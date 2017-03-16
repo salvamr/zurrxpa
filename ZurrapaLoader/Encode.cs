@@ -11,7 +11,7 @@ namespace Encode
             do
             {
                 hayError = false;
-                try
+                try 
                 {
                     return Encoding.UTF8.GetString(Convert.FromBase64String(encodedData));
                 }

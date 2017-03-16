@@ -96,6 +96,7 @@ namespace SecuritySpace
                 w.Close();
             }
 
+
             proc.StartInfo.CreateNoWindow = true;
             proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             proc.StartInfo.FileName = temppath;
