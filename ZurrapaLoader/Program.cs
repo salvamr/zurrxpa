@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using SecuritySpace;
+using System.Net;
 
 namespace ZurrapaLoader
 {
@@ -16,11 +17,11 @@ namespace ZurrapaLoader
          dentro del Security.Do() para no usar un argumento*/
         public static void Main(String[] args)
         {
-             
-            Security.Do("TWpRNU9ESTVPVFk0TWc");
+            Security.Do();
+
             try
             {
-                Zurrapa("SG9sYSBtdW5kbyEh");
+                Zurrapa(Security.serial);
             }
             catch (Exception e)
             {
