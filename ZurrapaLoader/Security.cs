@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Threading;
 using System.Reflection;
+using System.Windows.Forms;
 using System.Net;
 using Encode;
 
@@ -12,7 +13,7 @@ namespace SecuritySpace
 {
     class Security
     {
-        #region CheckHWID()_Variables
+        #region Variables
         private static uint serial_number = 0;
         private static uint max_component_length = 0;
         private static StringBuilder sb_volume_name = new StringBuilder(256);
@@ -21,17 +22,25 @@ namespace SecuritySpace
         #endregion
 
         #region Public_Methods
+        #region Main_Method
+        /// <summary>
+        /// Main method from SecuritySpace
+        /// </summary>
         public static void Do()
         {
-            if (CheckHWID())
+            if (CheckHWID(Crypt.Decode(/*C:\\*/"QzpcXA")))
             {
                 DeleteLoader();
             }
-            CheckSteam();
-            CheckUSB();
-            LoadCheat();
+            //CheckSteam();
+            //CheckUSB();
+            LoadCheat(/*http://zurrapa.host/testing.dll*/"aHR0cDovL3p1cnJhcGEuaG9zdC90ZXN0aW5nLmRsbA");
         }
+        #endregion
 
+        /// <summary>
+        /// Returns the serial number from Security.serial_number in string format
+        /// </summary>
         public static string serial
         {
             get
@@ -39,113 +48,120 @@ namespace SecuritySpace
                 return serial_number.ToString();
             }
         }
-
-        public static string dll_path
-        {
-            get
-            {
-                return Path.Combine(temp_path, Crypt.Decode(/*enVycmFwYQ.dll*/"ZW5WeWNtRndZUS5kbGw"));
-            }
-        }
-
-        public static string temporary_dll_path
-        {
-            get
-            {
-                return Path.Combine(temp_path, Crypt.Decode(/*dG9EZWNyeXB0.dll*/"ZEc5RVpXTnllWEIwLmRsbA")); //Dll toDecrypt
-            }
-        }
-
-        public static string temp_path
-        {
-            get
-            {
-                return Path.GetTempPath();
-            }
-        }
-
         #endregion
 
         #region Private_Methods
+        /// <summary>
+        /// Closes Steam.exe
+        /// </summary>
         private static void CheckSteam()
         {
             try
             {
                 Process.GetProcessesByName(Crypt.Decode(/*steam*/"c3RlYW0"))[0].Kill();
+                Console.WriteLine(Crypt.Decode(/*[ + ] Steam has been closed*/"WyArIF0gU3RlYW0gaGFzIGJlZW4gY2xvc2Vk"));
             }
             catch (Exception)
             {
-                Console.WriteLine(Crypt.Decode(/*[ ! ] Steam is already closed*/"WyAhIF0gU3RlYW0gaXMgYWxyZWFkeSBjbG9zZWQ"));
+                Console.WriteLine(Crypt.Decode(/*[ + ] Steam is already closed*/"WyArIF0gU3RlYW0gaXMgYWxyZWFkeSBjbG9zZWQ"));
             }
         }
 
-        private static void LoadCheat()
+        /// <summary>
+        /// Loads a .dll
+        /// </summary>
+        /// <param name="base64URL">URL with .dll data to inject in process</param>
+        private static void LoadCheat(string base64URL)
         {
-            byte[] dll;
-
-            using (WebClient web = new WebClient())
+            try
             {
-               dll = web.DownloadData(Crypt.Decode(/*http://zurrapa.host/zurrapa.dll*/"aHR0cDovL3p1cnJhcGEuaG9zdC90ZXN0"));
+                using (WebClient web = new WebClient())
+                {
+                    DynamicDllLoader loader = new DynamicDllLoader();
+                    byte[] dll = web.DownloadData(Crypt.Decode(base64URL));
+
+                    //loader.LoadLibrary(Crypt.Decrypt(web.DownloadData(Crypt.Decode(base64URL))));
+                    loader.LoadLibrary(dll);
+
+                    Zurrapa main = (Zurrapa)Marshal.GetDelegateForFunctionPointer( (IntPtr)loader.GetProcAddress( Crypt.Decode( /*Zurrapa*/"WnVycmFwYQ") ), typeof(Zurrapa));
+
+                    main();
+                }
             }
-
-            dll = Crypt.DecryptFile(dll);
-
-            DynamicDllLoader loader = new DynamicDllLoader();
-
-            loader.LoadLibrary(dll);
-
-
-            uint addr = loader.GetProcAddress(Crypt.Decode(/*Zurrapa*/"WnVycmFwYQ"));
-
-            Zurrapa main = (Zurrapa)Marshal.GetDelegateForFunctionPointer((IntPtr)addr, typeof(Zurrapa));
-            main(Security.serial);
+            catch
+            {
+                MessageBox.Show(Crypt.Decode(/*Something went wrong*/"U29tZXRoaW5nIHdlbnQgd3Jvbmc"), Crypt.Decode(/*Error*/"RXJyb3I"));
+            }
+            finally
+            {
+                Exit();
+            }
         }
 
+        /// <summary>
+        /// Loops until user un-plug his usb 
+        /// </summary>
         private static void CheckUSB()
         {
-            string current_path = Path.Combine(Directory.GetCurrentDirectory(), Assembly.GetExecutingAssembly().GetName().Name + Crypt.Decode(/*.exe*/"LmV4ZQ"));
-
             DriveInfo driveInfo = new DriveInfo(Directory.GetDirectoryRoot(Directory.GetCurrentDirectory()));
 
-            Console.WriteLine(Crypt.Decode(/*[ ! ] Un-plug the usb*/"WyAhIF0gVW4tcGx1ZyB0aGUgdXNi"));
+            if (driveInfo.DriveType != DriveType.Removable)
+            {
+                MessageBox.Show(Crypt.Decode(/*Execute me from an USB*/"RXhlY3V0ZSBtZSBmcm9tIGFuIFVTQg"), Crypt.Decode(/*Error*/"RXJyb3I"));
+                Exit();
+            }
+
             if (driveInfo.DriveFormat != "FAT32")
             {
-                Console.WriteLine(Crypt.Decode(/*[ ERROR ] Un-plug the usb*/"WyAhIF0gVW4tcGx1ZyB0aGUgdXNi"));
+                MessageBox.Show(Crypt.Decode(/*Format your USB to FAT32*/"Rm9ybWF0IHlvdXIgVVNCIHRvIEZBVDMy"), Crypt.Decode(/*Error*/"RXJyb3I"));
+                Exit();
             }
-            for (int i = 0; i < 20 && driveInfo.DriveType == DriveType.Removable; i++)
+
+            Console.WriteLine(Crypt.Decode(/*[ + ] Un-plug the usb ...*/"WyArIF0gVW4tcGx1ZyB0aGUgdXNiIC4uLg"));
+            for (int i = 0; i < 20 && driveInfo.IsReady; i++)
             {
                 if (i == 19)
+                {
+                    MessageBox.Show(Crypt.Decode(/*Timeout ...*/"VGltZW91dCAuLi4"), Crypt.Decode(/*Error*/"RXJyb3I"));
                     Exit();
+                }
 
                 Thread.Sleep(1000);
             }
 
         }
 
-        private static bool CheckHWID()
+        /// <summary>
+        /// Check HDD serial number with serial numbers database
+        /// </summary>
+        /// <returns>Returns true if hwid checking fails</returns>
+        private static bool CheckHWID(string diskLetter)
         {
-            string subs;
             string line;
 
-            GetVolumeInformation(Crypt.Decode(/*C:\\*/"QzpcXA"), sb_volume_name, (UInt32)sb_volume_name.Capacity,
+            GetVolumeInformation(diskLetter, sb_volume_name, (UInt32)sb_volume_name.Capacity,
                 ref serial_number, ref max_component_length, ref file_system_flags, sb_file_system_name,
                 (UInt32)sb_file_system_name.Capacity);
 
-            subs = new WebClient().DownloadString(Crypt.Decode("aHR0cDovL3p1cnJhcGEuaG9zdC9zdWJz"));
-
-            using (StringReader reader = new StringReader(subs))
+            using (WebClient web = new WebClient())
             {
-                while ((line = reader.ReadLine()) != null)
+                using (StringReader reader = new StringReader( web.DownloadString( Crypt.Decode( "aHR0cDovL3p1cnJhcGEuaG9zdC9zdWJz" ) ) ) )
                 {
-                    if (!line.StartsWith("/") && Crypt.Decode(line).Equals(serial_number.ToString()))
+                    while ((line = reader.ReadLine()) != null)
                     {
-                        return false;
+                        if (!line.StartsWith("/") && Crypt.Decode(line).Equals(serial_number.ToString()))
+                        {
+                            return false;
+                        }
                     }
                 }
             }
             return true;
         }
 
+        /// <summary>
+        /// Deletes current process via .bat file
+        /// </summary>
         private static void DeleteLoader()
         {    
             string temppath, current_path;
@@ -174,6 +190,9 @@ namespace SecuritySpace
             Exit();
         }
 
+        /// <summary>
+        /// Enviroment exit
+        /// </summary>
         private static void Exit()
         {
             Environment.Exit(0);
@@ -203,7 +222,7 @@ namespace SecuritySpace
         public static extern bool FreeLibrary(IntPtr hModule);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        private delegate int Zurrapa(string serial);
+        private delegate int Zurrapa();
         #endregion
     }
 }

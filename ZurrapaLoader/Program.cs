@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using SecuritySpace;
+using System.Threading;
 using Encode;
 
 namespace ZurrapaLoader
@@ -13,6 +14,7 @@ namespace ZurrapaLoader
     {
         public static void Main(String[] args)
         {
+            Console.Title = Crypt.Decode(/*Zurrapa*/"WnVycmFwYQ");
             Security.Do();
         }
     }

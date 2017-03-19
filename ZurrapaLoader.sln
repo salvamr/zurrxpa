@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZurrapaLoader", "ZurrapaLoader\ZurrapaLoader.csproj", "{35DC75FF-A6B8-4430-82E9-D26C81E7E2E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZurrapaDLL", "ZurrapaDLL\ZurrapaDLL.csproj", "{1738A917-14F4-4D71-8B12-07968F9DC61B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{35DC75FF-A6B8-4430-82E9-D26C81E7E2E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35DC75FF-A6B8-4430-82E9-D26C81E7E2E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35DC75FF-A6B8-4430-82E9-D26C81E7E2E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1738A917-14F4-4D71-8B12-07968F9DC61B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1738A917-14F4-4D71-8B12-07968F9DC61B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1738A917-14F4-4D71-8B12-07968F9DC61B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1738A917-14F4-4D71-8B12-07968F9DC61B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
