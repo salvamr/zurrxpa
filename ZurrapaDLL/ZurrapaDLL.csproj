@@ -30,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Fasm.NET, Version=1.0.4939.27955, Culture=neutral, processorArchitecture=x86">
@@ -38,6 +39,7 @@
     <Reference Include="MemorySharp, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MemorySharp.1.2.0\lib\MemorySharp.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -49,6 +51,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CProcess.cs" />
+    <Compile Include="Engine\EntityPlayer.cs" />
+    <Compile Include="Engine\LocalPlayer.cs" />
     <Compile Include="Features\Aimbot.cs" />
     <Compile Include="Features\Bunnyhop.cs" />
     <Compile Include="Features\Miscellaneous.cs" />

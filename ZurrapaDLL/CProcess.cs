@@ -8,31 +8,29 @@ namespace ZurrapaDLL
 {
     class CProcess
     {
-        public Process process;
-        public ProcessModule myProcessModule, clientDll, engineDll;
-        public ProcessModuleCollection myProcessModuleCollection;
+        private static readonly Process process = Process.GetProcessesByName("csgo")[0];
+        private static readonly MemorySharp mem = new MemorySharp(process);
+        private static ProcessModule myProcessModule;
+        private static ProcessModule clientDll, engineDll;
+        private static ProcessModuleCollection myProcessModuleCollection;
 
-        public CProcess(string procName)
+        public static IntPtr CLIENT
         {
-            try
+            get
             {
-                process = Process.GetProcessesByName(procName)[0];
-
-                myProcessModule = null;
-                clientDll = null;
-                engineDll = null;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("{0}: {1}", procName.ToUpper(), e.Message);
-            }
-            finally
-            {
-                Environment.Exit(0);
+                return clientDll.BaseAddress;
             }
         }
 
-        public bool IsModuleLoaded(string ModuleName)
+        public static IntPtr ENGINE
+        {
+            get
+            {
+                return engineDll.BaseAddress;
+            }
+        }
+
+        public static bool IsModuleLoaded(string ModuleName)
         {
             bool loaded = false;
 
@@ -60,16 +58,14 @@ namespace ZurrapaDLL
             return loaded;
         }
 
-        public T Read<T>(IntPtr Address)
+        public static T Read<T>(IntPtr Address)
         {
-            MemorySharp mem = new MemorySharp(process);
             T read = mem.Read<T>(Address);
             return read;
         }
 
-        public void Write<T>(IntPtr Address, T value)
+        public static void Write<T>(IntPtr Address, T value)
         {
-            MemorySharp mem = new MemorySharp(process);
             mem.Write<T>(Address, value);
         }
     }

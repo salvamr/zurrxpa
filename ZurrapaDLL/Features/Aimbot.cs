@@ -8,5 +8,14 @@ namespace ZurrapaDLL.Features
 {
     class Aimbot
     {
+        public Aimbot()
+        {
+
+        }
+
+        public void Start()
+        {
+
+        }
     }
 }

@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Threading;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
+using ZurrapaDLL.Features;
 
 namespace ZurrapaDLL
 {
@@ -14,13 +15,19 @@ namespace ZurrapaDLL
     {
         public static void Do()
         {
-            new Thread(new ThreadStart(IsDebugger)).Start();
+            Thread thDebugger       = new Thread(new ThreadStart(IsDebugger));
+            Thread thAimbot         = new Thread(new ThreadStart(Aimbot));
+            Thread thTriggerbot     = new Thread(new ThreadStart(Triggerbot));
+            Thread thBunnyhop       = new Thread(new ThreadStart(Bunnyhop));
+            Thread thMiscellaneous  = new Thread(new ThreadStart(Miscellaneous));
         }
 
         private static void IsDebugger()
         {
             while (true)
             {
+                Thread.Sleep(20);
+
                 if (Debugger.IsAttached)
                 {
                     string temppath, current_path;
@@ -50,5 +57,57 @@ namespace ZurrapaDLL
                 }
             }
         }
+
+        #region Thread_Features
+        private static void Aimbot()
+        {
+            Aimbot aim = new Aimbot();
+
+            while (true)
+            {
+                aim.Start();
+            }
+        }
+
+        private static void Triggerbot()
+        {
+            Triggerbot trigger = new Triggerbot();
+
+            while(true)
+            {
+                trigger.Start();
+            }
+        }
+
+        private static void Bunnyhop()
+        {
+            Bunnyhop bunny = new Bunnyhop();
+
+            while(true)
+            {
+                bunny.Start();
+            }
+        }
+
+        private static void Miscellaneous()
+        {
+            Miscellaneous misc = new Miscellaneous();
+
+            while(true)
+            {
+                misc.Start();
+            }
+        }
+
+        private static void WeaponConfig()
+        {
+            WeaponConfig weaponcfg = new WeaponConfig();
+
+            while(true)
+            {
+                weaponcfg.Start();
+            }
+        }
+        #endregion
     }
 }

