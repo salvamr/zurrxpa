@@ -6,34 +6,35 @@ using System.Threading.Tasks;
 
 namespace ZurrapaDLL.Engine
 {
-    class LocalPlayer
+    static class LocalPlayer
     {
-        protected static IntPtr GetPlayer()
+
+        public static IntPtr GetPlayer()
         {
-            return CProcess.Read<IntPtr>(CProcess.CLIENT /*+ Offsets.m_dwLocalPlayer*/);
+            return CProcess.Read<IntPtr>(CProcess.CLIENT + 0xAB0708);
         }
 
-        protected static bool IsShooting()
+        public static bool IsShooting()
         {
             return CProcess.Read<bool>(GetPlayer() /*+ Offsets.m_iShotsFired*/);
         }
 
-        protected static int GetPlayerStatus()
+        public static int GetPlayerStatus()
         {
             return CProcess.Read<int>(GetPlayer() /*+ Offsets.m_fFlags*/);
         }
 
-        protected static int GetHealth()
+        public static int GetHealth()
         {
-            return CProcess.Read<int>(GetPlayer() /*+ Offsets.m_iHealth*/);
+            return CProcess.Read<int>(GetPlayer() + 0xFC);
         }
 
-        protected static int GetCrosshairID()
+        public static int GetCrosshairID()
         {
             return CProcess.Read<int>(GetPlayer() /*+ Offsets.m_iCrossHairID*/);
         }
 
-        protected static unsafe float GetSentivity()
+        public static unsafe float GetSentivity()
         {
             ulong sens_ptr = (ulong)CProcess.CLIENT /*+ Offsets.m_pSensitivity*/;
             ulong sens_value_xored = CProcess.Read<ulong>(CProcess.CLIENT /*+ Offsets.m_dwSensitivity*/);
@@ -41,7 +42,7 @@ namespace ZurrapaDLL.Engine
             return *(float*)&Value;
         }
 
-        protected static unsafe void SetSensitivity()
+        public static unsafe void SetSensitivity()
         {
 
         }

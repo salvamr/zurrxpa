@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Collections;
+using System.Threading;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using Binarysharp.MemoryManagement;
 using Binarysharp.MemoryManagement.Modules;
 using Binarysharp.MemoryManagement.Native;
@@ -8,11 +12,8 @@ namespace ZurrapaDLL
 {
     class CProcess
     {
-        private static readonly Process process = Process.GetProcessesByName("csgo")[0];
-        private static readonly MemorySharp mem = new MemorySharp(process);
-        private static ProcessModule myProcessModule;
-        private static ProcessModule clientDll, engineDll;
-        private static ProcessModuleCollection myProcessModuleCollection;
+        private static MemorySharp mem;
+        private static RemoteModule clientDll, engineDll;
 
         public static IntPtr CLIENT
         {
@@ -30,32 +31,35 @@ namespace ZurrapaDLL
             }
         }
 
-        public static bool IsModuleLoaded(string ModuleName)
+        public static void waitingForGame(string procName)
         {
-            bool loaded = false;
+            do
+            {
+                isProcessReady(procName);
+                findModulePointer(ref clientDll, "client.dll");
+                findModulePointer(ref engineDll, "engine.dll");
+                Thread.Sleep(1000);
+            } while (clientDll.Equals(IntPtr.Zero) && engineDll.Equals(IntPtr.Zero));
+        }
 
+        private static void isProcessReady(string procName)
+        {
             try
             {
-                myProcessModuleCollection = process.Modules;
-
-                for (int j = 0; j < myProcessModuleCollection.Count; j++)
-                {
-                    myProcessModule = myProcessModuleCollection[j];
-
-                    if (myProcessModule.ModuleName.Contains(ModuleName))
-                    {
-                        clientDll = myProcessModule;
-                        loaded = true;
-                        break;
-                    }
-                }
+                mem = new MemorySharp(Process.GetProcessesByName(procName)[0].Id);
             }
-            catch
+            catch (Exception)
             {
-                loaded = false;
+                isProcessReady(procName);
             }
+        }
 
-            return loaded;
+        private static void findModulePointer(ref RemoteModule module, string moduleName)
+        {
+            while (module.BaseAddress.Equals(IntPtr.Zero))
+            {
+                module = mem.Modules[moduleName];
+            }
         }
 
         public static T Read<T>(IntPtr Address)
@@ -68,5 +72,8 @@ namespace ZurrapaDLL
         {
             mem.Write<T>(Address, value);
         }
+
+        [DllImport("user32.dll")]
+        private static extern int FindWindow(string sClass, string sWindow);
     }
 }

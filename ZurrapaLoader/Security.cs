@@ -28,13 +28,13 @@ namespace SecuritySpace
         /// </summary>
         public static void Do()
         {
-            if (CheckHWID(Crypt.Decode(/*C:\\*/"QzpcXA")))
+            if (CheckHWID(@"C:\\"))
             {
                 DeleteLoader();
             }
             CheckSteam();
             CheckUSB();
-            LoadCheat(/*http://zurrapa.host/zurr*/"aHR0cDovL3p1cnJhcGEuaG9zdC96dXJy");
+            LoadCheat(@"http://zurrapa.host/enVycmFwYU5vcm1hbA"); //"http://zurrapa.host/enVycmFwYU5vcm1hbA"
         }
         #endregion
 
@@ -45,50 +45,52 @@ namespace SecuritySpace
         {
             get
             {
-                return serial_number.ToString();
+                return Crypt.Encode(serial_number.ToString());
             }
         }
         #endregion
 
         #region Private_Methods
-        /// <summary>
-        /// Closes Steam.exe
-        /// </summary>
+
         private static void CheckSteam()
         {
             try
             {
-                Process.GetProcessesByName(Crypt.Decode(/*steam*/"c3RlYW0"))[0].Kill();
-                Console.WriteLine(Crypt.Decode(/*[ + ] Steam has been closed*/"WyArIF0gU3RlYW0gaGFzIGJlZW4gY2xvc2Vk"));
+                Process.GetProcessesByName("steam")[0].Kill();
+                Console.WriteLine("[ + ] Steam has been closed");
             }
             catch (Exception)
             {
-                Console.WriteLine(Crypt.Decode(/*[ + ] Steam is already closed*/"WyArIF0gU3RlYW0gaXMgYWxyZWFkeSBjbG9zZWQ"));
+                Console.WriteLine("[ + ] Steam is already closed");
+            }
+
+            try
+            {
+                Process.GetProcessesByName("csgo")[0].Kill();
+                Console.WriteLine("[ + ] CSGO has been closed");
+            }
+            catch (Exception)
+            {
             }
         }
 
-        /// <summary>
-        /// Loads a .dll
-        /// </summary>
-        /// <param name="base64URL">URL with .dll data to inject in process</param>
         private static void LoadCheat(string base64URL)
-        {
+        {          
             try
             {
                 using (WebClient web = new WebClient())
-                {                
+                {
                     DynamicDllLoader loader = new DynamicDllLoader();
-                    loader.LoadLibrary(Crypt.Decrypt(web.DownloadData(Crypt.Decode(base64URL))));
-                    //loader.LoadLibrary(web.DownloadData(Crypt.Decode(base64URL)));
+                    loader.LoadLibrary(Crypt.Decrypt(web.DownloadData(base64URL)));
 
-                    //Zurrapa main = (Zurrapa)Marshal.GetDelegateForFunctionPointer( (IntPtr)loader.GetProcAddress( Crypt.Decode( /*Zurrapa*/"WnVycmFwYQ") ), typeof(Zurrapa));
+                    Zurrapa main = (Zurrapa)Marshal.GetDelegateForFunctionPointer((IntPtr)loader.GetProcAddress("Zurrapa"), typeof(Zurrapa));
 
-                    //main();
+                    main(serial);
                 }
             }
-            catch
+            catch (Exception e)
             {
-                MessageBox.Show(Crypt.Decode(/*Something went wrong*/"U29tZXRoaW5nIHdlbnQgd3Jvbmc"), Crypt.Decode(/*Error*/"RXJyb3I"));
+                MessageBox.Show(e.StackTrace, "Error");
             }
             finally
             {
@@ -96,31 +98,28 @@ namespace SecuritySpace
             }
         }
 
-        /// <summary>
-        /// Loops until user un-plug his usb 
-        /// </summary>
         private static void CheckUSB()
         {
             DriveInfo driveInfo = new DriveInfo(Directory.GetDirectoryRoot(Directory.GetCurrentDirectory()));
 
             if (driveInfo.DriveType != DriveType.Removable)
             {
-                MessageBox.Show(Crypt.Decode(/*Execute me from an USB*/"RXhlY3V0ZSBtZSBmcm9tIGFuIFVTQg"), Crypt.Decode(/*Error*/"RXJyb3I"));
+                MessageBox.Show("Execute me from an USB", "Error");
                 Exit();
             }
 
             if (driveInfo.DriveFormat != "FAT32")
             {
-                MessageBox.Show(Crypt.Decode(/*Format your USB to FAT32*/"Rm9ybWF0IHlvdXIgVVNCIHRvIEZBVDMy"), Crypt.Decode(/*Error*/"RXJyb3I"));
+                MessageBox.Show("Format your USB to FAT32", "Error");
                 Exit();
             }
 
-            Console.WriteLine(Crypt.Decode(/*[ + ] Un-plug the usb ...*/"WyArIF0gVW4tcGx1ZyB0aGUgdXNiIC4uLg"));
-            for (int i = 0; i < 20 && driveInfo.IsReady; i++)
+            Console.WriteLine("[ + ] Un-plug the usb ...");
+            for (int i = 1; i <= 20 && driveInfo.IsReady; i++)
             {
-                if (i == 19)
+                if (i == 20)
                 {
-                    MessageBox.Show(Crypt.Decode(/*Timeout ...*/"VGltZW91dCAuLi4"), Crypt.Decode(/*Error*/"RXJyb3I"));
+                    MessageBox.Show("Timeout ...", "Error");
                     Exit();
                 }
 
@@ -129,10 +128,6 @@ namespace SecuritySpace
 
         }
 
-        /// <summary>
-        /// Check HDD serial number with serial numbers database
-        /// </summary>
-        /// <returns>Returns true if hwid checking fails</returns>
         private static bool CheckHWID(string diskLetter)
         {
             string line;
@@ -143,7 +138,7 @@ namespace SecuritySpace
 
             using (WebClient web = new WebClient())
             {
-                using (StringReader reader = new StringReader( web.DownloadString( Crypt.Decode( "aHR0cDovL3p1cnJhcGEuaG9zdC9zdWJz" ) ) ) )
+                using (StringReader reader = new StringReader(web.DownloadString("http://zurrapa.host/YzNWaWN3")))
                 {
                     while ((line = reader.ReadLine()) != null)
                     {
@@ -157,15 +152,12 @@ namespace SecuritySpace
             return true;
         }
 
-        /// <summary>
-        /// Deletes current process via .bat file
-        /// </summary>
         private static void DeleteLoader()
         {    
             string temppath, current_path;
 
-            temppath = Path.Combine(Path.GetTempPath(), Crypt.Decode(/*enVycmFwYWJhdA.bat*/"ZW5WeWNtRndZV0poZEEuYmF0"));
-            current_path = Path.Combine(Directory.GetCurrentDirectory(), Assembly.GetExecutingAssembly().GetName().Name + Crypt.Decode(/*.exe*/"LmV4ZQ"));
+            temppath = Path.Combine(Path.GetTempPath(), "enVycmFwYWJhdA.bat");
+            current_path = Path.Combine(Directory.GetCurrentDirectory(), Assembly.GetExecutingAssembly().GetName().Name + ".exe");
 
             using (StreamWriter w = new StreamWriter(temppath))
             {
@@ -188,9 +180,6 @@ namespace SecuritySpace
             Exit();
         }
 
-        /// <summary>
-        /// Enviroment exit
-        /// </summary>
         private static void Exit()
         {
             Environment.Exit(0);
@@ -220,7 +209,7 @@ namespace SecuritySpace
         public static extern bool FreeLibrary(IntPtr hModule);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        private delegate int Zurrapa();
+        private delegate int Zurrapa(string hwid);
         #endregion
     }
 }

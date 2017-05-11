@@ -12,7 +12,14 @@ namespace ZurrapaDLL
     {
         static void Main(string[] args)
         {
-            Threads.Do();
+            Console.WriteLine("hi");
+            CProcess.waitingForGame("csgo");
+
+            Console.WriteLine("client.dll: " + CProcess.CLIENT);
+
+            //Threads.Do();
+            Console.ReadLine();
+           
         }
     }
 }

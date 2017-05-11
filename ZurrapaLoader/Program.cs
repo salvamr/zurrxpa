@@ -14,7 +14,7 @@ namespace ZurrapaLoader
     {
         public static void Main(String[] args)
         {
-            Console.Title = Crypt.Decode(/*Zurrapa*/"WnVycmFwYQ");
+            Console.Title = "Zurrapa";
             Security.Do();
         }
     }

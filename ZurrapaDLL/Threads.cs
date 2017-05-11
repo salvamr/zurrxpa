@@ -8,18 +8,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ZurrapaDLL.Features;
+using ZurrapaDLL.Engine;
 
 namespace ZurrapaDLL
 {
     class Threads
     {
+        private static Thread thDebugger;
+        private static Thread thAimbot;
+        private static Thread thTriggerbot;
+        private static Thread thBunnyhop;
+        private static Thread thMiscellaneous;
+
         public static void Do()
         {
-            Thread thDebugger       = new Thread(new ThreadStart(IsDebugger));
-            Thread thAimbot         = new Thread(new ThreadStart(Aimbot));
-            Thread thTriggerbot     = new Thread(new ThreadStart(Triggerbot));
-            Thread thBunnyhop       = new Thread(new ThreadStart(Bunnyhop));
-            Thread thMiscellaneous  = new Thread(new ThreadStart(Miscellaneous));
+            Aimbot oAimbot = new Aimbot();
+            thAimbot = new Thread(new ThreadStart(oAimbot.Start));
+            thAimbot.Start();
+            thDebugger = new Thread(new ThreadStart(IsDebugger));
+            thTriggerbot = new Thread(new ThreadStart(Triggerbot));
+            thBunnyhop = new Thread(new ThreadStart(Bunnyhop));
+            thMiscellaneous = new Thread(new ThreadStart(Miscellaneous));
+        }
+
+        public static void End()
+        {
+            thDebugger.Abort();
+            thAimbot.Abort();
+            thTriggerbot.Abort();
+            thBunnyhop.Abort();
+            thMiscellaneous.Abort();
         }
 
         private static void IsDebugger()
@@ -64,8 +82,9 @@ namespace ZurrapaDLL
             Aimbot aim = new Aimbot();
 
             while (true)
-            {
+            {       
                 aim.Start();
+                Thread.Sleep(1);
             }
         }
 
@@ -73,9 +92,10 @@ namespace ZurrapaDLL
         {
             Triggerbot trigger = new Triggerbot();
 
-            while(true)
+            while (true)
             {
                 trigger.Start();
+                Thread.Sleep(1);
             }
         }
 
@@ -83,9 +103,10 @@ namespace ZurrapaDLL
         {
             Bunnyhop bunny = new Bunnyhop();
 
-            while(true)
+            while (true)
             {
                 bunny.Start();
+                Thread.Sleep(1);
             }
         }
 
@@ -93,9 +114,10 @@ namespace ZurrapaDLL
         {
             Miscellaneous misc = new Miscellaneous();
 
-            while(true)
+            while (true)
             {
                 misc.Start();
+                Thread.Sleep(1);
             }
         }
 
@@ -103,9 +125,10 @@ namespace ZurrapaDLL
         {
             WeaponConfig weaponcfg = new WeaponConfig();
 
-            while(true)
+            while (true)
             {
                 weaponcfg.Start();
+                Thread.Sleep(1);
             }
         }
         #endregion
