@@ -20,7 +20,7 @@ string INIReader::GetString(string section, string name, string default_value)
 	return _values.count(key) ? _values[key] : default_value;
 }
 
-int INIReader::GetInteger(string section, string name, int default_value)
+long INIReader::GetInteger(string section, string name, long default_value)
 {
 	string valstr = GetString(section, name, "");
 	const char* value = valstr.c_str();
@@ -29,18 +29,30 @@ int INIReader::GetInteger(string section, string name, int default_value)
 	return end > value ? n : default_value;
 }
 
-float INIReader::GetFloat(string section, string name, float default_value)
+double INIReader::GetDouble(string section, string name, double default_value)
 {
 	string valstr = GetString(section, name, "");
 	const char* value = valstr.c_str();
 	char* end;
-	float n = strtof(value, &end);
+	double n = strtod(value, &end);
 	return end > value ? n : default_value;
+}
+
+bool INIReader::GetBoolean(string section, string name, bool default_value)
+{
+	string valstr = GetString(section, name, "");
+	std::transform(valstr.begin(), valstr.end(), valstr.begin(), ::tolower);
+	if (valstr == "true" || valstr == "yes" || valstr == "on" || valstr == "1")
+		return true;
+	else if (valstr == "false" || valstr == "no" || valstr == "off" || valstr == "0")
+		return false;
+	else
+		return default_value;
 }
 
 string INIReader::MakeKey(string section, string name)
 {
-	string key = section + decode(/*.*/"Lg") + name;
+	string key = section + "." + name;
 	std::transform(key.begin(), key.end(), key.begin(), ::tolower);
 	return key;
 }

@@ -169,6 +169,38 @@ namespace Dumper
             return 0;
         }
 
+		uintptr_t CProcess::FindPatternSkip(const std::string& module, const char* pattern, int skips, DWORD skip_size, short type, uintptr_t patternOffset, uintptr_t addressOffset)
+		{
+			auto mod = GetModuleByName(module);
+			if (!mod)
+				return 0;
+
+			auto pb = const_cast< unsigned char* >(&mod->GetDumpedBytes().at(0));
+			auto max = mod->GetImgSize() - 0x1000;
+
+			for (auto off = 0UL; off < max; ++off) {
+				if (CompareBytes(pb + off, pattern)) {
+					static int iSkip = 0;
+					if (iSkip < skips)
+					{
+						off += skip_size;
+						iSkip++;
+						continue;
+					}
+					auto add = mod->GetImgBase() + off + patternOffset;
+
+					if (type & SignatureType_t::READ)
+						ReadMemory(add, &add, sizeof(uintptr_t));
+
+					if (type & SignatureType_t::SUBTRACT)
+						add -= mod->GetImgBase();
+
+					return add + addressOffset;
+				}
+			}
+			return 0;
+		}
+
         bool CProcess::GetProcessID( void )
         {
             if( _haswindow ) {

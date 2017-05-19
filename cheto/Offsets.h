@@ -20,7 +20,6 @@ public:
 		m_vecViewOffset,
 		m_vecVelocity,
 		m_vecPunch,
-		m_nTickBase,
 		m_iCrossHairID,
 		m_dwBoneMatrix,
 		m_bDormant,

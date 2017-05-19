@@ -1,6 +1,6 @@
 #include "Process.h"
 
-CProcess Process;
+CProcess*	Process = new CProcess();
 
 Module CProcess::GetModule(char* moduleName)
 {
@@ -40,24 +40,24 @@ int CProcess::GetProcID(string ProcName)
 	}
 	else
 
-		if (PE32.szExeFile == ProcName)
+	if (PE32.szExeFile == ProcName)
+	{
+		CloseHandle(ProcSnapshot);
+		return PE32.th32ProcessID;
+	}
+	else
+	{
+		do
 		{
-			CloseHandle(ProcSnapshot);
-			return PE32.th32ProcessID;
-		}
-		else
-		{
-			do
+			if (PE32.szExeFile == ProcName)
 			{
-				if (PE32.szExeFile == ProcName)
-				{
-					CloseHandle(ProcSnapshot);
-					return PE32.th32ProcessID;
-				}
-			} while (Process32Next(ProcSnapshot, &PE32));
-			CloseHandle(ProcSnapshot);
-			return 0;
-		}
+				CloseHandle(ProcSnapshot);
+				return PE32.th32ProcessID;
+			}
+		} while (Process32Next(ProcSnapshot, &PE32));
+		CloseHandle(ProcSnapshot);
+		return 0;
+	}
 }
 
 bool CProcess::Attach(char* pName, DWORD rights)
@@ -75,6 +75,8 @@ bool CProcess::Attach(char* pName, DWORD rights)
 
 			HandleProcess = OpenProcess(rights, false, PID);
 
+			Attached = true;
+
 			return true;
 		}
 	} while (Process32Next(handle, &entry));
@@ -84,6 +86,8 @@ bool CProcess::Attach(char* pName, DWORD rights)
 
 void CProcess::Detach()
 {
+	Attached = false;
 	CloseHandle(HandleProcess);
 }
+
 

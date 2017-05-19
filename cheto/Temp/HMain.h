@@ -7,3 +7,4 @@
 #include "OffsetManager\HOffsetManager.h"
 
 #endif /* _HMAIN_H_ */
+

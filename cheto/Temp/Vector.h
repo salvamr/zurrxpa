@@ -52,3 +52,4 @@ public:
 };
 inline Vector operator* ( float fl, const Vector& v )	{ return v * fl; }
 
+

@@ -13,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZurrapaLoaderLAN", "Zurrapa
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zurrapa", "cheto\cheto.vcxproj", "{0C56D53E-11CE-4287-B213-022E95B5594C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zurrapaLAN", "chetoLAN\chetoLAN.vcxproj", "{430B1A24-EBB2-4416-B182-97DB947994E7}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		.exe|Any CPU = .exe|Any CPU
@@ -223,46 +221,6 @@ Global
 		{0C56D53E-11CE-4287-B213-022E95B5594C}.tests|x64.ActiveCfg = tests|Win32
 		{0C56D53E-11CE-4287-B213-022E95B5594C}.tests|x86.ActiveCfg = tests|Win32
 		{0C56D53E-11CE-4287-B213-022E95B5594C}.tests|x86.Build.0 = tests|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}..exe|Any CPU.ActiveCfg = .exe|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}..exe|Mixed Platforms.ActiveCfg = .exe|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}..exe|Mixed Platforms.Build.0 = .exe|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}..exe|Win32.ActiveCfg = .exe|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}..exe|Win32.Build.0 = .exe|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}..exe|x64.ActiveCfg = .exe|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}..exe|x86.ActiveCfg = .exe|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}..exe|x86.Build.0 = .exe|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.Debug|Mixed Platforms.Build.0 = Debug|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.Debug|Win32.ActiveCfg = Debug|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.Debug|Win32.Build.0 = Debug|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.Debug|x64.ActiveCfg = Debug|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.Debug|x86.ActiveCfg = Debug|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.Debug|x86.Build.0 = Debug|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.Release|Any CPU.ActiveCfg = Release|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.Release|Mixed Platforms.ActiveCfg = Release|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.Release|Mixed Platforms.Build.0 = Release|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.Release|Win32.ActiveCfg = Release|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.Release|Win32.Build.0 = Release|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.Release|x64.ActiveCfg = Release|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.Release|x86.ActiveCfg = Release|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.Release|x86.Build.0 = Release|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.test|Any CPU.ActiveCfg = test|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.test|Mixed Platforms.ActiveCfg = test|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.test|Mixed Platforms.Build.0 = test|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.test|Win32.ActiveCfg = test|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.test|Win32.Build.0 = test|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.test|x64.ActiveCfg = test|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.test|x86.ActiveCfg = test|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.test|x86.Build.0 = test|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.tests|Any CPU.ActiveCfg = tests|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.tests|Mixed Platforms.ActiveCfg = tests|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.tests|Mixed Platforms.Build.0 = tests|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.tests|Win32.ActiveCfg = tests|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.tests|Win32.Build.0 = tests|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.tests|x64.ActiveCfg = tests|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.tests|x86.ActiveCfg = tests|Win32
-		{430B1A24-EBB2-4416-B182-97DB947994E7}.tests|x86.Build.0 = tests|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

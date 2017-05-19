@@ -39,8 +39,9 @@ void IsDebuggerActive()
 }
 
 extern "C" __declspec(dllexport) void Zurrapa(char* hwid)
+//int main()
 {
-	Settings.hwid = string(hwid);
+	Settings.hwid = string(hwid);//"MTI1NDY3NTI0Ng";
 
 	EnableMenuItem(GetSystemMenu(GetConsoleWindow(), FALSE), SC_CLOSE, MF_GRAYED);
 

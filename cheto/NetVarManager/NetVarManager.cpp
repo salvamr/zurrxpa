@@ -4,6 +4,8 @@
 #include <iomanip>
 #include <sstream>
 #include <fstream>
+#include <cstdint>
+#include "../Process.h"
 
 namespace Dumper
 {
@@ -111,27 +113,32 @@ namespace Dumper
 
         bool CNetVarManager::Load( void )
         {
-            auto firstclass = pProcess->FindPattern( "client.dll", "44 54 5F 54 45 57 6F 72 6C 64 44 65 63 61 6C", 0, 0, 0 );
+			auto decalname = pProcess->FindPattern("client.dll", "64 65 63 61 6C 6E 61 6D 65 00", 0, 0, 0);
 
-            std::stringstream ss;
-            for( auto i = 0; i < 4; ++i ) {
-                ss << std::hex << std::setw(2) << std::setfill('0') << ( ( firstclass >> 8 * i ) & 0xFF ) << " ";
-            }
+			std::stringstream ss;
+			for (auto i = 0; i < 4; ++i)
+			{
+				ss << std::hex << std::setw(2) << std::setfill('0') << ((decalname >> 8 * i) & 0xFF) << " ";
+			}
 
-            firstclass = pProcess->FindPattern( "client.dll", ss.str().c_str(), Remote::SignatureType_t::READ, 0x2B, 0 );
+			auto decalref = pProcess->FindPattern("client.dll", ss.str().c_str(), Remote::SignatureType_t::NORMAL, 0, 0);
 
-            if( !firstclass )
-                return false;
+			decalref = pProcess->FindPatternSkip("client.dll", ss.str().c_str(), 5, 0xA, Remote::SignatureType_t::NORMAL, 0, 0);
 
-            for( auto Class = ClientClass( firstclass ); Class.Get(); Class = ClientClass( Class.GetNextClass() ) ) {
+			auto firstclass = Process.Read<std::uint32_t>(decalref + 0x3B);
 
-                auto table = RecvTable( Class.GetTable() );
-                if( !table.Get() )
-                    continue;
+			if (!firstclass)
+				return false;
 
-                ScanTable( table, 0, 0, table.GetTableName().c_str() );
-            }
-            return true;
+			for (auto Class = ClientClass(firstclass); Class.Get(); Class = ClientClass(Class.GetNextClass())) {
+
+				auto table = RecvTable(Class.GetTable());
+				if (!table.Get())
+					continue;
+
+				ScanTable(table, 0, 0, table.GetTableName().c_str());
+			}
+			return true;
         }
 
         void CNetVarManager::Dump( void ) const

@@ -20,6 +20,8 @@ public:
 	Module Client;
 	Module Engine;
 
+	bool Attached;
+
 	Module GetModule(char* moduleName);
 	int GetProcID(string ProcName);
 	bool Attach(char* pName, DWORD rights = PROCESS_ALL_ACCESS);
@@ -37,6 +39,6 @@ public:
 	}
 };
 
-extern CProcess Process;
+extern CProcess* Process;
 
 #endif

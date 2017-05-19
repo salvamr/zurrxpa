@@ -9,13 +9,7 @@ class CWeapon
 {
 public:
 	void	Main();
-	bool	IsBadWeapon();
-	bool	IsPistol();
-
-private:
-	int OldWeapon = 0;
-	void Load(int);
-	
-}; extern CWeapon Weapon;
+	bool	IsBadWeapon(int);
+}; extern CWeapon* Weapon;
 
 #endif

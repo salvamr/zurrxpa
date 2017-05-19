@@ -1,35 +1,39 @@
 #ifndef _ENGINE_H_
 #define _ENGINE_H_
 
+#include "Include.h"
 #include "Offsets.h"
 
 class CLocalPlayer
 {
 public:
+	CLocalPlayer();
+	~CLocalPlayer();
 
 	DWORD	GetPlayer();
 
 	float	GetSpeed();
-	float	GetSensitivity();
 
 	bool	IsShooting();
 
+	int		GetStatus();
 	int		GetHealth();
 	int		GetCrosshairID();
 	int		GetTeam();
 	int		GetWeaponID();
 
-	void	SetSensitivity(float Value);
 	void	SetAttack();
 
 	Vector	GetEyePosition();
 	Vector	GetVecPunch();
 
-}; extern CLocalPlayer Local;
+}; extern CLocalPlayer* Local;
 
 class CEntity
 {
 public:
+	CEntity();
+	~CEntity();
 
 	DWORD	EntityList;
 	DWORD	GetBoneMatrix();
@@ -46,6 +50,6 @@ public:
 
 	Vector	GetBone(int);
 
-}; extern CEntity Entity;
+}; extern CEntity* Entity;
 
 #endif

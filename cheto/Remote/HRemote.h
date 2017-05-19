@@ -105,8 +105,8 @@ namespace Dumper
 
             static bool                             CompareBytes( const unsigned char* bytes, const char* pattern );
             uintptr_t                               FindPattern( const std::string& module, const char* pattern, short type, uintptr_t patternOffset, uintptr_t addressOffset );
-
-        private:
+			uintptr_t								FindPatternSkip(const std::string& module, const char* pattern, int skips, DWORD skip_size, short type, uintptr_t patternOffset, uintptr_t addressOffset);
+		private:
 
             bool                                    GetProcessID( void );
             bool                                    GetProcessHandle( void );

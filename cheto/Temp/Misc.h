@@ -9,12 +9,18 @@
 class CMisc
 {
 public:
+	CMisc();
+	~CMisc();
+
 	void Main();
 private:
 
+	void featureNoFlash();
 	void featurePanicKey();
 	void featureReloadKey();
+	void featureHideWindow();
+	void featureMarioBrosSong();
 
-}; extern CMisc Misc;
+}; extern CMisc* Misc;
 
 #endif

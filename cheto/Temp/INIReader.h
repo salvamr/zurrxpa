@@ -9,8 +9,9 @@ public:
 	INIReader(string filename);
 	int ParseError();
 	string GetString(string section, string name, string default_value);
-	int GetInteger(string section, string name, int default_value);
-	float GetFloat(string section, string name, float default_value);
+	long GetInteger(string section, string name, long default_value);
+	double GetDouble(string section, string name, double default_value);
+	bool GetBoolean(string section, string name, bool default_value);
 
 private:
 	int _error;
