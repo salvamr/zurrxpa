@@ -113,19 +113,6 @@ namespace SecuritySpace
                 MessageBox.Show("Format your USB to FAT32", "Error");
                 Exit();
             }
-
-            Console.WriteLine("[ + ] Un-plug the usb ...");
-            for (int i = 1; i <= 20 && driveInfo.IsReady; i++)
-            {
-                if (i == 20)
-                {
-                    MessageBox.Show("Timeout ...", "Error");
-                    Exit();
-                }
-
-                Thread.Sleep(1000);
-            }
-
         }
 
         private static bool CheckHWID(string diskLetter)

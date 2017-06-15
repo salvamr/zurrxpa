@@ -39,14 +39,14 @@ namespace Dumper
 
 			// Signatures
 			Offset.m_bDormant = 0xE9;//= pProcess->FindPattern("client.dll", "55 8B EC 53 8B 5D 08 56 8B F1 88 9E ? ? ? ? E8", Remote::SignatureType_t::READ, 0xC, 0x0);
-			Offset.m_dwLocalPlayer		= pProcess->FindPattern("client.dll", "8D 34 85 ? ? ? ? 89 15", Remote::SignatureType_t::READ | Remote::SignatureType_t::SUBTRACT, 0x3, 0x4);
+			Offset.m_dwLocalPlayer		= pProcess->FindPattern("client.dll", "A3 ? ? ? ? C7 05 ? ? ? ? ? ? ? ? E8 ? ? ? ? 59 C3 6A ?", Remote::SignatureType_t::READ | Remote::SignatureType_t::SUBTRACT, 0x1, 0x10);
 			Offset.m_dwEntityList		= pProcess->FindPattern("client.dll", "BB ? ? ? ? 83 FF 01 0F 8C ? ? ? ? 3B F8", Remote::SignatureType_t::READ | Remote::SignatureType_t::SUBTRACT, 0x1, 0x0);
 			Offset.m_dwForceJump		= pProcess->FindPattern("client.dll", "89 0D ? ? ? ? 8B 0D ? ? ? ? 8B F2 8B C1 83 CE 08", Remote::SignatureType_t::READ | Remote::SignatureType_t::SUBTRACT, 0x2, 0x0);
 			Offset.m_dwForceAttack		= pProcess->FindPattern("client.dll", "89 0D ? ? ? ? 8B 0D ? ? ? ? 8B F2 8B C1 83 CE 04", Remote::SignatureType_t::READ | Remote::SignatureType_t::SUBTRACT, 0x2, 0x0);
-			Offset.m_pSensitivity		= pProcess->FindPattern("client.dll", "6A 01 51 C7 04 24 17 B7 D1 38 B9", Remote::SignatureType_t::READ | Remote::SignatureType_t::SUBTRACT, 0xB, 0x0);
-			Offset.m_dwSensitivity		= pProcess->FindPattern("client.dll", "6A 01 51 C7 04 24 17 B7 D1 38 B9", Remote::SignatureType_t::READ | Remote::SignatureType_t::SUBTRACT, 0xB, 0x2C);
-			Offset.m_dwClientState		= pProcess->FindPattern("engine.dll", "8B 3D ? ? ? ? 8A F9", Remote::SignatureType_t::READ | Remote::SignatureType_t::SUBTRACT, 0x2, 0x0);
-			Offset.m_dwViewAngles		= pProcess->FindPattern("engine.dll", "F3 0F 11 80 ? ? ? ? D9 46 04 D9 05 ? ? ? ?", Remote::SignatureType_t::READ, 0x4, 0x0);	
+			Offset.m_pSensitivity		= pProcess->FindPattern("client.dll", "81 F9 ? ? ? ? 75 1D F3 0F 10 05 ? ? ? ? F3 0F 11 44 24 ? 8B 44 24 18 35 ? ? ? ? 89 44 24 0C EB 0B", Remote::SignatureType_t::READ | Remote::SignatureType_t::SUBTRACT, 0x2, 0x0);
+			Offset.m_dwSensitivity		= pProcess->FindPattern("client.dll", "81 F9 ? ? ? ? 75 1D F3 0F 10 05 ? ? ? ? F3 0F 11 44 24 ? 8B 44 24 18 35 ? ? ? ? 89 44 24 0C EB 0B", Remote::SignatureType_t::READ | Remote::SignatureType_t::SUBTRACT, 0x2, 0x2C);
+			Offset.m_dwClientState		= pProcess->FindPattern("engine.dll", "A1 ? ? ? ? 33 D2 6A ? 6A ? 33 C9 89 B0 08 4E ? ? A1", Remote::SignatureType_t::READ | Remote::SignatureType_t::SUBTRACT, 0x1, 0x0);
+			Offset.m_dwViewAngles		= pProcess->FindPattern("engine.dll", "F3 0F 11 80 ? ? ? ? D9 46 04 D9 05", Remote::SignatureType_t::READ, 0x4, 0x0);	
 
 			//cout << "m_iItemDefinitionIndex 0x" << hex << Offset.m_iItemDefinitionIndex << endl;
 			//cout << "m_vecOrigin 0x" << hex << Offset.m_vecOrigin << endl;
