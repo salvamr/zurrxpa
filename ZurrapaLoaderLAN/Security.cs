@@ -82,7 +82,7 @@ namespace SecuritySpace
                         p.Start();
                     }
 
-                    SystemSounds.Beep.Play()
+                    SystemSounds.Beep.Play();
                     DeleteProcessWhenExit(path);
                 }
             }
