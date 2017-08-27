@@ -1,5 +1,6 @@
-#ifndef __AIMBOT_H__
-#define __AIMBOT_H__
+
+#ifndef aimbot
+#define aimbot
 
 #include "Include.h"
 #include "Offsets.h"
@@ -53,5 +54,7 @@ private:
 	Vector m_localEyePosition;
 	Vector m_entityBone;
 };
+
+extern CAimbot Aimbot;
 
 #endif

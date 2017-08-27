@@ -1,5 +1,7 @@
 #include "Bunnyhop.h"
 
+CBunny Bunnyhop;
+
 CBunny::CBunny()
 {
 	localPlayer = new CLocalPlayer();

@@ -1,5 +1,7 @@
 #include "Triggerbot.h"
 
+CTrigger Triggerbot;
+
 CTrigger::CTrigger()
 {
 	localPlayer = new CLocalPlayer();

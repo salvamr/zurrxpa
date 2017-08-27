@@ -1,5 +1,6 @@
-#ifndef _BUNNY_H_
-#define _BUNNY_H_
+
+#ifndef bunnyhop
+#define bunnyhop
 
 #include "Include.h"
 #include "Offsets.h"
@@ -16,4 +17,5 @@ private:
 
 };
 
+extern CBunny Bunnyhop;
 #endif

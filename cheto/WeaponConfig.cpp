@@ -1,5 +1,7 @@
 #include "WeaponConfig.h"
 
+CWeapon Weapon;
+
 CWeapon::CWeapon()
 {
 	localPlayer = new CLocalPlayer();

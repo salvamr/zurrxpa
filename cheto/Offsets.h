@@ -1,5 +1,6 @@
-#ifndef __OFFSETS_H__
-#define __OFFSETS_H__
+
+#ifndef offsets
+#define offsets
 
 #include "Settings.h"
 
@@ -33,6 +34,8 @@ public:
 		m_dwSensitivity;
 
 	void	Load();
-}; extern COffsets Offset;
+}; 
+
+extern COffsets Offset;
 
 #endif

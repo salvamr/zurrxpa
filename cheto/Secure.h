@@ -1,5 +1,6 @@
-#ifndef _SECURE_H_
-#define _SECURE_H_
+
+#ifndef secure
+#define secure
 
 #include "Include.h"
 
@@ -7,7 +8,8 @@ class  CSecure
 {
 public:
 	void	LookingForCSGO();
-	void	BorrarZurrapa();
-}; extern CSecure Secure;
+}; 
+
+extern CSecure Secure;
 
 #endif

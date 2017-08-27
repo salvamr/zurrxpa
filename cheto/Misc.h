@@ -1,5 +1,6 @@
-#ifndef _MISC_H_
-#define _MISC_H
+
+#ifndef misc
+#define misc
 
 #include "Include.h"
 #include "Offsets.h"
@@ -21,5 +22,7 @@ private:
 	void featureHideWindow();
 	void featureMarioBrosSong();
 };
+
+extern CMisc Misc;
 
 #endif

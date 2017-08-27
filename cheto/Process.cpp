@@ -2,62 +2,43 @@
 
 CProcess Process;
 
-Module CProcess::GetModule(char* moduleName)
+HMODULE CProcess::GetModule(char* moduleName)
 {
-	HANDLE module = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, PID);
-	MODULEENTRY32 mEntry;
-	mEntry.dwSize = sizeof(mEntry);
+	HMODULE hMods[1024];
+	DWORD cbNeeded;
 
-	do
+	// Get a list of all the modules in this process.
+
+	if (EnumProcessModules(HandleProcess, hMods, sizeof(hMods), &cbNeeded))
 	{
-		if (!strcmp(mEntry.szModule, (LPSTR)moduleName))
+		for (unsigned int i = 0; i < (cbNeeded / sizeof(HMODULE)); i++)
 		{
-			CloseHandle(module);
+			char szModName[MAX_PATH];
 
-			Module mod = { (DWORD)mEntry.hModule, mEntry.modBaseSize };
-			return mod;
+			// Get the full path to the module's file.
+
+			if (GetModuleFileNameEx(HandleProcess, hMods[i], szModName,
+				sizeof(szModName) / sizeof(TCHAR)))
+			{
+				// Print the module name and handle value.
+
+				if (strcmp(PathFindFileName(szModName), moduleName) == 0)
+				{
+					//cout << "Path: " << PathFindFileName(szModName) << " Base: " << hMods[i] << endl;
+					return hMods[i];
+				}
+			}
 		}
-	} while (Module32Next(module, &mEntry));
+	}
 
-	Module mod = { (DWORD)false, (DWORD)false };
-	return mod;
+	return NULL;
 }
 
-int CProcess::GetProcID(string ProcName)
+MODULEINFO CProcess::GetModuleInfo(HMODULE module)
 {
-	HANDLE ProcSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-	PROCESSENTRY32 PE32;
-
-	if (ProcSnapshot == INVALID_HANDLE_VALUE)
-		return 0;
-
-	PE32.dwSize = sizeof(PROCESSENTRY32);
-
-	if (!Process32First(ProcSnapshot, &PE32))
-	{
-		CloseHandle(ProcSnapshot);
-		return 0;
-	}
-	else
-
-		if (PE32.szExeFile == ProcName)
-		{
-			CloseHandle(ProcSnapshot);
-			return PE32.th32ProcessID;
-		}
-		else
-		{
-			do
-			{
-				if (PE32.szExeFile == ProcName)
-				{
-					CloseHandle(ProcSnapshot);
-					return PE32.th32ProcessID;
-				}
-			} while (Process32Next(ProcSnapshot, &PE32));
-			CloseHandle(ProcSnapshot);
-			return 0;
-		}
+	MODULEINFO moduleInfo = { 0 };
+	GetModuleInformation(HandleProcess, module, &moduleInfo, sizeof(moduleInfo));
+	return moduleInfo;
 }
 
 bool CProcess::Attach(char* pName, DWORD rights)
@@ -70,10 +51,9 @@ bool CProcess::Attach(char* pName, DWORD rights)
 	{
 		if (!strcmp(entry.szExeFile, pName))
 		{
-			PID = entry.th32ProcessID;
 			CloseHandle(handle);
 
-			HandleProcess = OpenProcess(rights, false, PID);
+			HandleProcess = OpenProcess(rights, false, entry.th32ProcessID);
 
 			return true;
 		}

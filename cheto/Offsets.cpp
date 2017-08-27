@@ -1,5 +1,5 @@
 ﻿#include "Offsets.h"
-#include "HMain.h"
+#include "Dumper\HMain.h"
 #include "Process.h"
 #include "Printing.h"
 
@@ -9,10 +9,12 @@ void COffsets::Load()
 {
 	Print.it("Dumping offsets ...");
 
-	if (!pProcess->Attach( "csgo.exe" )) 
+	if (!dDumper->Start())
 	{
-		Print.error("Failed to attach Zurrapa Dumper");
-	} 
+		MessageBox(NULL, "Failed to start the dumper", "Zurrapa", MB_ICONERROR | MB_OK);
+		CloseHandle(Process.HandleProcess);
+		ExitProcess(0);
+	}
 
 	pNetVarManager->Load();
 	pOffsetManager->Dump();
@@ -21,7 +23,4 @@ void COffsets::Load()
 
 	pNetVarManager->Release();
 	delete pNetVarManager;
-
-	pProcess->Detach();
-	delete pProcess;
 }

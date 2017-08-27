@@ -1,8 +1,9 @@
-#ifndef _INCLUDE_H_
-#define _INCLUDE_H_
+#pragma once
+#ifndef include
+#define include
 
-#define CLIENT		Process.Client.Base
-#define ENGINE		Process.Engine.Base
+#define CLIENT		(DWORD)Process.Client
+#define ENGINE		(DWORD)Process.Engine
 
 #include <Windows.h>
 #include <fstream> 
@@ -16,10 +17,14 @@
 #include <map>
 #include <thread>
 #include <string>
+#include "Psapi.h"
+#include "Shlwapi.h"
 
 #pragma comment(lib, "urlmon.lib")
 #pragma comment(lib, "winmm.lib" )
 #pragma comment(lib, "Wininet.lib")
+#pragma comment(lib,"psapi")
+#pragma comment(lib, "Shlwapi.lib")
 
 using namespace std;
 
@@ -37,6 +42,6 @@ class  CGameStatus
 {
 public:
 	bool Status;
-}; extern CGameStatus GameStatus;
-
+}; 
+extern CGameStatus GameStatus;
 #endif

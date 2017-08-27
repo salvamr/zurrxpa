@@ -1,5 +1,6 @@
-#ifndef _ENGINE_H_
-#define _ENGINE_H_
+
+#ifndef engine
+#define engine
 
 #include "Offsets.h"
 

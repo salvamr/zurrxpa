@@ -1,27 +1,20 @@
-#ifndef __PROCESS_H__
-#define __PROCESS_H__
+
+#ifndef process
+#define process
 
 #include "Include.h"
-struct Module
-{
-	DWORD Base;
-	DWORD Size;
-};
+
 class CProcess
 {
 public:
-	MODULEENTRY32	ME32;
 
 	HANDLE HandleProcess;
 
-	DWORD PID;
-	DWORD SteamPID;
+	HMODULE Client;
+	HMODULE Engine;
 
-	Module Client;
-	Module Engine;
-
-	Module GetModule(char* moduleName);
-	int GetProcID(string ProcName);
+	HMODULE GetModule(char*);
+	MODULEINFO GetModuleInfo(HMODULE module);
 	bool Attach(char* pName, DWORD rights = PROCESS_ALL_ACCESS);
 	void Detach();
 

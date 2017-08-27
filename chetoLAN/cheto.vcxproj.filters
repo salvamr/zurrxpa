@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Features">
+      <UniqueIdentifier>{5373b1a0-8e84-4a4c-929d-4ebecc5a4455}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{9c339a8e-0da5-45bd-a9b5-2421f6b28622}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Secure">
+      <UniqueIdentifier>{3441b247-84fe-47a7-a7bd-e3fcd53bb7aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Process">
+      <UniqueIdentifier>{b955d014-f1a3-40ff-982c-fc37795858cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Settings">
+      <UniqueIdentifier>{2de588b5-9216-49a4-8ed1-dc08f15ff008}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="INIReader">
+      <UniqueIdentifier>{acc861f4-2f10-434f-9908-7eeba4153c25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Offsets">
+      <UniqueIdentifier>{107c7125-9a63-47ad-b6c0-61ae56f4c38b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dumper">
+      <UniqueIdentifier>{ebd2e5ca-ac34-4aa0-8607-803e64cdba38}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Aimbot.cpp">
+      <Filter>Features</Filter>
+    </ClCompile>
+    <ClCompile Include="Misc.cpp">
+      <Filter>Features</Filter>
+    </ClCompile>
+    <ClCompile Include="Triggerbot.cpp">
+      <Filter>Features</Filter>
+    </ClCompile>
+    <ClCompile Include="LocalPlayer.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityPlayer.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Secure.cpp">
+      <Filter>Secure</Filter>
+    </ClCompile>
+    <ClCompile Include="WeaponConfig.cpp">
+      <Filter>Features</Filter>
+    </ClCompile>
+    <ClCompile Include="Process.cpp">
+      <Filter>Process</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings.cpp">
+      <Filter>Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="ini.cpp">
+      <Filter>INIReader</Filter>
+    </ClCompile>
+    <ClCompile Include="INIReader.cpp">
+      <Filter>INIReader</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Offsets.cpp">
+      <Filter>Offsets</Filter>
+    </ClCompile>
+    <ClCompile Include="Dumper\NetVarManager.cpp">
+      <Filter>Dumper</Filter>
+    </ClCompile>
+    <ClCompile Include="Dumper\OffsetManager.cpp">
+      <Filter>Dumper</Filter>
+    </ClCompile>
+    <ClCompile Include="Dumper\Remote.cpp">
+      <Filter>Dumper</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Aimbot.h">
+      <Filter>Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Misc.h">
+      <Filter>Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Triggerbot.h">
+      <Filter>Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Secure.h">
+      <Filter>Secure</Filter>
+    </ClInclude>
+    <ClInclude Include="WeaponConfig.h">
+      <Filter>Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Process.h">
+      <Filter>Process</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Include.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ini.h">
+      <Filter>INIReader</Filter>
+    </ClInclude>
+    <ClInclude Include="INIReader.h">
+      <Filter>INIReader</Filter>
+    </ClInclude>
+    <ClInclude Include="Offsets.h">
+      <Filter>Offsets</Filter>
+    </ClInclude>
+    <ClInclude Include="Dumper\HMain.h">
+      <Filter>Dumper</Filter>
+    </ClInclude>
+    <ClInclude Include="Dumper\HNetVarManager.h">
+      <Filter>Dumper</Filter>
+    </ClInclude>
+    <ClInclude Include="Dumper\HOffsetManager.h">
+      <Filter>Dumper</Filter>
+    </ClInclude>
+    <ClInclude Include="Dumper\HRemote.h">
+      <Filter>Dumper</Filter>
+    </ClInclude>
+    <ClInclude Include="Dumper\HUtilis.h">
+      <Filter>Dumper</Filter>
+    </ClInclude>
+    <ClInclude Include="Dumper\HWin.h">
+      <Filter>Dumper</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

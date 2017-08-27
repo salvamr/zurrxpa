@@ -1,5 +1,7 @@
 #include "Aimbot.h"
 
+CAimbot Aimbot;
+
 CAimbot::CAimbot() 
 {
 	localPlayer = new CLocalPlayer();

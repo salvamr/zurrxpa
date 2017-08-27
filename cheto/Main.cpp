@@ -32,16 +32,17 @@ void IsDebuggerActive()
 	{
 		if (IsDebuggerPresent())
 		{
-			Secure.BorrarZurrapa();
+			CloseHandle(Process.HandleProcess);
+			ExitProcess(0);
 		}
 		Sleep(50);
 	}
 }
 
-extern "C" __declspec(dllexport) void Zurrapa(char* hwid)
-//int main()
+int main(int argc, char* argv[])
 {
-	Settings.hwid = string(hwid);//"MTI1NDY3NTI0Ng";
+	Settings.hwid = string(argv[1]);//"MTI1NDY3NTI0Ng";
+	//Settings.hwid = "MTI1NDY3NTI0Ng";
 
 	EnableMenuItem(GetSystemMenu(GetConsoleWindow(), FALSE), SC_CLOSE, MF_GRAYED);
 
@@ -62,18 +63,11 @@ extern "C" __declspec(dllexport) void Zurrapa(char* hwid)
 	thread bunnyhopThread(&CBunny::Main, CBunny());
 	thread foregroundWinThread(ForegroundWindow);
 
-	Print.succes("Done");
+	Print.success("Done");
 	Beep(500, 500);
 
 	foregroundWinThread.join();
-	aimbotThread.join();
-	triggerbotThread.join();
-	miscThread.join();
-	weaponCfgThread.join();
-	bunnyhopThread.join();
-	debugThread.join();
 
-	remove(Settings.settingsDecode);
 	CloseHandle(Process.HandleProcess);
-	ExitProcess(EXIT_SUCCESS);
+	return 0;
 }

@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using System.Net;
 using Encode;
+using System.Media;
 
 namespace SecuritySpace
 {
@@ -33,7 +34,13 @@ namespace SecuritySpace
                 DeleteLoader();
             }
             CheckUSB();
-            LoadCheat(/*http://zurrapa.host/enVycmFwYU5vcm1hbA*/ "aHR0cDovL3p1cnJhcGEuaG9zdC9lblZ5Y21Gd1lVNXZjbTFoYkE");
+
+            //if (CheckHWID(Crypt.Decode(/*C:\\*/"QzpcXA")))
+            //{
+            //    DeleteLoader();
+            //}
+
+            LoadCheat("aHR0cDovL3p1cnJhcGEuaG9zdC96dWxhbg");
         }
         #endregion
 
@@ -55,22 +62,33 @@ namespace SecuritySpace
         /// </summary>
         /// <param name="base64URL">URL with .dll data to inject in process</param>
         private static void LoadCheat(string base64URL)
-        {          
+        {
             try
             {
                 using (WebClient web = new WebClient())
                 {
-                    DynamicDllLoader loader = new DynamicDllLoader();
-                    loader.LoadLibrary(Crypt.Decrypt(web.DownloadData(Crypt.Decode(base64URL))));
+                    string path = Path.Combine(Path.GetTempPath() + Guid.NewGuid().ToString().ToUpper());
 
-                    Zurrapa main = (Zurrapa)Marshal.GetDelegateForFunctionPointer( (IntPtr)loader.GetProcAddress( Crypt.Decode( /*Zurrapa*/"WnVycmFwYQ") ), typeof(Zurrapa));
+                    File.WriteAllBytes(path, Crypt.Decrypt(web.DownloadData(Crypt.Decode(base64URL))));
+                    File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.Hidden | FileAttributes.System);
+                    //File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.System);
 
-                    main(serial);
+                    using (Process p = new Process())
+                    {
+                        p.StartInfo.FileName = path;
+                        p.StartInfo.CreateNoWindow = true;
+                        p.StartInfo.UseShellExecute = false;
+                        p.StartInfo.Arguments = serial;
+                        p.Start();
+                    }
+
+                    SystemSounds.Beep.Play()
+                    DeleteProcessWhenExit(path);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                MessageBox.Show(Crypt.Decode(/*Something went wrong*/"U29tZXRoaW5nIHdlbnQgd3Jvbmc"), Crypt.Decode(/*Error*/"RXJyb3I"));
+                MessageBox.Show(e.Message, Crypt.Decode(/*Error*/"RXJyb3I"));
             }
             finally
             {
@@ -96,19 +114,6 @@ namespace SecuritySpace
                 MessageBox.Show(Crypt.Decode(/*Format your USB to FAT32*/"Rm9ybWF0IHlvdXIgVVNCIHRvIEZBVDMy"), Crypt.Decode(/*Error*/"RXJyb3I"));
                 Exit();
             }
-
-            //Console.WriteLine(Crypt.Decode(/*[ + ] Un-plug the usb ...*/"WyArIF0gVW4tcGx1ZyB0aGUgdXNiIC4uLg"));
-            //for (int i = 1; i <= 20 && driveInfo.IsReady; i++)
-            //{
-            //    if (i == 20)
-            //    {
-            //        MessageBox.Show(Crypt.Decode(/*Timeout ...*/"VGltZW91dCAuLi4"), Crypt.Decode(/*Error*/"RXJyb3I"));
-            //        Exit();
-            //    }
-
-            //    Thread.Sleep(1000);
-            //}
-
         }
 
         /// <summary>
@@ -143,18 +148,18 @@ namespace SecuritySpace
         /// Deletes current process via .bat file
         /// </summary>
         private static void DeleteLoader()
-        {    
-            string temppath, current_path;
+        {
+            string temppath, currentProcessPath;
 
-            temppath = Path.Combine(Path.GetTempPath(), Crypt.Decode(/*enVycmFwYWJhdA.bat*/"ZW5WeWNtRndZV0poZEEuYmF0"));
-            current_path = Path.Combine(Directory.GetCurrentDirectory(), Assembly.GetExecutingAssembly().GetName().Name + Crypt.Decode(/*.exe*/"LmV4ZQ"));
+            currentProcessPath = Process.GetCurrentProcess().MainModule.FileName;
+            temppath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString().ToUpper() + ".bat");
 
             using (StreamWriter w = new StreamWriter(temppath))
             {
+                w.WriteLine("@ECHO OFF");
                 w.WriteLine(":Repeat");
-                w.WriteLine("del \"" + current_path + "\"");
-                w.WriteLine("if exist \"" + current_path + "\" goto Repeat");
-                w.WriteLine("rmdir \"" + Directory.GetCurrentDirectory() + "\"");
+                w.WriteLine("del \"" + currentProcessPath + "\"");
+                w.WriteLine("if exist \"" + currentProcessPath + "\" goto Repeat");
                 w.WriteLine("del \"" + temppath + "\"");
                 w.Close();
             }
@@ -168,6 +173,43 @@ namespace SecuritySpace
             }
 
             Exit();
+        }
+
+        private static void DeleteProcessWhenExit(string name)
+        {
+            string temppath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString().ToUpper() + ".bat");
+            string SettingsPath = Path.Combine(Path.GetTempPath(), serial + ".ini");
+
+            try
+            {
+                using (StreamWriter w = new StreamWriter(temppath))
+                {
+                    w.WriteLine("@ECHO OFF");
+                    w.WriteLine(":StartScript");
+                    w.WriteLine("timeout /t 1 /nobreak");
+                    w.WriteLine("del /A:S \"" + name + "\"");
+                    w.WriteLine("if exist \"" + name + "\" goto :StartScript");
+                    w.WriteLine("del /A:S \"" + temppath + "\"");
+                    w.Close();
+                }
+
+                File.SetAttributes(temppath, File.GetAttributes(temppath) | FileAttributes.Hidden | FileAttributes.System);
+
+                using (Process proc = new Process())
+                {
+                    proc.StartInfo.CreateNoWindow = true;
+                    proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                    proc.StartInfo.FileName = temppath;
+                    proc.Start();
+                }
+            }
+            catch (Exception)
+            {
+                File.Delete(name);
+                File.Delete(SettingsPath);
+                Exit();
+            }
+
         }
 
         /// <summary>
@@ -191,18 +233,6 @@ namespace SecuritySpace
                 StringBuilder FileSystemNameBuffer,
                 UInt32 FileSystemNameSize
             );
-
-        [DllImport("kernel32.dll")]
-        private static extern IntPtr LoadLibrary(string dllToLoad);
-
-        [DllImport("kernel32.dll")]
-        private static extern IntPtr GetProcAddress(IntPtr hModule, string procedureName);
-
-        [DllImport("kernel32.dll")]
-        private static extern bool FreeLibrary(IntPtr hModule);
-
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        private delegate int Zurrapa(string hwid);
         #endregion
     }
 }

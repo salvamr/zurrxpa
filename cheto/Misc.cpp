@@ -1,5 +1,7 @@
 #include "Misc.h"
 
+CMisc Misc;
+
 CMisc::CMisc()
 {
 	localPlayer = new CLocalPlayer();

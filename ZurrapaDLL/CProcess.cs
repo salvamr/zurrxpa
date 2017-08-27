@@ -35,31 +35,33 @@ namespace ZurrapaDLL
         {
             do
             {
-                isProcessReady(procName);
-                findModulePointer(ref clientDll, "client.dll");
-                findModulePointer(ref engineDll, "engine.dll");
+                if (isProcessReady(procName))
+                {
+                    clientDll = findModulePointer("client.dll");
+                    engineDll = findModulePointer("engine.dll");
+                }
+                
                 Thread.Sleep(1000);
             } while (clientDll.Equals(IntPtr.Zero) && engineDll.Equals(IntPtr.Zero));
         }
 
-        private static void isProcessReady(string procName)
+        private static bool isProcessReady(string procName)
         {
             try
             {
                 mem = new MemorySharp(Process.GetProcessesByName(procName)[0].Id);
+                return true;
             }
             catch (Exception)
             {
                 isProcessReady(procName);
+                return false;
             }
         }
 
-        private static void findModulePointer(ref RemoteModule module, string moduleName)
+        private static RemoteModule findModulePointer(string moduleName)
         {
-            while (module.BaseAddress.Equals(IntPtr.Zero))
-            {
-                module = mem.Modules[moduleName];
-            }
+            return mem.Modules[moduleName];
         }
 
         public static T Read<T>(IntPtr Address)

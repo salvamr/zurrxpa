@@ -1,5 +1,6 @@
-#ifndef _TRIGGER_H_
-#define _TRIGGER_H_
+
+#ifndef triggerbot
+#define triggerbot
 
 #include "Include.h"
 #include "Offsets.h"
@@ -16,5 +17,7 @@ private:
 	CEntity* entityList;
 	int crossId;
 }; 
+
+extern CTrigger Triggerbot;
 
 #endif

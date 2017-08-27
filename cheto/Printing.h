@@ -1,24 +1,27 @@
-#ifndef _H_PRINTING
-#define _H_PRINTING
+
+#ifndef printing
+#define printing
 
 #include <Windows.h>
 #include <iostream>
 #include "Process.h"
 
-using namespace std;
-
-class  CPrinClass
+class CPrint
 {
 public:
-	void error(string msg);
+	static void error(string msg);
 
-	void it(string msg, bool tab = false, int color = 7); //Lightgray
-	void succes(string msg, bool tab = false, int color = 10); //Green
-	void warning(string msg, bool tab = false, int color = 14); //Yellow
+	static void it(string msg, bool tab = false, int color = 7); //Lightgray
+
+	static void warning(string msg, bool tab = false, int color = 14); //Yellow
+
+	static void success(string msg, bool tab = false, int color = 14); //Yellow
 private:
-	void standar_exclamation(string msg, int color, bool tab = false);
-	void standar_plus(string msg, int color, bool tab = false);
-	const int defaultColor = 7;
-}; extern CPrinClass Print;
+	static void standar_exclamation(string msg, int color, bool tab = false);
+	static void standar_plus(string msg, int color, bool tab = false);
+	static const int defaultColor = 7;
+}; 
+
+extern CPrint Print;
 
 #endif

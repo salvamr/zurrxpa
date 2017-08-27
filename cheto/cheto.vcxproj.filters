@@ -29,12 +29,12 @@
     <Filter Include="Dumper">
       <UniqueIdentifier>{ebd2e5ca-ac34-4aa0-8607-803e64cdba38}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Printing">
+      <UniqueIdentifier>{f21885c0-95f3-422b-aafe-7cbdecb711f0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Aimbot.cpp">
-      <Filter>Features</Filter>
-    </ClCompile>
-    <ClCompile Include="Bunnyhop.cpp">
       <Filter>Features</Filter>
     </ClCompile>
     <ClCompile Include="Misc.cpp">
@@ -70,20 +70,23 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Printing.cpp">
-      <Filter>Settings</Filter>
-    </ClCompile>
     <ClCompile Include="Offsets.cpp">
       <Filter>Offsets</Filter>
     </ClCompile>
-    <ClCompile Include="NetVarManager\NetVarManager.cpp">
+    <ClCompile Include="Dumper\NetVarManager.cpp">
       <Filter>Dumper</Filter>
     </ClCompile>
-    <ClCompile Include="OffsetManager\OffsetManager.cpp">
+    <ClCompile Include="Dumper\OffsetManager.cpp">
       <Filter>Dumper</Filter>
     </ClCompile>
-    <ClCompile Include="Remote\Remote.cpp">
+    <ClCompile Include="Dumper\Remote.cpp">
       <Filter>Dumper</Filter>
+    </ClCompile>
+    <ClCompile Include="Bunnyhop.cpp">
+      <Filter>Features</Filter>
+    </ClCompile>
+    <ClCompile Include="Printing.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -91,9 +94,6 @@
       <Filter>Features</Filter>
     </ClInclude>
     <ClInclude Include="Misc.h">
-      <Filter>Features</Filter>
-    </ClInclude>
-    <ClInclude Include="Bunnyhop.h">
       <Filter>Features</Filter>
     </ClInclude>
     <ClInclude Include="Triggerbot.h">
@@ -126,26 +126,30 @@
     <ClInclude Include="INIReader.h">
       <Filter>INIReader</Filter>
     </ClInclude>
-    <ClInclude Include="Printing.h">
-      <Filter>Settings</Filter>
-    </ClInclude>
     <ClInclude Include="Offsets.h">
       <Filter>Offsets</Filter>
     </ClInclude>
-    <ClInclude Include="NetVarManager\HNetVarManager.h">
+    <ClInclude Include="Dumper\HMain.h">
       <Filter>Dumper</Filter>
     </ClInclude>
-    <ClInclude Include="OffsetManager\HOffsetManager.h">
+    <ClInclude Include="Dumper\HNetVarManager.h">
       <Filter>Dumper</Filter>
     </ClInclude>
-    <ClInclude Include="Remote\HRemote.h">
+    <ClInclude Include="Dumper\HOffsetManager.h">
       <Filter>Dumper</Filter>
     </ClInclude>
-    <ClInclude Include="Utilis\HUtilis.h">
+    <ClInclude Include="Dumper\HRemote.h">
       <Filter>Dumper</Filter>
     </ClInclude>
-    <ClInclude Include="HMain.h">
+    <ClInclude Include="Dumper\HUtilis.h">
       <Filter>Dumper</Filter>
     </ClInclude>
+    <ClInclude Include="Dumper\HWin.h">
+      <Filter>Dumper</Filter>
+    </ClInclude>
+    <ClInclude Include="Bunnyhop.h">
+      <Filter>Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Printing.h" />
   </ItemGroup>
 </Project>

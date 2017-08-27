@@ -1,5 +1,6 @@
-#ifndef _WEAPON_H_
-#define _WEAPON_H_
+
+#ifndef weaponconfig
+#define weaponconfig
 
 #include "Include.h"
 #include "Offsets.h"
@@ -17,6 +18,8 @@ private:
 	int CurrentWeapon;
 	void Load(int);
 	
-}; extern CWeapon weapon;
+};
+
+extern CWeapon Weapon;
 
 #endif

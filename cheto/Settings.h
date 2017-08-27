@@ -1,5 +1,6 @@
-#ifndef __SETTINGS_H__
-#define __SETTINGS_H__
+
+#ifndef settings
+#define settings
 
 #include "Include.h"
 
@@ -38,6 +39,7 @@ public:
 
 	string hwid;
 	char settingsDecode[MAX_PATH];
-}; extern CSettings Settings;
+}; 
 
+extern CSettings Settings;
 #endif
