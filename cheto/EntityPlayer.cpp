@@ -1,9 +1,7 @@
 #include "Engine.h"
 
 CEntity::CEntity() 
-{
-
-}
+{}
 
 DWORD CEntity::GetEntity(int Index)
 {

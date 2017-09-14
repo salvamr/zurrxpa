@@ -7,6 +7,7 @@
 #include "Triggerbot.h"
 #include "Bunnyhop.h"
 #include "Misc.h"
+#include "BSP.h"
 
 CGameStatus GameStatus;
 
@@ -41,12 +42,10 @@ void IsDebuggerActive()
 
 int main(int argc, char* argv[])
 {
-	Settings.hwid = string(argv[1]);
-	//Settings.hwid = "MTI1NDY3NTI0Ng";
+	Settings.hwid = "MTk2MzA1MTI1Mg";
+	//Settings.hwid = string(argv[1]);
 
-	EnableMenuItem(GetSystemMenu(GetConsoleWindow(), FALSE), SC_CLOSE, MF_GRAYED);
-
-	thread debugThread(IsDebuggerActive);
+	//thread debugThread(IsDebuggerActive);
 
 	Print.warning("Visit http://zurrapa.host/ to change your settings");
 	Print.warning("READ THE README IF YOU DIDN'T -> http://zurrapa.host/readme");
@@ -56,6 +55,7 @@ int main(int argc, char* argv[])
 	Settings.Load();
 	Offset.Load();
 
+	thread bspThread(&BSP::Main, BSP());
 	thread aimbotThread(&CAimbot::Main, CAimbot());
 	thread triggerbotThread(&CTrigger::Main, CTrigger());
 	thread weaponCfgThread(&CWeapon::Main, CWeapon());

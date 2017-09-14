@@ -25,20 +25,20 @@ void CSettings::Load()
 {
 	Print.it("Loading config: " + hwid + ".ini");
 
-	GetTempPath(_MAX_PATH, settingsDecode);
-	strcat(settingsDecode, (hwid + ".ini").c_str());
+	GetTempPath(_MAX_PATH, settingsPath);
+	strcat(settingsPath, (hwid + ".ini").c_str());
 
 	string URLSettings = "http://zurrapa.host/configs/" + hwid + ".ini";
 
-	if (iniExist(settingsDecode))
+	if (iniExist(settingsPath))
 	{
-		remove(settingsDecode);
+		remove(settingsPath);
 	}
 
 	DeleteUrlCacheEntry(URLSettings.c_str());
-	URLDownloadToFile(NULL, URLSettings.c_str(), settingsDecode, 0, NULL);
+	URLDownloadToFile(NULL, URLSettings.c_str(), settingsPath, 0, NULL);
 
-	INIReader file(settingsDecode);
+	INIReader file(settingsPath);
 
 	for (int i = 0; i < 15; i++)
 	{

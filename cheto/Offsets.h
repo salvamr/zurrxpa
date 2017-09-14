@@ -31,7 +31,8 @@ public:
 		m_dwForceJump,
 		m_dwForceAttack,
 		m_pSensitivity,
-		m_dwSensitivity;
+		m_dwSensitivity,
+		m_dwMapName;
 
 	void	Load();
 }; 

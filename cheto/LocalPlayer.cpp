@@ -91,6 +91,20 @@ bool CLocalPlayer::IsPistol()
 		|| GetWeaponID() == 61 || GetWeaponID() == 63) ? true : false;
 }
 
+bool CLocalPlayer::InGame()
+{
+	return (GetWeaponID() > 0 && GetWeaponID() < 1000) ? true : false;
+}
+
+string CLocalPlayer::GetMapName()
+{
+	char MapName[256];
+
+	ReadProcessMemory(Process.HandleProcess, (PVOID)(Process.Read<DWORD>(ENGINE + Offset.m_dwClientState) + Offset.m_dwMapName), &MapName, sizeof(MapName), NULL);
+
+	return MapName;
+}
+
 void CLocalPlayer::SetAttack()
 {
 	if (!GetAsyncKeyState(0x01))

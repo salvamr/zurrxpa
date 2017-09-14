@@ -1,4 +1,7 @@
-#include "Include.h"
+#ifndef _h_vector
+#define _h_vector
+
+#include <math.h> 
 
 typedef float vec_t;
 class Vector
@@ -51,4 +54,4 @@ public:
 	vec_t x, y, z;
 };
 inline Vector operator* ( float fl, const Vector& v )	{ return v * fl; }
-
+#endif

@@ -6,6 +6,7 @@
 #include "Offsets.h"
 #include "Settings.h"
 #include "WeaponConfig.h"
+#include "BSP.h"
 
 class CAimbot
 {

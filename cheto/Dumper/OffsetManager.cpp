@@ -45,6 +45,7 @@ namespace Dumper
 			Offset.m_dwSensitivity		= dDumper->FindPattern("client.dll", "81 F9 ? ? ? ? 75 1D F3 0F 10 05 ? ? ? ? F3 0F 11 44 24 ? 8B 44 24 18 35 ? ? ? ? 89 44 24 0C EB 0B", Remote::SignatureType_t::READ | Remote::SignatureType_t::SUBTRACT, 0x2, 0x2C);
 			Offset.m_dwClientState		= dDumper->FindPattern("engine.dll", "A1 ? ? ? ? 33 D2 6A 00 6A 00 33 C9 89 B0", Remote::SignatureType_t::READ | Remote::SignatureType_t::SUBTRACT, 0x1, 0x0);
 			Offset.m_dwViewAngles		= dDumper->FindPattern("engine.dll", "F3 0F 11 80 ? ? ? ? D9 46 04 D9 05", Remote::SignatureType_t::READ, 0x4, 0x0);	
+			Offset.m_dwMapName			= dDumper->FindPattern("engine.dll", "05 ? ? ? ? C3 CC CC CC CC CC CC CC A1", Remote::SignatureType_t::READ, 0x1, 0x0);
 
 			//cout << "m_iItemDefinitionIndex 0x" << hex << Offset.m_iItemDefinitionIndex << endl;
 			//cout << "m_vecOrigin 0x" << hex << Offset.m_vecOrigin << endl;

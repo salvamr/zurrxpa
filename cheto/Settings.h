@@ -38,7 +38,7 @@ public:
 	bool WeaponConfig;
 
 	string hwid;
-	char settingsDecode[MAX_PATH];
+	char settingsPath[MAX_PATH];
 }; 
 
 extern CSettings Settings;

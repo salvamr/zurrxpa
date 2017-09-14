@@ -1,8 +1,9 @@
 
-#ifndef engine
-#define engine
+#ifndef _h_engine
+#define _h_engine
 
 #include "Offsets.h"
+#include "Vector.h"
 
 class CLocalPlayer
 {
@@ -17,6 +18,7 @@ public:
 	bool	IsShooting();
 	bool	IsBadWeapon();
 	bool	IsPistol();
+	bool	InGame();
 
 	int		GetStatus();
 	int		GetHealth();
@@ -29,6 +31,8 @@ public:
 
 	Vector	GetEyePosition();
 	Vector	GetVecPunch();
+
+	string GetMapName();
 
 };
 

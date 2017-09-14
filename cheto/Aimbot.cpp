@@ -155,6 +155,8 @@ bool CAimbot::IsValid(int Index)
 		return false;
 	if (entityList->GetBone(Index, Settings.AimbotBone).IsZero())
 		return false;
+	if (!bsp.IsVisible(entityList->GetBone(Index, Settings.AimbotBone), localPlayer->GetEyePosition()))
+		return false;
 	return true;
 }
 
@@ -168,7 +170,7 @@ void CAimbot::DropTarget()
 
 void CAimbot::GetBestTarget()
 {
-	for (int i = 0; i < 64; i++)
+	for (int i = 0; i < 64 /*TODO: ClientEngine + dwClientState_MaxPlayer = 0x310;*/; i++)
 	{
 		if (IsValid(i))
 		{
@@ -193,7 +195,7 @@ void CAimbot::doAimbot()
 	if (Settings.AimbotKey > 0 && GameStatus.Status)
 	{
 		DropTarget();
-
+		
 		if (!GetAsyncKeyState(Settings.AimbotKey) || m_iBestTarget == -1)
 		{
 			m_flBestTarget = Settings.AimbotFOV;
@@ -288,6 +290,7 @@ void CAimbot::doAimbot()
 					NormalizeAngles(AimPosition);
 					SetViewAngles(AimPosition);
 				}
+				
 			}
 		}
 	}

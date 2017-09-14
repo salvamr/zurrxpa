@@ -15,6 +15,7 @@ public:
 
 private:
 	CLocalPlayer* localPlayer;
+	INIReader* file;
 	int CurrentWeapon;
 	void Load(int);
 	
