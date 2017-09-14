@@ -41,7 +41,7 @@ void IsDebuggerActive()
 
 int main(int argc, char* argv[])
 {
-	Settings.hwid = string(argv[1]);//"MTI1NDY3NTI0Ng";
+	Settings.hwid = string(argv[1]);
 	//Settings.hwid = "MTI1NDY3NTI0Ng";
 
 	EnableMenuItem(GetSystemMenu(GetConsoleWindow(), FALSE), SC_CLOSE, MF_GRAYED);
