@@ -24,7 +24,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Aimbot.cpp" />
-    <ClCompile Include="BSP.cpp" />
     <ClCompile Include="Bunnyhop.cpp" />
     <ClCompile Include="Dumper\NetVarManager.cpp" />
     <ClCompile Include="Dumper\OffsetManager.cpp" />
@@ -45,7 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Aimbot.h" />
-    <ClInclude Include="BSP.h" />
     <ClInclude Include="Bunnyhop.h" />
     <ClInclude Include="Dumper\HMain.h" />
     <ClInclude Include="Dumper\HNetVarManager.h" />

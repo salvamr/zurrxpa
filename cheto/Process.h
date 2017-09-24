@@ -1,6 +1,6 @@
 
-#ifndef process
-#define process
+#ifndef _h_process
+#define _h_process
 
 #include "Include.h"
 

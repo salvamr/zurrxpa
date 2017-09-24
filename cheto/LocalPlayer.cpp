@@ -93,16 +93,8 @@ bool CLocalPlayer::IsPistol()
 
 bool CLocalPlayer::InGame()
 {
-	return (GetWeaponID() > 0 && GetWeaponID() < 1000) ? true : false;
-}
-
-string CLocalPlayer::GetMapName()
-{
-	char MapName[256];
-
-	ReadProcessMemory(Process.HandleProcess, (PVOID)(Process.Read<DWORD>(ENGINE + Offset.m_dwClientState) + Offset.m_dwMapName), &MapName, sizeof(MapName), NULL);
-
-	return MapName;
+	DWORD m_dwClientState = Process.Read<DWORD>(ENGINE + Offset.m_dwClientState);
+	return (Process.Read<int>(m_dwClientState + Offset.dwClientState_State) & 6);
 }
 
 void CLocalPlayer::SetAttack()

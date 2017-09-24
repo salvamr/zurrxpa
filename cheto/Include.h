@@ -19,6 +19,7 @@
 #include <string>
 #include "Psapi.h"
 #include "Shlwapi.h"
+#include <list>
 
 #pragma comment(lib, "urlmon.lib")
 #pragma comment(lib, "winmm.lib" )

@@ -32,7 +32,8 @@ public:
 		m_dwForceAttack,
 		m_pSensitivity,
 		m_dwSensitivity,
-		m_dwMapName;
+		m_dwMaxPlayers,
+		dwClientState_State;
 
 	void	Load();
 }; 

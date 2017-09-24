@@ -2,7 +2,7 @@
 
 CAimbot Aimbot;
 
-CAimbot::CAimbot() 
+CAimbot::CAimbot()
 {
 	localPlayer = new CLocalPlayer();
 	entityList = new CEntity();
@@ -10,8 +10,7 @@ CAimbot::CAimbot()
 	m_iTickCount = 0;
 
 	vecAimAngle = Vector(0.0f, 0.0f, 0.0f);
-	m_flBestTarget = 360.0f;
-	m_iBestTarget = -1;
+	m_iBestTarget = 0;
 
 	AimPosition = Vector(0.0f, 0.0f, 0.0f);
 	Pixels = 0;
@@ -19,10 +18,12 @@ CAimbot::CAimbot()
 	iDelta = 0;
 	Distance = 0.0f;
 
-	m_Aimmin = Vector(0.0f, 0.0f, 0.0f);
 	m_vecPunch = Vector(0.0f, 0.0f, 0.0f);
 	m_localEyePosition = Vector(0.0f, 0.0f, 0.0f);
 	m_entityBone = Vector(0.0f, 0.0f, 0.0f);
+
+	iPlayerCount = 0;
+	bAim = false;
 }
 
 CAimbot::~CAimbot()
@@ -61,7 +62,7 @@ void CAimbot::CalcAngle(Vector vecSrc, Vector vecEnd, Vector& qaOut)
 	qaOut.x = RAD2DEG(atan(vecDelta.z / vecDelta.Length2D()));
 	qaOut.y = RAD2DEG(atan(vecDelta.y / vecDelta.x));
 
-	if (vecDelta.x >= 0.0f){ qaOut.y += 180.0f; };
+	if (vecDelta.x >= 0.0f) { qaOut.y += 180.0f; };
 }
 
 float CAimbot::GetFov(Vector vecAngles, Vector vecSrc, Vector vecEnd)
@@ -128,60 +129,52 @@ void CAimbot::NormalizeAngles(Vector& vec)
 Vector CAimbot::PerfectRecoilControl(Vector vPunchAngle)
 {
 	double len = VectorNormalize(vPunchAngle);
+
 	len -= (10.0 + len * 0.5) * 0.015625f;
 	len = max(len, 0.0);
 	vPunchAngle.x *= (vec_t)len;
 	vPunchAngle.y *= (vec_t)len;
+
 	return vPunchAngle;
-}
-
-bool CAimbot::IsValid(int Index)
-{
-	if (!entityList->GetEntity(Index))
-		return false;
-	if (localPlayer->IsBadWeapon())
-		return false;
-	if (Settings.AimbotDisableForPistols && localPlayer->IsPistol())
-		return false;
-	if (entityList->IsAlive(Index))
-		return false;
-	if (entityList->IsDormant(Index))
-		return false;
-	if (!entityList->GetBoneMatrix(Index))
-		return false;
-	if (localPlayer->GetTeam() == entityList->GetTeam(Index))
-		return false;
-	if (entityList->GetHealth(Index) > 100 || entityList->IsInvisible(Index))
-		return false;
-	if (entityList->GetBone(Index, Settings.AimbotBone).IsZero())
-		return false;
-	if (!bsp.IsVisible(entityList->GetBone(Index, Settings.AimbotBone), localPlayer->GetEyePosition()))
-		return false;
-	return true;
-}
-
-void CAimbot::DropTarget()
-{
-	if (!IsValid(m_iBestTarget))
-	{
-		m_iBestTarget = -1;
-	}
 }
 
 void CAimbot::GetBestTarget()
 {
-	for (int i = 0; i < 64 /*TODO: ClientEngine + dwClientState_MaxPlayer = 0x310;*/; i++)
-	{
-		if (IsValid(i))
-		{
-			float flFOV = GetFov(GetViewAngles(), localPlayer->GetEyePosition(), entityList->GetBone(i, Settings.AimbotBone));
+	//int(entity index) float(angle)
+	map<int, float> AnglesToPlayers;
+	list<int> maxPlayers = entityList->GetMaxPlayers();
 
-			if (flFOV < m_flBestTarget)
-			{
-				m_flBestTarget = flFOV;
-				m_iBestTarget = i;
-			}
-		}
+	if (maxPlayers.empty() ||
+		(Settings.AimbotDisableForPistols && localPlayer->IsPistol()) ||
+		(localPlayer->IsBadWeapon()))
+	{
+		bAim = false;
+		return;
+	}
+
+	if (iPlayerCount == 0 || iPlayerCount != maxPlayers.size())
+		iPlayerCount = maxPlayers.size();
+
+	for (auto it = maxPlayers.begin(); it != maxPlayers.end(); ++it)
+	{
+		if (entityList->GetTeam(*it) != localPlayer->GetTeam())
+			AnglesToPlayers.emplace(*it, GetFov(GetViewAngles(), localPlayer->GetEyePosition(), entityList->GetBone(*it, Settings.AimbotBone)));
+	}
+
+	auto minAnglesToPlayers = min_element(AnglesToPlayers.begin(), AnglesToPlayers.end(),
+		[](const pair<int, float>& p1, const pair<int, float>& p2) {
+		return p1.second < p2.second;
+	});
+
+	if (minAnglesToPlayers->second < Settings.AimbotFOV && m_iBestTarget != minAnglesToPlayers->first)
+	{
+		m_iBestTarget = minAnglesToPlayers->first;
+		bAim = true;
+	}
+	else
+	{
+		m_iBestTarget = 0;
+		bAim = false;
 	}
 }
 
@@ -190,54 +183,24 @@ float CAimbot::Get3D(float X, float Y, float Z, float eX, float eY, float eZ)
 	return(sqrtf((eX - X) * (eX - X) + (eY - Y) * (eY - Y) + (eZ - Z) * (eZ - Z)));
 }
 
-void CAimbot::doAimbot()
+void CAimbot::Main()
 {
-	if (Settings.AimbotKey > 0 && GameStatus.Status)
+	while (FindWindow(NULL, "Counter-Strike: Global Offensive"))
 	{
-		DropTarget();
-		
-		if (!GetAsyncKeyState(Settings.AimbotKey) || m_iBestTarget == -1)
+		if (GameStatus.Status && GetAsyncKeyState(Settings.AimbotKey) & 0x8000)
 		{
-			m_flBestTarget = Settings.AimbotFOV;
-			m_iTickCount = timeGetTime();
 			GetBestTarget();
-			return;
-		}
 
-		if (Settings.AimbotTime)
-		{
-			iDelta = timeGetTime() - m_iTickCount;
-
-			if (Settings.AimbotTime < iDelta)
-				return;
-		}
-		if (m_iBestTarget > 0)
-		{
-			m_vecPunch = localPlayer->GetVecPunch();
-			m_localEyePosition = localPlayer->GetEyePosition();
-			m_entityBone = entityList->GetBone(m_iBestTarget, Settings.AimbotBone);
-
-			Distance = Get3D(m_localEyePosition.x, m_localEyePosition.y, m_localEyePosition.z, m_entityBone.x, m_entityBone.y, m_entityBone.z);
-			AimPosition.x = (vec_t)((asin((m_entityBone.z - m_localEyePosition.z) / Distance) * 180.0f / M_PI) * -1.0f);
-			AimPosition.y = (vec_t)(ATAN2(m_entityBone.x - m_localEyePosition.x, m_entityBone.y - m_localEyePosition.y) / M_PI * 180.0f);
-
-			if (Settings.AimbotRCS == 0)
+			if (bAim && m_iBestTarget > 0)
 			{
-				m_Aimmin[0] = AimPosition.x - (GetViewAngles().x);
-				m_Aimmin[1] = AimPosition.y - (GetViewAngles().y);
-			}
-			else
-			{
-				m_Aimmin[0] = AimPosition.x - (GetViewAngles().x + m_vecPunch.x);
-				m_Aimmin[1] = AimPosition.y - (GetViewAngles().y + m_vecPunch.y);
-			}
+				m_vecPunch = localPlayer->GetVecPunch();
+				m_localEyePosition = localPlayer->GetEyePosition();
+				m_entityBone = entityList->GetBone(m_iBestTarget, Settings.AimbotBone);
 
-			NormalizeAngles(m_Aimmin);
+				Distance = Get3D(m_localEyePosition.x, m_localEyePosition.y, m_localEyePosition.z, m_entityBone.x, m_entityBone.y, m_entityBone.z);
+				AimPosition.x = (vec_t)((asin((m_entityBone.z - m_localEyePosition.z) / Distance) * 180.0f / M_PI) * -1.0f);
+				AimPosition.y = (vec_t)(ATAN2(m_entityBone.x - m_localEyePosition.x, m_entityBone.y - m_localEyePosition.y) / M_PI * 180.0f);
 
-			float fovdist = sqrt((m_Aimmin[0] * m_Aimmin[0]) + (m_Aimmin[1] * m_Aimmin[1]));
-
-			if (fovdist < Settings.AimbotFOV)
-			{
 				if (!(Settings.AimbotDisableRCSPistols && localPlayer->IsPistol()))
 				{
 					if (Settings.AimbotRCS == 1 && localPlayer->IsShooting())
@@ -288,19 +251,11 @@ void CAimbot::doAimbot()
 					}
 
 					NormalizeAngles(AimPosition);
+
 					SetViewAngles(AimPosition);
 				}
-				
 			}
 		}
-	}
-}
-
-void CAimbot::Main()
-{
-	while (FindWindow(NULL, "Counter-Strike: Global Offensive"))
-	{
-		doAimbot();
-		Sleep(1);	
+		Sleep(1);
 	}
 }

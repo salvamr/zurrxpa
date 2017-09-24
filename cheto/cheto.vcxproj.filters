@@ -88,9 +88,6 @@
     <ClCompile Include="Printing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BSP.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Aimbot.h">
@@ -154,6 +151,5 @@
       <Filter>Features</Filter>
     </ClInclude>
     <ClInclude Include="Printing.h" />
-    <ClInclude Include="BSP.h" />
   </ItemGroup>
 </Project>

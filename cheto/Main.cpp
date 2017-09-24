@@ -7,7 +7,6 @@
 #include "Triggerbot.h"
 #include "Bunnyhop.h"
 #include "Misc.h"
-#include "BSP.h"
 
 CGameStatus GameStatus;
 
@@ -25,6 +24,8 @@ void ForegroundWindow()
 		}
 		Sleep(50);
 	}
+
+	CloseHandle(Process.HandleProcess);
 }
 
 void IsDebuggerActive()
@@ -55,19 +56,20 @@ int main(int argc, char* argv[])
 	Settings.Load();
 	Offset.Load();
 
-	thread bspThread(&BSP::Main, BSP());
 	thread aimbotThread(&CAimbot::Main, CAimbot());
 	thread triggerbotThread(&CTrigger::Main, CTrigger());
 	thread weaponCfgThread(&CWeapon::Main, CWeapon());
 	thread miscThread(&CMisc::Main, CMisc());
 	thread bunnyhopThread(&CBunny::Main, CBunny());
-	thread foregroundWinThread(ForegroundWindow);
 
 	Print.success("Done");
-	Beep(500, 500);
+	Beep(500, 500);	
 
-	foregroundWinThread.join();
-
-	CloseHandle(Process.HandleProcess);
+	ForegroundWindow();
+	aimbotThread.join();
+	triggerbotThread.join();
+	weaponCfgThread.join();
+	miscThread.join();
+	bunnyhopThread.join();
 	return 0;
 }

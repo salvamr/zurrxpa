@@ -32,8 +32,6 @@ public:
 	Vector	GetEyePosition();
 	Vector	GetVecPunch();
 
-	string GetMapName();
-
 };
 
 class CEntity
@@ -49,7 +47,7 @@ public:
 	bool	IsDormant(int); 
 	int		GetHealth(int);
 	bool	IsInvisible(int);
-
+	list<int> GetMaxPlayers();
 };
 
 #endif

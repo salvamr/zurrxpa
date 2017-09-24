@@ -38,6 +38,28 @@ DWORD CEntity::GetBoneMatrix(int Index)
 	return Process.Read<DWORD>( GetEntity(Index) + Offset.m_dwBoneMatrix);
 }
 
+list<int> CEntity::GetMaxPlayers()
+{
+	int maxPlayers = 0;
+	list<int> totalPlayers;
+
+	maxPlayers = Process.Read<int>(Process.Read<DWORD>(ENGINE + Offset.m_dwClientState) + Offset.m_dwMaxPlayers);
+
+	for (int i = 0; i < maxPlayers; i++)
+	{
+		if (this->GetEntity(i) && 
+			!this->IsAlive(i) && 
+			!this->IsDormant(i) && 
+			this->GetBoneMatrix(i) && 
+			this->GetHealth(i) > 0 &&
+			!this->IsInvisible(i) &&
+			!this->GetBone(i, Settings.AimbotBone).IsZero())
+			totalPlayers.push_back(i);
+	}
+
+	return totalPlayers; 
+}
+
 Vector CEntity::GetBone(int Index, int BoneID )
 {
 	Vector temp;
