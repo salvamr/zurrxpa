@@ -192,6 +192,8 @@ void CMisc::Main()
 {
 	while (FindWindow(NULL, "Counter-Strike: Global Offensive"))
 	{
+		Sleep(50);
+
 		if (GameStatus.Status)
 			featureNoFlash();
 
@@ -199,6 +201,5 @@ void CMisc::Main()
 		featureReloadKey();
 		featureHideWindow();
 		featureMarioBrosSong();
-		Sleep(50);
 	}
 }

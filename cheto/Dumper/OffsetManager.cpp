@@ -27,7 +27,6 @@ namespace Dumper
 			Offset.m_bGunGameImmunity	= pNetVarManager->GetNetVar("DT_CSPlayer","m_bGunGameImmunity");
 			Offset.m_iCrossHairID		= pNetVarManager->GetNetVar("DT_CSPlayer", "m_bHasDefuser") + 0x5C;
 			Offset.m_iShotsFired		= pNetVarManager->GetNetVar("DT_CSPlayer", "m_iShotsFired");
-			
 
 			Offset.m_lifeState			= pNetVarManager->GetNetVar("DT_BasePlayer", "m_lifeState");
 			Offset.m_fFlags				= pNetVarManager->GetNetVar("DT_BasePlayer", "m_fFlags");
@@ -50,7 +49,7 @@ namespace Dumper
 			Offset.m_dwViewAngles		= dDumper->FindPattern("engine.dll", "F3 0F 11 80 ? ? ? ? D9 46 04 D9 05", Remote::SignatureType_t::READ, 0x4, 0x0);
 			Offset.m_dwMaxPlayers		= dDumper->FindPattern("engine.dll", "A1 ? ? ? ? 8B 80 ? ? ? ? C3 CC CC CC CC 55 8B EC 8A 45 08", Remote::SignatureType_t::READ, 0x7, 0x0);
 			Offset.dwClientState_State	= dDumper->FindPattern("engine.dll", "83 B8 ? ? ? ? ? 0F 94 C0 C3", Remote::SignatureType_t::READ, 0x2, 0x0);
-
+			Offset.dwMouseEnable		= dDumper->FindPattern("client.dll", "B9 ? ? ? ? FF 50 34 85 C0 75 10", Remote::SignatureType_t::READ | Remote::SignatureType_t::SUBTRACT, 0x1, 0x30);
 			//cout
 			//	<< hex
 			//	<< "0x" << Offset.m_bDormant << "\n"

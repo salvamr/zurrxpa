@@ -126,7 +126,6 @@ void CSettings::Load()
 		SuperMarioBrosKey = 0;
 
 	WeaponConfig = file.GetInteger("MISC", "WeaponConfig", 0) == 1 ? true : false;
-	OldWeapon = 0;
 
 	AimbotMouse = file.GetInteger("MISC", "MouseInput", 0) == 1 ? true : false;
 }

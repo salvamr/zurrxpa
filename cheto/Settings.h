@@ -11,9 +11,6 @@ public:
 	void Load();
 	bool iniExist(string);
 
-	// Extra, from weaponconfig
-	int OldWeapon;
-
 	/*Settings*/
 	int	AimbotKey;
 	float AimbotFOV;

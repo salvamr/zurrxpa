@@ -17,7 +17,9 @@ void CTrigger::Main()
 {
 	while (FindWindow(NULL, "Counter-Strike: Global Offensive"))
 	{
-		if (GameStatus.Status && Settings.TriggerKey && GetAsyncKeyState(Settings.TriggerKey) & 0x8000 && !localPlayer->IsBadWeapon())
+		Sleep(1);
+
+		if (GameStatus.Status && !localPlayer->IsMouseEnabled() && GetAsyncKeyState(Settings.TriggerKey) & 0x8000 && !localPlayer->IsBadWeapon())
 		{
 			crossId = localPlayer->GetCrosshairID();
 
@@ -38,6 +40,5 @@ void CTrigger::Main()
 
 			crossId = 0;
 		}
-		Sleep(1);
 	}
 }

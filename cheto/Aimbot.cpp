@@ -7,8 +7,6 @@ CAimbot::CAimbot()
 	localPlayer = new CLocalPlayer();
 	entityList = new CEntity();
 
-	m_iTickCount = 0;
-
 	vecAimAngle = Vector(0.0f, 0.0f, 0.0f);
 	m_iBestTarget = 0;
 
@@ -138,10 +136,15 @@ Vector CAimbot::PerfectRecoilControl(Vector vPunchAngle)
 	return vPunchAngle;
 }
 
+float CAimbot::Get3DDistance(float mX, float mY, float mZ, float eX, float eY, float eZ)
+{
+	return(sqrtf((eX - mX) * (eX - mX) + (eY - mY) * (eY - mY) + (eZ - mZ) * (eZ - mZ)));
+}
+
 void CAimbot::GetBestTarget()
 {
 	//int(entity index) float(angle)
-	map<int, float> AnglesToPlayers;
+	map<int, float> CrosshairToPlayers;
 	list<int> maxPlayers = entityList->GetMaxPlayers();
 
 	if (maxPlayers.empty() ||
@@ -158,15 +161,21 @@ void CAimbot::GetBestTarget()
 	for (auto it = maxPlayers.begin(); it != maxPlayers.end(); ++it)
 	{
 		if (entityList->GetTeam(*it) != localPlayer->GetTeam())
-			AnglesToPlayers.emplace(*it, GetFov(GetViewAngles(), localPlayer->GetEyePosition(), entityList->GetBone(*it, Settings.AimbotBone)));
+			CrosshairToPlayers.emplace(*it, GetFov(GetViewAngles(), localPlayer->GetEyePosition(), entityList->GetBone(*it, Settings.AimbotBone)));
 	}
 
-	auto minAnglesToPlayers = min_element(AnglesToPlayers.begin(), AnglesToPlayers.end(),
+	if (CrosshairToPlayers.empty())
+	{
+		bAim = false;
+		return;
+	}
+
+	auto minAnglesToPlayers = min_element(CrosshairToPlayers.begin(), CrosshairToPlayers.end(),
 		[](const pair<int, float>& p1, const pair<int, float>& p2) {
 		return p1.second < p2.second;
 	});
 
-	if (minAnglesToPlayers->second < Settings.AimbotFOV && m_iBestTarget != minAnglesToPlayers->first)
+	if (minAnglesToPlayers->second < Settings.AimbotFOV)
 	{
 		m_iBestTarget = minAnglesToPlayers->first;
 		bAim = true;
@@ -178,16 +187,13 @@ void CAimbot::GetBestTarget()
 	}
 }
 
-float CAimbot::Get3D(float X, float Y, float Z, float eX, float eY, float eZ)
-{
-	return(sqrtf((eX - X) * (eX - X) + (eY - Y) * (eY - Y) + (eZ - Z) * (eZ - Z)));
-}
-
 void CAimbot::Main()
 {
 	while (FindWindow(NULL, "Counter-Strike: Global Offensive"))
 	{
-		if (GameStatus.Status && GetAsyncKeyState(Settings.AimbotKey) & 0x8000)
+		Sleep(1);
+
+		if (GameStatus.Status && !localPlayer->IsMouseEnabled() && GetAsyncKeyState(Settings.AimbotKey) & 0x8000)
 		{
 			GetBestTarget();
 
@@ -197,9 +203,10 @@ void CAimbot::Main()
 				m_localEyePosition = localPlayer->GetEyePosition();
 				m_entityBone = entityList->GetBone(m_iBestTarget, Settings.AimbotBone);
 
-				Distance = Get3D(m_localEyePosition.x, m_localEyePosition.y, m_localEyePosition.z, m_entityBone.x, m_entityBone.y, m_entityBone.z);
+				Distance = Get3DDistance(m_localEyePosition.x, m_localEyePosition.y, m_localEyePosition.z, m_entityBone.x, m_entityBone.y, m_entityBone.z);
 				AimPosition.x = (vec_t)((asin((m_entityBone.z - m_localEyePosition.z) / Distance) * 180.0f / M_PI) * -1.0f);
 				AimPosition.y = (vec_t)(ATAN2(m_entityBone.x - m_localEyePosition.x, m_entityBone.y - m_localEyePosition.y) / M_PI * 180.0f);
+				AimPosition.z = 0.0f;
 
 				if (!(Settings.AimbotDisableRCSPistols && localPlayer->IsPistol()))
 				{
@@ -256,6 +263,5 @@ void CAimbot::Main()
 				}
 			}
 		}
-		Sleep(1);
 	}
 }

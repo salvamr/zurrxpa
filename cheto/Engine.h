@@ -12,13 +12,13 @@ public:
 
 	DWORD	GetPlayer();
 
-	float	GetSpeed();
 	float	GetSensitivity();
 
 	bool	IsShooting();
 	bool	IsBadWeapon();
 	bool	IsPistol();
 	bool	InGame();
+	bool	IsMouseEnabled();
 
 	int		GetStatus();
 	int		GetHealth();

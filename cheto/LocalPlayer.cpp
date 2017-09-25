@@ -66,11 +66,9 @@ Vector CLocalPlayer::GetEyePosition()
 	return	temp + temp2;
 }
 
-float CLocalPlayer::GetSpeed()
+bool CLocalPlayer::IsMouseEnabled()
 {
-	Vector w = Process.Read<Vector>(GetPlayer() + Offset.m_vecVelocity);
-
-	return sqrt(w.x * w.x + w.y * w.y + w.z * w.z);
+	return Process.Read<char>(CLIENT + Offset.dwMouseEnable) == '0' ? true : false;
 }
 
 Vector CLocalPlayer::GetVecPunch()

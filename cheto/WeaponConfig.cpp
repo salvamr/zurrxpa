@@ -5,30 +5,33 @@ CWeapon Weapon;
 CWeapon::CWeapon()
 {
 	localPlayer = new CLocalPlayer();
-	Settings.OldWeapon = 0;
+	OldWeapon = -1;
 	CurrentWeapon = 0;
 	file = new INIReader(Settings.settingsPath);
 }
 
 CWeapon::~CWeapon()
 {
+	delete localPlayer;
+	delete file;
 }
 
 void CWeapon::Main()
 {
 	while (FindWindow(NULL, "Counter-Strike: Global Offensive"))
 	{
-		if (Settings.WeaponConfig == true && GameStatus.Status)
+		Sleep(50);
+
+		if (Settings.WeaponConfig && GameStatus.Status)
 		{
 			CurrentWeapon = localPlayer->GetWeaponID();
 
-			if (CurrentWeapon != Settings.OldWeapon)
+			if (CurrentWeapon != OldWeapon)
 			{
 				Load(CurrentWeapon);
-				Settings.OldWeapon = CurrentWeapon;
+				OldWeapon = CurrentWeapon;
 			}
 		}
-		Sleep(50);
 	}
 }
 

@@ -7,6 +7,7 @@
 #include "Settings.h"
 #include "WeaponConfig.h"
 #include <algorithm>
+
 class CAimbot
 {
 public:
@@ -22,7 +23,7 @@ private:
 	void    CalcAngle(Vector vecSrc, Vector vecEnd, Vector &qaOut);
 	void	GetBestTarget();
 
-	float	Get3D(float X, float Y, float Z, float eX, float eY, float eZ);
+	float	Get3DDistance(float X, float Y, float Z, float eX, float eY, float eZ);
 	double  VectorNormalize(Vector &vec);
 	float	GetFov(Vector vecAngles, Vector vecSrc, Vector vecEnd);
 	double	ATAN2(double x, double y);
@@ -32,8 +33,6 @@ private:
 	CEntity* entityList;
 
 	Vector  PerfectRecoilControl(Vector vPunchAngle);
-
-	int		m_iTickCount;
 
 	Vector	vecAimAngle;
 	int		m_iBestTarget;

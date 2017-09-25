@@ -19,7 +19,6 @@ public:
 		m_iHealth,
 		m_hActiveWeapon,
 		m_vecViewOffset,
-		m_vecVelocity,
 		m_vecPunch,
 		m_iCrossHairID,
 		m_dwBoneMatrix,
@@ -33,7 +32,8 @@ public:
 		m_pSensitivity,
 		m_dwSensitivity,
 		m_dwMaxPlayers,
-		dwClientState_State;
+		dwClientState_State,
+		dwMouseEnable;
 
 	void	Load();
 }; 
