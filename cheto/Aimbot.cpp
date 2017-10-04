@@ -9,23 +9,26 @@ CAimbot::CAimbot()
 
 	vecAimAngle = Vector(0.0f, 0.0f, 0.0f);
 	m_iBestTarget = 0;
+	oldBestTarget = 0;
 
 	AimPosition = Vector(0.0f, 0.0f, 0.0f);
 	Pixels = 0;
 
 	iDelta = 0;
 	Distance = 0.0f;
+	iTickCount = 0;
 
 	m_vecPunch = Vector(0.0f, 0.0f, 0.0f);
 	m_localEyePosition = Vector(0.0f, 0.0f, 0.0f);
 	m_entityBone = Vector(0.0f, 0.0f, 0.0f);
 
-	iPlayerCount = 0;
 	bAim = false;
 }
 
 CAimbot::~CAimbot()
 {
+	delete localPlayer;
+	delete entityList;
 }
 
 float CAimbot::RandomFloat(float Start, float End)
@@ -136,45 +139,52 @@ Vector CAimbot::PerfectRecoilControl(Vector vPunchAngle)
 	return vPunchAngle;
 }
 
-float CAimbot::Get3DDistance(float mX, float mY, float mZ, float eX, float eY, float eZ)
+float CAimbot::Get3DDistance(Vector source, Vector destination)
 {
-	return(sqrtf((eX - mX) * (eX - mX) + (eY - mY) * (eY - mY) + (eZ - mZ) * (eZ - mZ)));
+	return(sqrtf((destination.x - source.x) * (destination.x - source.x) + (destination.y - source.y) * (destination.y - source.y) + (destination.z - source.z) * (destination.z - source.z)));
 }
 
 void CAimbot::GetBestTarget()
 {
 	//int(entity index) float(angle)
 	map<int, float> CrosshairToPlayers;
-	list<int> maxPlayers = entityList->GetMaxPlayers();
+	list<int> maxPlayers;
 
+	//we get all players from the game
+	maxPlayers = entityList->GetMaxPlayers();
+
+	//some aimbot checks
 	if (maxPlayers.empty() ||
-		(Settings.AimbotDisableForPistols && localPlayer->IsPistol()) ||
-		(localPlayer->IsBadWeapon()))
+		(Settings.AimbotDisableForPistols && localPlayer->HasPistol()) ||
+		(localPlayer->HasBadWeapon()))
 	{
 		bAim = false;
 		return;
 	}
 
-	if (iPlayerCount == 0 || iPlayerCount != maxPlayers.size())
-		iPlayerCount = maxPlayers.size();
-
+	//find all the players in our field of view
 	for (auto it = maxPlayers.begin(); it != maxPlayers.end(); ++it)
 	{
+		//if the player from the list is not in our team add it to the target map
 		if (entityList->GetTeam(*it) != localPlayer->GetTeam())
 			CrosshairToPlayers.emplace(*it, GetFov(GetViewAngles(), localPlayer->GetEyePosition(), entityList->GetBone(*it, Settings.AimbotBone)));
 	}
 
+	//if we got no players closer to our crosshair do not aim
+	//we return because if we dont have any target to aim ... we dont want to aim, right?
 	if (CrosshairToPlayers.empty())
 	{
 		bAim = false;
 		return;
 	}
 
+	//find the closest target to the crosshair
 	auto minAnglesToPlayers = min_element(CrosshairToPlayers.begin(), CrosshairToPlayers.end(),
 		[](const pair<int, float>& p1, const pair<int, float>& p2) {
 		return p1.second < p2.second;
 	});
 
+	//if the closest target to the crosshair is less than the fov from settings aim to that target. Else do not aim to that target
 	if (minAnglesToPlayers->second < Settings.AimbotFOV)
 	{
 		m_iBestTarget = minAnglesToPlayers->first;
@@ -185,6 +195,13 @@ void CAimbot::GetBestTarget()
 		m_iBestTarget = 0;
 		bAim = false;
 	}
+
+	//If the new best target is not the old best target, start counting ticks again to check later the AimbotTime. And update the old best target
+	if (m_iBestTarget != oldBestTarget)
+	{
+		iTickCount = timeGetTime();
+		oldBestTarget = m_iBestTarget;
+	}
 }
 
 void CAimbot::Main()
@@ -193,7 +210,7 @@ void CAimbot::Main()
 	{
 		Sleep(1);
 
-		if (GameStatus.Status && !localPlayer->IsMouseEnabled() && GetAsyncKeyState(Settings.AimbotKey) & 0x8000)
+		if (GameStatus.Status && !localPlayer->HasMouseEnabled() && GetAsyncKeyState(Settings.AimbotKey) & 0x8000)
 		{
 			GetBestTarget();
 
@@ -203,12 +220,13 @@ void CAimbot::Main()
 				m_localEyePosition = localPlayer->GetEyePosition();
 				m_entityBone = entityList->GetBone(m_iBestTarget, Settings.AimbotBone);
 
-				Distance = Get3DDistance(m_localEyePosition.x, m_localEyePosition.y, m_localEyePosition.z, m_entityBone.x, m_entityBone.y, m_entityBone.z);
+				Distance = Get3DDistance(m_localEyePosition, m_entityBone);
+
 				AimPosition.x = (vec_t)((asin((m_entityBone.z - m_localEyePosition.z) / Distance) * 180.0f / M_PI) * -1.0f);
 				AimPosition.y = (vec_t)(ATAN2(m_entityBone.x - m_localEyePosition.x, m_entityBone.y - m_localEyePosition.y) / M_PI * 180.0f);
 				AimPosition.z = 0.0f;
 
-				if (!(Settings.AimbotDisableRCSPistols && localPlayer->IsPistol()))
+				if (!(Settings.AimbotDisableRCSPistols && localPlayer->HasPistol()))
 				{
 					if (Settings.AimbotRCS == 1 && localPlayer->IsShooting())
 					{
@@ -222,14 +240,22 @@ void CAimbot::Main()
 					}
 					else if (Settings.AimbotRCS == 2 && localPlayer->IsShooting())
 					{
-						m_vecPunch.x *= RandomFloat(1.50f, 2.0f);
-						m_vecPunch.y *= RandomFloat(1.50f, 2.0f);
+						m_vecPunch.x *= RandomFloat(1.50f, 1.99f);
+						m_vecPunch.y *= RandomFloat(1.50f, 1.99f);
 
 						m_vecPunch = PerfectRecoilControl(m_vecPunch);
 
 						AimPosition.x -= m_vecPunch.x;
 						AimPosition.y -= m_vecPunch.y;
 					}
+				}
+
+				if (Settings.AimbotTime)
+				{
+					int iDelta = timeGetTime() - iTickCount;
+
+					if (Settings.AimbotTime < iDelta)
+						continue;
 				}
 
 				if (Settings.AimbotMouse)

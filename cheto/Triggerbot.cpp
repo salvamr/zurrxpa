@@ -11,6 +11,8 @@ CTrigger::CTrigger()
 
 CTrigger::~CTrigger()
 {
+	delete localPlayer;
+	delete entityList;
 }
 
 void CTrigger::Main()
@@ -19,11 +21,11 @@ void CTrigger::Main()
 	{
 		Sleep(1);
 
-		if (GameStatus.Status && !localPlayer->IsMouseEnabled() && GetAsyncKeyState(Settings.TriggerKey) & 0x8000 && !localPlayer->IsBadWeapon())
+		if (GameStatus.Status && !localPlayer->HasMouseEnabled() && GetAsyncKeyState(Settings.TriggerKey) & 0x8000 && !localPlayer->HasBadWeapon())
 		{
 			crossId = localPlayer->GetCrosshairID();
 
-			if ((Settings.TriggerDisableForPistols && localPlayer->IsPistol()))
+			if ((Settings.TriggerDisableForPistols && localPlayer->HasPistol()))
 			{
 				continue;
 			}

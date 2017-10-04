@@ -13,11 +13,11 @@ CTrigger::~CTrigger()
 
 void CTrigger::doTrigger()
 {
-	if (GameStatus.Status && Settings.TriggerKey && GetAsyncKeyState(Settings.TriggerKey) & 0x8000 && !localPlayer->IsBadWeapon())
+	if (GameStatus.Status && Settings.TriggerKey && GetAsyncKeyState(Settings.TriggerKey) & 0x8000 && !localPlayer->HasBadWeapon())
 	{
 		crossId = localPlayer->GetCrosshairID();
 
-		if ((Settings.TriggerDisableForPistols && localPlayer->IsPistol()))
+		if ((Settings.TriggerDisableForPistols && localPlayer->HasPistol()))
 		{
 			return;
 		}

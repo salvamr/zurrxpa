@@ -23,7 +23,7 @@ private:
 	void    CalcAngle(Vector vecSrc, Vector vecEnd, Vector &qaOut);
 	void	GetBestTarget();
 
-	float	Get3DDistance(float X, float Y, float Z, float eX, float eY, float eZ);
+	float	Get3DDistance(Vector, Vector);
 	double  VectorNormalize(Vector &vec);
 	float	GetFov(Vector vecAngles, Vector vecSrc, Vector vecEnd);
 	double	ATAN2(double x, double y);
@@ -36,6 +36,7 @@ private:
 
 	Vector	vecAimAngle;
 	int		m_iBestTarget;
+	int		oldBestTarget;
 
 	Vector	AimPosition;
 	float	Pixels;
@@ -47,7 +48,7 @@ private:
 	Vector m_localEyePosition;
 	Vector m_entityBone;
 
-	int iPlayerCount;
+	int iTickCount;
 	bool bAim;
 };
 

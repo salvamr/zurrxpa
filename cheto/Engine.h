@@ -15,10 +15,10 @@ public:
 	float	GetSensitivity();
 
 	bool	IsShooting();
-	bool	IsBadWeapon();
-	bool	IsPistol();
-	bool	InGame();
-	bool	IsMouseEnabled();
+	bool	HasBadWeapon();
+	bool	HasPistol();
+	bool	IsInGame();
+	bool	HasMouseEnabled();
 
 	int		GetStatus();
 	int		GetHealth();

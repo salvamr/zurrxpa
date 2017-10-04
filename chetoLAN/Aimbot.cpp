@@ -137,9 +137,9 @@ bool CAimbot::IsValid(int Index)
 {
 	if (!entityList->GetEntity(Index))
 		return false;
-	if (localPlayer->IsBadWeapon())
+	if (localPlayer->HasBadWeapon())
 		return false;
-	if (Settings.AimbotDisableForPistols && localPlayer->IsPistol())
+	if (Settings.AimbotDisableForPistols && localPlayer->HasPistol())
 		return false;
 	if (entityList->IsAlive(Index))
 		return false;
@@ -234,7 +234,7 @@ void CAimbot::doAimbot()
 
 			if (fovdist < Settings.AimbotFOV)
 			{
-				if (!(Settings.AimbotDisableRCSPistols && localPlayer->IsPistol()))
+				if (!(Settings.AimbotDisableRCSPistols && localPlayer->HasPistol()))
 				{
 					if (Settings.AimbotRCS == 1 && localPlayer->IsShooting())
 					{

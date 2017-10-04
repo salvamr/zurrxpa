@@ -66,7 +66,7 @@ Vector CLocalPlayer::GetEyePosition()
 	return	temp + temp2;
 }
 
-bool CLocalPlayer::IsMouseEnabled()
+bool CLocalPlayer::HasMouseEnabled()
 {
 	return Process.Read<char>(CLIENT + Offset.dwMouseEnable) == '0' ? true : false;
 }
@@ -76,20 +76,20 @@ Vector CLocalPlayer::GetVecPunch()
 	return Process.Read<Vector>(GetPlayer() + Offset.m_vecPunch);
 }
 
-bool CLocalPlayer::IsBadWeapon()
+bool CLocalPlayer::HasBadWeapon()
 {
 	return (GetWeaponID() == 42 || GetWeaponID() == 43 || GetWeaponID() == 44 || GetWeaponID() == 45 || GetWeaponID() == 46 || GetWeaponID() == 47 || GetWeaponID() == 48
 		|| GetWeaponID() == 49 || GetWeaponID() == 59 || GetWeaponID() == 64 || GetWeaponID() == 500 || GetWeaponID() == 505 || GetWeaponID() == 506 || GetWeaponID() == 507 || GetWeaponID() == 508
 		|| GetWeaponID() == 509 || GetWeaponID() == 512 || GetWeaponID() == 514 || GetWeaponID() == 515 || GetWeaponID() == 516) ? true : false;
 }
 
-bool CLocalPlayer::IsPistol()
+bool CLocalPlayer::HasPistol()
 {
 	return (GetWeaponID() == 31 || GetWeaponID() == 1 || GetWeaponID() == 2 || GetWeaponID() == 3 || GetWeaponID() == 4 || GetWeaponID() == 30 || GetWeaponID() == 32 || GetWeaponID() == 36
 		|| GetWeaponID() == 61 || GetWeaponID() == 63) ? true : false;
 }
 
-bool CLocalPlayer::InGame()
+bool CLocalPlayer::IsInGame()
 {
 	DWORD m_dwClientState = Process.Read<DWORD>(ENGINE + Offset.m_dwClientState);
 	return (Process.Read<int>(m_dwClientState + Offset.dwClientState_State) & 6);

@@ -9,6 +9,7 @@ CBunny::CBunny()
 
 CBunny::~CBunny()
 {
+	delete localPlayer;
 }
 
 void CBunny::Main()
@@ -17,7 +18,7 @@ void CBunny::Main()
 	{
 		Sleep(1);
 
- 		if (GameStatus.Status && !localPlayer->IsMouseEnabled() && GetAsyncKeyState(Settings.BunnyHopKey) & 0x8000)
+ 		if (GameStatus.Status && !localPlayer->HasMouseEnabled() && GetAsyncKeyState(Settings.BunnyHopKey) & 0x8000)
 		{
 			if (localPlayer->GetStatus() & (1 << 0))
 			{

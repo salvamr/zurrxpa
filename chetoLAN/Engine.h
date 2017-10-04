@@ -13,8 +13,8 @@ public:
 	float	GetSensitivity();
 
 	bool	IsShooting();
-	bool	IsBadWeapon();
-	bool	IsPistol();
+	bool	HasBadWeapon();
+	bool	HasPistol();
 
 	int		GetStatus();
 	int		GetHealth();
