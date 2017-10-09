@@ -1,6 +1,8 @@
-#include "Include.h"
+
 #include "ini.h"
 #include "INIReader.h"
+
+#include <algorithm>
 
 using std::string;
 

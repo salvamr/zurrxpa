@@ -1,4 +1,5 @@
 #include "Secure.h"
+#include "Process.h"
 
 CSecure Secure;
 

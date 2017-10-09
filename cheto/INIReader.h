@@ -1,7 +1,10 @@
 #ifndef __INIREADER_H__
 #define __INIREADER_H__
 
-#include "Include.h"
+#include <string>
+#include <map>
+
+using namespace std;
 
 class INIReader
 {

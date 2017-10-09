@@ -1,5 +1,7 @@
-#include "Include.h"
 #include "ini.h"
+
+#include <cstring>
+#include <cctype>
 
 #if !INI_USE_STACK
 #include <stdlib.h>

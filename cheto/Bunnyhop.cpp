@@ -1,6 +1,11 @@
 #include "Bunnyhop.h"
 
-CBunny Bunnyhop;
+#include "GameStatus.h"
+#include "Process.h"
+#include "Settings.h"
+#include "Offsets.h"
+
+#include <Windows.h>
 
 CBunny::CBunny()
 {

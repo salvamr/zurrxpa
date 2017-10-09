@@ -2,9 +2,8 @@
 #ifndef weaponconfig
 #define weaponconfig
 
-#include "Include.h"
-#include "Offsets.h"
-#include "Settings.h"
+#include "Engine.h"
+#include "INIReader.h"
 
 class CWeapon
 {
@@ -19,7 +18,6 @@ private:
 	int CurrentWeapon;
 	int OldWeapon;
 	void Load(int);
-	
 };
 
 extern CWeapon Weapon;

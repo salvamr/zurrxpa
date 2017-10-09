@@ -1,9 +1,9 @@
 #include "Engine.h"
+#include "Process.h"
+#include "Offsets.h"
 
 CLocalPlayer::CLocalPlayer() 
-{
-
-}
+{}
 
 DWORD CLocalPlayer::GetPlayer()
 {

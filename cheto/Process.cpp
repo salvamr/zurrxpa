@@ -1,4 +1,8 @@
 #include "Process.h"
+#include <Windows.h>
+#include <iostream>
+
+#include "TlHelp32.h"
 
 CProcess Process;
 
@@ -13,7 +17,7 @@ HMODULE CProcess::GetModule(char* moduleName)
 	{
 		for (unsigned int i = 0; i < (cbNeeded / sizeof(HMODULE)); i++)
 		{
-			char szModName[MAX_PATH];
+			char szModName[260];
 
 			// Get the full path to the module's file.
 
@@ -41,7 +45,7 @@ MODULEINFO CProcess::GetModuleInfo(HMODULE module)
 	return moduleInfo;
 }
 
-bool CProcess::Attach(char* pName, DWORD rights)
+bool CProcess::Attach(char* pName)
 {
 	HANDLE handle = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
 	PROCESSENTRY32 entry;
@@ -53,7 +57,7 @@ bool CProcess::Attach(char* pName, DWORD rights)
 		{
 			CloseHandle(handle);
 
-			HandleProcess = OpenProcess(rights, false, entry.th32ProcessID);
+			HandleProcess = OpenProcess(PROCESS_ALL_ACCESS, false, entry.th32ProcessID);
 
 			return true;
 		}

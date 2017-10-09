@@ -1,6 +1,11 @@
 #include "Misc.h"
 
-CMisc Misc;
+#include "Settings.h"
+#include "Process.h"
+#include "GameStatus.h"
+#include "Offsets.h"
+
+#include <Windows.h>
 
 CMisc::CMisc()
 {
@@ -9,6 +14,7 @@ CMisc::CMisc()
 
 CMisc::~CMisc()
 {
+	delete localPlayer;
 }
 
 void CMisc::featureNoFlash()
@@ -29,6 +35,7 @@ void CMisc::featurePanicKey()
 		ExitProcess(EXIT_SUCCESS);
 	}
 }
+
 void CMisc::featureReloadKey()
 {
 	if (GetAsyncKeyState(Settings.ReloadKey))
@@ -38,6 +45,7 @@ void CMisc::featureReloadKey()
 		Beep(500, 100);
 	}
 }
+
 void CMisc::featureHideWindow()
 {
 	if (Settings.HideWindow)

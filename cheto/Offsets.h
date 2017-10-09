@@ -2,7 +2,7 @@
 #ifndef offsets
 #define offsets
 
-#include "Settings.h"
+#include <Windows.h>
 
 class COffsets
 {

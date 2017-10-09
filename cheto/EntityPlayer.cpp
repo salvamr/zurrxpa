@@ -1,4 +1,7 @@
 #include "Engine.h"
+#include "Process.h"
+#include "Offsets.h"
+#include "Settings.h"
 
 CEntity::CEntity() 
 {}

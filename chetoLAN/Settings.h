@@ -1,17 +1,16 @@
-#ifndef __SETTINGS_H__
-#define __SETTINGS_H__
+#ifndef settings
+#define settings
 
-#include "Include.h"
+#include <iostream>
+
+using namespace std;
 
 class CSettings
 {
 public:
 
 	void Load();
-	bool iniExist(string);
-
-	// Extra, from weaponconfig
-	int OldWeapon;
+	bool iniExist(char*);
 
 	/*Settings*/
 	int	AimbotKey;
@@ -22,20 +21,26 @@ public:
 	float AimbotSmooth;
 	int	AimbotBone;
 	bool AimbotDisableForPistols;
-	bool AimbotMouse = true;
+	bool AimbotMouse;
 
 	int	TriggerKey;
 	int	TriggerDelay;
 	bool TriggerDisableForPistols;
 
+	int	BunnyHopKey;
+	bool HideWindow;
+	bool NoFlash;
 	int	ReloadKey;
 	int	PanicKey;
+	int	SuperMarioBrosKey;
 	bool WeaponConfig;
+
 	string launchOptions;
 	string gameLocation;
 
 	string hwid;
-	char settingsDecode[MAX_PATH];
-}; extern CSettings Settings;
+	char settingsPath[260];
+};
 
+extern CSettings Settings;
 #endif

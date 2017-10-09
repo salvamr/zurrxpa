@@ -1,5 +1,8 @@
 #include "Process.h"
 
+#include <Windows.h>
+#include "Settings.h"
+
 CProcess Process;
 
 HMODULE CProcess::GetModules(char* moduleName)
@@ -13,7 +16,7 @@ HMODULE CProcess::GetModules(char* moduleName)
 	{
 		for (unsigned int i = 0; i < (cbNeeded / sizeof(HMODULE)); i++)
 		{
-			char szModName[MAX_PATH];
+			char szModName[260];
 
 			// Get the full path to the module's file.
 
@@ -72,10 +75,5 @@ MODULEINFO CProcess::GetModuleInfo(HMODULE module)
 	MODULEINFO moduleInfo = { 0 };
 	GetModuleInformation(Process.HandleProcess, module, &moduleInfo, sizeof(moduleInfo));
 	return moduleInfo;
-}
-
-void CProcess::Detach()
-{
-	CloseHandle(HandleProcess);
 }
 

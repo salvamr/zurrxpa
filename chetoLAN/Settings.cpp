@@ -1,10 +1,19 @@
 #include "Settings.h"
+#include "Process.h"
 #include <direct.h>
-#include "ini.h"
+
+#include <Wininet.h>
+#pragma comment(lib, "wininet.lib") 
+
+#include <fstream>
+#include "..\cheto\INIReader.h"
+
+#include <UrlMon.h>
+#pragma comment(lib, "urlmon.lib")
 
 CSettings Settings;
 
-bool CSettings::iniExist(string name)
+bool CSettings::iniExist(char* name)
 {
 	ifstream file(name);
 
@@ -22,21 +31,21 @@ bool CSettings::iniExist(string name)
 
 void CSettings::Load()
 {
-	GetTempPath(_MAX_PATH, settingsDecode);
-	strcat(settingsDecode, (hwid + ".ini").c_str());
+	GetTempPath(_MAX_PATH, settingsPath);
+	strcat(settingsPath, (hwid + ".ini").c_str());
 
-	string URLSettings = "http://zurrapa.host/configs/" + hwid + ".ini";
+	string URLSettings = "http://zurrapa.host/configs/" + (hwid + ".ini");
 
-	if (iniExist(settingsDecode))
+	if (iniExist(settingsPath))
 	{
-		remove(settingsDecode);
+		remove(settingsPath);
 	}
 
 	DeleteUrlCacheEntry(URLSettings.c_str());
-	URLDownloadToFile(NULL, URLSettings.c_str(), settingsDecode, 0, NULL);
-	SetFileAttributes(settingsDecode, FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM);
+	URLDownloadToFile(NULL, URLSettings.c_str(), settingsPath, 0, NULL);
+	SetFileAttributes(settingsPath, FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM);
 
-	INIReader file(settingsDecode);
+	INIReader file(settingsPath);
 
 	if (file.GetInteger("INIT", "SettingsINIPres", 0) != 1)
 	{
@@ -106,7 +115,6 @@ void CSettings::Load()
 		PanicKey = 0;
 
 	WeaponConfig = file.GetInteger("MISC", "WeaponConfig", 0) == 1 ? true : false;
-	OldWeapon = 0;
 
 	AimbotMouse = file.GetInteger("MISC", "MouseInput", 0) == 1 ? true : false;
 

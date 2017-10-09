@@ -1,8 +1,6 @@
 #ifndef _SECURE_H_
 #define _SECURE_H_
 
-#include "Include.h"
-
 class  CSecure
 {
 public:

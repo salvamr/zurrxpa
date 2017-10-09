@@ -1,12 +1,14 @@
-
 #ifndef aimbot
 #define aimbot
 
-#include "Include.h"
-#include "Offsets.h"
-#include "Settings.h"
-#include "WeaponConfig.h"
-#include <algorithm>
+#include "Vector.h"
+#include "Engine.h"
+
+#define M_PI			3.14159265358979323846f
+#define M_PI_F			( ( float )( M_PI ) )
+#define RAD2DEG( x )	( ( float )( x ) * ( float )( 180.0f / M_PI_F ) )
+
+using namespace std;
 
 class CAimbot
 {

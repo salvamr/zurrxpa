@@ -1,15 +1,16 @@
-﻿#include "Include.h"
-#include "Offsets.h"
+﻿#include "..\cheto\Offsets.h"
+#include "..\cheto\Secure.h"
+#include "../cheto/GameStatus.h"
+#include "Process.h"
+
 #include "Settings.h"
-#include "Secure.h"
-#include "Aimbot.h"
-#include "Triggerbot.h"
-#include "Misc.h"
 
-#include "AccCtrl.h"
-#include "Aclapi.h"
+#include "..\cheto\Aimbot.h"
+#include "..\cheto\Triggerbot.h"
+#include "..\cheto\Misc.h"
+#include "../cheto/WeaponConfig.h"
 
-CGameStatus GameStatus;
+#include <thread>
 
 void ForegroundWindow()
 {
@@ -41,12 +42,11 @@ void IsDebuggerActive()
 
 //argv[0] es el nombre del ejecutable
 //argv[1] es el hwid
-
 int main(int argc, char* argv[])
 {
 	thread debugThread(IsDebuggerActive);
 	
-	//Settings.hwid = "MTI1NDY3NTI0Ng"; 
+	//Settings.hwid = "MTk2MzA1MTI1Mg"; 
 	Settings.hwid = string(argv[1]);
 
 	Settings.Load();

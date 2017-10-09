@@ -2,9 +2,7 @@
 #ifndef triggerbot
 #define triggerbot
 
-#include "Include.h"
-#include "Offsets.h"
-#include "WeaponConfig.h"
+#include "Engine.h"
 
 class CTrigger
 {

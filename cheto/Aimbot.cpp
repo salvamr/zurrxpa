@@ -1,6 +1,18 @@
 #include "Aimbot.h"
 
-CAimbot Aimbot;
+#include "Process.h"
+#include "GameStatus.h"
+#include "Settings.h"
+#include "Offsets.h"
+
+#include <stdlib.h>
+#include <Windows.h>
+#include <cfloat>
+#include <map>
+#include <list>
+#include <algorithm>
+
+#pragma comment(lib,"winmm.lib")
 
 CAimbot::CAimbot()
 {

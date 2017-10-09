@@ -1,8 +1,15 @@
-
 #ifndef _h_process
 #define _h_process
 
-#include "Include.h"
+#include "Shlwapi.h"
+#pragma comment(lib, "Shlwapi.lib")
+
+#include "Psapi.h"
+#pragma comment(lib,"psapi.lib")
+
+
+#define CLIENT		(DWORD)Process.Client
+#define ENGINE		(DWORD)Process.Engine
 
 class CProcess
 {
@@ -15,7 +22,7 @@ public:
 
 	HMODULE GetModule(char*);
 	MODULEINFO GetModuleInfo(HMODULE module);
-	bool Attach(char* pName, DWORD rights = PROCESS_ALL_ACCESS);
+	bool Attach(char* pName);
 	void Detach();
 
 	template <class T>

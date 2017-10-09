@@ -2,9 +2,7 @@
 #ifndef bunnyhop
 #define bunnyhop
 
-#include "Include.h"
-#include "Offsets.h"
-#include "Settings.h"
+#include "Engine.h"
 
 class CBunny
 {

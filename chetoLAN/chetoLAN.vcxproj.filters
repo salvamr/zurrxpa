@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Process.cpp" />
+    <ClCompile Include="Settings.cpp" />
+    <ClCompile Include="..\cheto\Dumper\NetVarManager.cpp">
+      <Filter>Dumper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cheto\Dumper\OffsetManager.cpp">
+      <Filter>Dumper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cheto\Dumper\Remote.cpp">
+      <Filter>Dumper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cheto\Aimbot.cpp">
+      <Filter>zurrapa.normal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cheto\Bunnyhop.cpp">
+      <Filter>zurrapa.normal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cheto\EntityPlayer.cpp">
+      <Filter>zurrapa.normal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cheto\ini.cpp">
+      <Filter>zurrapa.normal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cheto\INIReader.cpp">
+      <Filter>zurrapa.normal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cheto\LocalPlayer.cpp">
+      <Filter>zurrapa.normal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cheto\Misc.cpp">
+      <Filter>zurrapa.normal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cheto\Offsets.cpp">
+      <Filter>zurrapa.normal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cheto\Printing.cpp">
+      <Filter>zurrapa.normal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cheto\Triggerbot.cpp">
+      <Filter>zurrapa.normal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cheto\WeaponConfig.cpp">
+      <Filter>zurrapa.normal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cheto\GameStatus.cpp">
+      <Filter>zurrapa.normal</Filter>
+    </ClCompile>
+    <ClCompile Include="Secure.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Dumper">
+      <UniqueIdentifier>{5d83f51f-6fb1-45d0-978b-9e9aa753416d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="zurrapa.normal">
+      <UniqueIdentifier>{4186665c-a35b-4ac7-a059-7daa692dd965}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\cheto\Dumper\HMain.h">
+      <Filter>Dumper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cheto\Dumper\HNetVarManager.h">
+      <Filter>Dumper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cheto\Dumper\HOffsetManager.h">
+      <Filter>Dumper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cheto\Dumper\HRemote.h">
+      <Filter>Dumper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cheto\Dumper\HUtilis.h">
+      <Filter>Dumper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cheto\Dumper\HWin.h">
+      <Filter>Dumper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cheto\Aimbot.h">
+      <Filter>zurrapa.normal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cheto\Bunnyhop.h">
+      <Filter>zurrapa.normal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cheto\Engine.h">
+      <Filter>zurrapa.normal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cheto\Include.h">
+      <Filter>zurrapa.normal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cheto\ini.h">
+      <Filter>zurrapa.normal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cheto\INIReader.h">
+      <Filter>zurrapa.normal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cheto\Misc.h">
+      <Filter>zurrapa.normal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cheto\Offsets.h">
+      <Filter>zurrapa.normal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cheto\Printing.h">
+      <Filter>zurrapa.normal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cheto\Triggerbot.h">
+      <Filter>zurrapa.normal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cheto\Vector.h">
+      <Filter>zurrapa.normal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cheto\WeaponConfig.h">
+      <Filter>zurrapa.normal</Filter>
+    </ClInclude>
+    <ClInclude Include="Process.h" />
+    <ClInclude Include="..\cheto\GameStatus.h">
+      <Filter>zurrapa.normal</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h" />
+    <ClInclude Include="Secure.h" />
+  </ItemGroup>
+</Project>

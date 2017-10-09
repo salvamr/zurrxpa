@@ -1,6 +1,7 @@
 #include "WeaponConfig.h"
 
-CWeapon Weapon;
+#include "Settings.h"
+#include "GameStatus.h"
 
 CWeapon::CWeapon()
 {

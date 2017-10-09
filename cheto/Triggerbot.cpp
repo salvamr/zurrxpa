@@ -1,6 +1,8 @@
 #include "Triggerbot.h"
 
-CTrigger Triggerbot;
+#include "GameStatus.h"
+#include "Settings.h"
+#include <Windows.h>
 
 CTrigger::CTrigger()
 {

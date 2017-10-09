@@ -1,9 +1,11 @@
-
 #ifndef _h_engine
 #define _h_engine
 
-#include "Offsets.h"
 #include "Vector.h"
+#include <list>
+#include <Windows.h>
+
+using namespace std;
 
 class CLocalPlayer
 {

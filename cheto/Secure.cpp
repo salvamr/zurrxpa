@@ -1,11 +1,15 @@
+#include <Windows.h>
+
 #include "Secure.h"
+#include "Printing.h"
+#include "Process.h"
 
 CSecure Secure;
 
 void CSecure::LookingForCSGO()
 {
-	Print.it("2 minutes left to launch CS:GO");
-	Print.it("Waiting for CSGO ");
+	Print::it("2 minutes left to launch CS:GO");
+	Print::it("Waiting for CSGO ");
 
 	int	count = 0;									
 	while (!FindWindow(NULL, "Counter-Strike: Global Offensive" ) ||
@@ -33,7 +37,7 @@ void CSecure::LookingForCSGO()
 		}
 		else
 		{
-			Print.error("Client.dll not located");
+			Print::error("Client.dll not located");
 		}
 	}
 
@@ -48,7 +52,7 @@ void CSecure::LookingForCSGO()
 		}
 		else
 		{
-			Print.error("Engine.dll not located");
+			Print::error("Engine.dll not located");
 		}
 	}
 }

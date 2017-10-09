@@ -1,14 +1,17 @@
-﻿#include "Include.h"
+﻿#include "Printing.h"
 #include "Offsets.h"
 #include "Settings.h"
 #include "Secure.h"
+#include "Process.h"
+#include "GameStatus.h"
 
 #include "Aimbot.h"
 #include "Triggerbot.h"
 #include "Bunnyhop.h"
+#include "WeaponConfig.h"
 #include "Misc.h"
 
-CGameStatus GameStatus;
+#include <thread>
 
 void ForegroundWindow()
 {
@@ -43,13 +46,13 @@ void IsDebuggerActive()
 
 int main(int argc, char* argv[])
 {
-	Settings.hwid = "MTk2MzA1MTI1Mg";
-	//Settings.hwid = string(argv[1]);
+	thread debugThread(IsDebuggerActive);
 
-	//thread debugThread(IsDebuggerActive);
+	//Settings.hwid = "MTk2MzA1MTI1Mg";
+	Settings.hwid = string(argv[1]);
 
-	Print.warning("Visit http://zurrapa.host/ to change your settings");
-	Print.warning("READ THE README IF YOU DIDN'T -> http://zurrapa.host/readme");
+	Print::warning("Visit http://zurrapa.host/ to change your settings");
+	Print::warning("READ THE README IF YOU DIDN'T -> http://zurrapa.host/readme");
 
 	Secure.LookingForCSGO();
 
@@ -62,7 +65,7 @@ int main(int argc, char* argv[])
 	thread miscThread(&CMisc::Main, CMisc());
 	thread bunnyhopThread(&CBunny::Main, CBunny());
 
-	Print.success("Done");
+	Print::success("Done");
 	Beep(500, 500);	
 
 	ForegroundWindow();

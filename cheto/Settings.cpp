@@ -1,11 +1,15 @@
 #include "Settings.h"
+
 #include <direct.h>
-#include "ini.h"
+#include <Windows.h>
+#include <fstream>
+#include <Wininet.h>
 #include "Printing.h"
+#include "INIReader.h"
 
 CSettings Settings;
 
-bool CSettings::iniExist(string name)
+bool CSettings::iniExist(char* name)
 {
 	ifstream file(name);
 
@@ -23,12 +27,12 @@ bool CSettings::iniExist(string name)
 
 void CSettings::Load()
 {
-	Print.it("Loading config: " + hwid + ".ini");
+	Print::it("Loading config: " + (string)hwid + ".ini");
 
 	GetTempPath(_MAX_PATH, settingsPath);
-	strcat(settingsPath, (hwid + ".ini").c_str());
+	strcat(settingsPath, ((string)hwid + ".ini").c_str());
 
-	string URLSettings = "http://zurrapa.host/configs/" + hwid + ".ini";
+	string URLSettings = "http://zurrapa.host/configs/" + (string)hwid + ".ini";
 
 	if (iniExist(settingsPath))
 	{
@@ -46,7 +50,7 @@ void CSettings::Load()
 			break;
 
 		if (i == 14)
-			Print.error("Cannot read config");
+			Print::error("Cannot read config");
 
 		Sleep(1000);
 	}

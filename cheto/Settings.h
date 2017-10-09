@@ -1,15 +1,16 @@
+#ifndef _h_settings
+#define _h_settings
 
-#ifndef settings
-#define settings
+#include <iostream>
 
-#include "Include.h"
+using namespace std;
 
 class CSettings
 {
 public:
 
 	void Load();
-	bool iniExist(string);
+	bool iniExist(char*);
 
 	/*Settings*/
 	int	AimbotKey;
@@ -35,7 +36,7 @@ public:
 	bool WeaponConfig;
 
 	string hwid;
-	char settingsPath[MAX_PATH];
+	char settingsPath[260];
 }; 
 
 extern CSettings Settings;

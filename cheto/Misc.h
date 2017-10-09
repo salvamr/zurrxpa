@@ -2,10 +2,7 @@
 #ifndef misc
 #define misc
 
-#include "Include.h"
-#include "Offsets.h"
-#include "Settings.h"
-#include "Aimbot.h"
+#include "Engine.h"
 
 class CMisc
 {

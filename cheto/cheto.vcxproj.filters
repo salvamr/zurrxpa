@@ -32,6 +32,9 @@
     <Filter Include="Printing">
       <UniqueIdentifier>{f21885c0-95f3-422b-aafe-7cbdecb711f0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameStatus">
+      <UniqueIdentifier>{c49f2e29-a0a2-4773-a294-77b1373cd680}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Aimbot.cpp">
@@ -73,6 +76,9 @@
     <ClCompile Include="Offsets.cpp">
       <Filter>Offsets</Filter>
     </ClCompile>
+    <ClCompile Include="Bunnyhop.cpp">
+      <Filter>Features</Filter>
+    </ClCompile>
     <ClCompile Include="Dumper\NetVarManager.cpp">
       <Filter>Dumper</Filter>
     </ClCompile>
@@ -82,11 +88,11 @@
     <ClCompile Include="Dumper\Remote.cpp">
       <Filter>Dumper</Filter>
     </ClCompile>
-    <ClCompile Include="Bunnyhop.cpp">
-      <Filter>Features</Filter>
-    </ClCompile>
     <ClCompile Include="Printing.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Printing</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStatus.cpp">
+      <Filter>GameStatus</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -117,9 +123,6 @@
     <ClInclude Include="Settings.h">
       <Filter>Settings</Filter>
     </ClInclude>
-    <ClInclude Include="Include.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="ini.h">
       <Filter>INIReader</Filter>
     </ClInclude>
@@ -128,6 +131,9 @@
     </ClInclude>
     <ClInclude Include="Offsets.h">
       <Filter>Offsets</Filter>
+    </ClInclude>
+    <ClInclude Include="Bunnyhop.h">
+      <Filter>Features</Filter>
     </ClInclude>
     <ClInclude Include="Dumper\HMain.h">
       <Filter>Dumper</Filter>
@@ -147,9 +153,11 @@
     <ClInclude Include="Dumper\HWin.h">
       <Filter>Dumper</Filter>
     </ClInclude>
-    <ClInclude Include="Bunnyhop.h">
-      <Filter>Features</Filter>
+    <ClInclude Include="Printing.h">
+      <Filter>Printing</Filter>
     </ClInclude>
-    <ClInclude Include="Printing.h" />
+    <ClInclude Include="GameStatus.h">
+      <Filter>GameStatus</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

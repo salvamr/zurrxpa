@@ -1,12 +1,11 @@
-
 #ifndef printing
 #define printing
 
-#include <Windows.h>
 #include <iostream>
-#include "Process.h"
 
-class CPrint
+using namespace std;
+
+class Print
 {
 public:
 	static void error(string msg);
@@ -21,7 +20,5 @@ private:
 	static void standar_plus(string msg, int color, bool tab = false);
 	static const int defaultColor = 7;
 }; 
-
-extern CPrint Print;
 
 #endif
