@@ -7,6 +7,12 @@
 #include "Printing.h"
 #include "INIReader.h"
 
+#include <Wininet.h>
+#pragma comment(lib, "wininet.lib") 
+
+#include <UrlMon.h>
+#pragma comment(lib, "urlmon.lib")
+
 CSettings Settings;
 
 bool CSettings::iniExist(char* name)
