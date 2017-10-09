@@ -57,6 +57,9 @@ int main(int argc, char* argv[])
 	Secure.LookingForCSGO();
 
 	Settings.Load();
+
+	Print::it("Dumping offsets ...");
+
 	Offset.Load();
 
 	thread aimbotThread(&CAimbot::Main, CAimbot());

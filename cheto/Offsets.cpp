@@ -6,8 +6,6 @@ COffsets Offset;
 
 void COffsets::Load()
 {
-	Print::it("Dumping offsets ...");
-
 	if (!dDumper->Start())
 	{
 		Print::error("Failed to start the dumper");
