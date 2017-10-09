@@ -26,6 +26,8 @@ void ForegroundWindow()
 		}
 		Sleep(50);
 	}
+
+	CloseHandle(Process.HandleProcess);
 }
 
 void IsDebuggerActive()
@@ -61,13 +63,14 @@ int main(int argc, char* argv[])
 	thread triggerbotThread(&CTrigger::Main, CTrigger());
 	thread weaponCfgThread(&CWeapon::Main, CWeapon());
 	thread miscThread(&CMisc::Main, CMisc());
-	thread foregroundWinThread(ForegroundWindow);
 
 	Beep(500, 500);
 
-	foregroundWinThread.join();
-
-	CloseHandle(Process.HandleProcess);
+	ForegroundWindow();
+	aimbotThread.join();
+	triggerbotThread.join();
+	weaponCfgThread.join();
+	miscThread.join();
 
 	return 0;
 }
