@@ -3,6 +3,7 @@
 #define weaponconfig
 
 #include "Engine.h"
+#include <thread>
 #include "INIReader.h"
 
 class CWeapon
@@ -11,6 +12,7 @@ public:
 	void	Main();
 	CWeapon();
 	~CWeapon();
+	static thread wcThread;
 
 private:
 	CLocalPlayer* localPlayer;

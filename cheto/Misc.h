@@ -3,6 +3,7 @@
 #define misc
 
 #include "Engine.h"
+#include <thread>
 
 class CMisc
 {
@@ -10,6 +11,7 @@ public:
 	CMisc();
 	~CMisc();
 	void Main();
+	static thread miscThread;
 private:
 	CLocalPlayer* localPlayer;
 
@@ -19,7 +21,5 @@ private:
 	void featureHideWindow();
 	void featureMarioBrosSong();
 };
-
-extern CMisc Misc;
 
 #endif

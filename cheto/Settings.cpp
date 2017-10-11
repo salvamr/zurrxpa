@@ -10,7 +10,7 @@
 #include <Wininet.h>
 #pragma comment(lib, "wininet.lib") 
 
-#include <UrlMon.h>
+#include <urlmon.h>
 #pragma comment(lib, "urlmon.lib")
 
 CSettings Settings;
@@ -31,14 +31,16 @@ bool CSettings::iniExist(char* name)
 	}
 }
 
-void CSettings::Load()
+void CSettings::Load(string serial)
 {
-	Print::it("Loading config: " + (string)hwid + ".ini");
+	Settings.hwid = serial;
+
+	Print::it("Loading config: " + serial + ".ini");
 
 	GetTempPath(_MAX_PATH, settingsPath);
-	strcat(settingsPath, ((string)hwid + ".ini").c_str());
+	strcat(settingsPath, (serial + ".ini").c_str());
 
-	string URLSettings = "http://zurrapa.host/configs/" + (string)hwid + ".ini";
+	string URLSettings = "http://zurrapa.host/configs/" + serial + ".ini";
 
 	if (iniExist(settingsPath))
 	{
@@ -66,7 +68,7 @@ void CSettings::Load()
 	if (AimbotKey < 0)
 		AimbotKey = 0;
 
-	AimbotFOV = file.GetFloat("AIMBOT", "FOV", 0);
+	AimbotFOV = file.GetFloat("AIMBOT", "FOV", 0.0f);
 
 	if (AimbotFOV > 360.0f)
 		AimbotFOV = 360.0f;
@@ -85,7 +87,7 @@ void CSettings::Load()
 
 	AimbotDisableRCSPistols = file.GetInteger("AIMBOT", "DisableRCSPistols", 0) == 1 ? true : false;
 
-	AimbotSmooth = file.GetFloat("AIMBOT", "Smooth", 0);
+	AimbotSmooth = file.GetFloat("AIMBOT", "Smooth", 0.0f);
 
 	if (AimbotSmooth > 100.0f)
 		AimbotSmooth = 100.0f;

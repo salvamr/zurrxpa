@@ -1,7 +1,6 @@
 #include "WeaponConfig.h"
 
 #include "Settings.h"
-#include "GameStatus.h"
 
 CWeapon::CWeapon()
 {
@@ -23,7 +22,7 @@ void CWeapon::Main()
 	{
 		Sleep(50);
 
-		if (Settings.WeaponConfig && GameStatus.Status)
+		if (GetForegroundWindow() == FindWindow(NULL, "Counter-Strike: Global Offensive") && Settings.WeaponConfig)
 		{
 			CurrentWeapon = localPlayer->GetWeaponID();
 
@@ -35,6 +34,8 @@ void CWeapon::Main()
 		}
 	}
 }
+
+thread CWeapon::wcThread(&CWeapon::Main, CWeapon());
 
 void CWeapon::Load(int weaponID)
 {

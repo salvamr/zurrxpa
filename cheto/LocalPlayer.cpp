@@ -68,7 +68,11 @@ Vector CLocalPlayer::GetEyePosition()
 
 bool CLocalPlayer::HasMouseEnabled()
 {
-	return Process.Read<char>(CLIENT + Offset.dwMouseEnable) == '0' ? true : false;
+	DWORD mouse_ptr = CLIENT + Offset.dwMouseEnablePtr;
+	DWORD mouse_value_xored = Process.Read<DWORD>(CLIENT + Offset.dwMouseEnable);
+	bool Value = mouse_ptr ^ mouse_value_xored;
+
+	return !Value;
 }
 
 Vector CLocalPlayer::GetVecPunch()

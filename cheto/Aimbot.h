@@ -3,6 +3,7 @@
 
 #include "Vector.h"
 #include "Engine.h"
+#include <thread>
 
 #define M_PI			3.14159265358979323846f
 #define M_PI_F			( ( float )( M_PI ) )
@@ -16,6 +17,7 @@ public:
 	CAimbot();
 	~CAimbot();
 	void	Main();
+	static thread aimbotThread;
 
 private:
 	void	NormalizeAngles(Vector &angle);
@@ -53,7 +55,4 @@ private:
 	int iTickCount;
 	bool bAim;
 };
-
-extern CAimbot Aimbot;
-
 #endif

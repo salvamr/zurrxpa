@@ -29,7 +29,6 @@
     <ClCompile Include="Dumper\OffsetManager.cpp" />
     <ClCompile Include="Dumper\Remote.cpp" />
     <ClCompile Include="EntityPlayer.cpp" />
-    <ClCompile Include="GameStatus.cpp" />
     <ClCompile Include="ini.cpp" />
     <ClCompile Include="INIReader.cpp" />
     <ClCompile Include="LocalPlayer.cpp" />
@@ -53,7 +52,6 @@
     <ClInclude Include="Dumper\HUtilis.h" />
     <ClInclude Include="Dumper\HWin.h" />
     <ClInclude Include="Engine.h" />
-    <ClInclude Include="GameStatus.h" />
     <ClInclude Include="ini.h" />
     <ClInclude Include="INIReader.h" />
     <ClInclude Include="Misc.h" />

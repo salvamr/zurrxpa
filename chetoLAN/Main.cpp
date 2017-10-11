@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
 {
 	thread debugThread(IsDebuggerActive);
 	
-	//Settings.hwid = "MTk2MzA1MTI1Mg"; 
+	//Settings.hwid = "NDE0NDQ2NzcwMQ"; 
 	Settings.hwid = string(argv[1]);
 
 	Settings.Load();

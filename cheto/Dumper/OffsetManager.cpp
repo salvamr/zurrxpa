@@ -50,19 +50,7 @@ namespace Dumper
 			Offset.m_dwMaxPlayers		= dDumper->FindPattern("engine.dll", "A1 ? ? ? ? 8B 80 ? ? ? ? C3 CC CC CC CC 55 8B EC 8A 45 08", Remote::SignatureType_t::READ, 0x7, 0x0);
 			Offset.dwClientState_State	= dDumper->FindPattern("engine.dll", "83 B8 ? ? ? ? ? 0F 94 C0 C3", Remote::SignatureType_t::READ, 0x2, 0x0);
 			Offset.dwMouseEnable		= dDumper->FindPattern("client.dll", "B9 ? ? ? ? FF 50 34 85 C0 75 10", Remote::SignatureType_t::READ | Remote::SignatureType_t::SUBTRACT, 0x1, 0x30);
-			//cout
-			//	<< hex
-			//	<< "0x" << Offset.m_bDormant << "\n"
-			//	<< "0x" << Offset.m_dwLocalPlayer << "\n"
-			//	<< "0x" << Offset.m_dwEntityList << "\n" 
-			//	<< "0x" << Offset.m_dwForceJump << "\n" 
-			//	<< "0x" << Offset.m_dwForceAttack << "\n" 
-			//	<< "0x" << Offset.m_pSensitivity << "\n"
-			//	<< "0x" << Offset.m_dwSensitivity << "\n" 
-			//	<< "0x" << Offset.m_dwClientState << "\n" 
-			//	<< "0x" << Offset.m_dwViewAngles << "\n" 
-			//	<< "0x" << Offset.m_dwMaxPlayers << "\n" 
-			//	<< "0x" << Offset.dwClientState_State << endl;
+			Offset.dwMouseEnablePtr		= dDumper->FindPattern("client.dll", "B9 ? ? ? ? FF 50 34 85 C0 75 10", Remote::SignatureType_t::READ | Remote::SignatureType_t::SUBTRACT, 0x1, 0x0);
 		}
 
         COffsetManager* COffsetManager::Singleton( void )

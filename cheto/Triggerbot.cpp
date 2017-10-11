@@ -1,6 +1,5 @@
 #include "Triggerbot.h"
 
-#include "GameStatus.h"
 #include "Settings.h"
 #include <Windows.h>
 
@@ -23,7 +22,7 @@ void CTrigger::Main()
 	{
 		Sleep(1);
 
-		if (GameStatus.Status && !localPlayer->HasMouseEnabled() && GetAsyncKeyState(Settings.TriggerKey) & 0x8000 && !localPlayer->HasBadWeapon())
+		if (GetForegroundWindow() == FindWindow(NULL, "Counter-Strike: Global Offensive") && !localPlayer->HasMouseEnabled() && GetAsyncKeyState(Settings.TriggerKey) & 0x8000 && !localPlayer->HasBadWeapon())
 		{
 			crossId = localPlayer->GetCrosshairID();
 
@@ -46,3 +45,5 @@ void CTrigger::Main()
 		}
 	}
 }
+
+thread CTrigger::triggerbotThread(&CTrigger::Main, CTrigger());

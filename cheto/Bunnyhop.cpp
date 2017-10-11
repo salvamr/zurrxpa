@@ -1,6 +1,5 @@
 #include "Bunnyhop.h"
 
-#include "GameStatus.h"
 #include "Process.h"
 #include "Settings.h"
 #include "Offsets.h"
@@ -14,7 +13,6 @@ CBunny::CBunny()
 
 CBunny::~CBunny()
 {
-	delete localPlayer;
 }
 
 void CBunny::Main()
@@ -23,7 +21,7 @@ void CBunny::Main()
 	{
 		Sleep(1);
 
- 		if (GameStatus.Status && !localPlayer->HasMouseEnabled() && GetAsyncKeyState(Settings.BunnyHopKey) & 0x8000)
+ 		if (GetForegroundWindow() == FindWindow(NULL, "Counter-Strike: Global Offensive") && !localPlayer->HasMouseEnabled() && GetAsyncKeyState(Settings.BunnyHopKey) & 0x8000)
 		{
 			if (localPlayer->GetStatus() & (1 << 0))
 			{
@@ -38,3 +36,5 @@ void CBunny::Main()
 		}
 	}
 }
+
+thread CBunny::bunnyThread(&CBunny::Main, CBunny());

@@ -5,13 +5,13 @@
     <ClCompile Include="Process.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="..\cheto\Dumper\NetVarManager.cpp">
-      <Filter>Dumper</Filter>
+      <Filter>zurrapa.normal\Dumper</Filter>
     </ClCompile>
     <ClCompile Include="..\cheto\Dumper\OffsetManager.cpp">
-      <Filter>Dumper</Filter>
+      <Filter>zurrapa.normal\Dumper</Filter>
     </ClCompile>
     <ClCompile Include="..\cheto\Dumper\Remote.cpp">
-      <Filter>Dumper</Filter>
+      <Filter>zurrapa.normal\Dumper</Filter>
     </ClCompile>
     <ClCompile Include="..\cheto\Aimbot.cpp">
       <Filter>zurrapa.normal</Filter>
@@ -52,31 +52,31 @@
     <ClCompile Include="Secure.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Dumper">
-      <UniqueIdentifier>{5d83f51f-6fb1-45d0-978b-9e9aa753416d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="zurrapa.normal">
       <UniqueIdentifier>{4186665c-a35b-4ac7-a059-7daa692dd965}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="zurrapa.normal\Dumper">
+      <UniqueIdentifier>{5d83f51f-6fb1-45d0-978b-9e9aa753416d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\cheto\Dumper\HMain.h">
-      <Filter>Dumper</Filter>
+      <Filter>zurrapa.normal\Dumper</Filter>
     </ClInclude>
     <ClInclude Include="..\cheto\Dumper\HNetVarManager.h">
-      <Filter>Dumper</Filter>
+      <Filter>zurrapa.normal\Dumper</Filter>
     </ClInclude>
     <ClInclude Include="..\cheto\Dumper\HOffsetManager.h">
-      <Filter>Dumper</Filter>
+      <Filter>zurrapa.normal\Dumper</Filter>
     </ClInclude>
     <ClInclude Include="..\cheto\Dumper\HRemote.h">
-      <Filter>Dumper</Filter>
+      <Filter>zurrapa.normal\Dumper</Filter>
     </ClInclude>
     <ClInclude Include="..\cheto\Dumper\HUtilis.h">
-      <Filter>Dumper</Filter>
+      <Filter>zurrapa.normal\Dumper</Filter>
     </ClInclude>
     <ClInclude Include="..\cheto\Dumper\HWin.h">
-      <Filter>Dumper</Filter>
+      <Filter>zurrapa.normal\Dumper</Filter>
     </ClInclude>
     <ClInclude Include="..\cheto\Aimbot.h">
       <Filter>zurrapa.normal</Filter>

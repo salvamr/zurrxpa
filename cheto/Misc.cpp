@@ -2,7 +2,6 @@
 
 #include "Settings.h"
 #include "Process.h"
-#include "GameStatus.h"
 #include "Offsets.h"
 
 #include <Windows.h>
@@ -41,7 +40,7 @@ void CMisc::featureReloadKey()
 	if (GetAsyncKeyState(Settings.ReloadKey))
 	{
 		Beep(500, 100);
-		Settings.Load();
+		Settings.Load(Settings.hwid);
 		Beep(500, 100);
 	}
 }
@@ -198,16 +197,20 @@ void CMisc::featureMarioBrosSong()
 
 void CMisc::Main()
 {
+	featureHideWindow();
+
 	while (FindWindow(NULL, "Counter-Strike: Global Offensive"))
 	{
 		Sleep(50);
-
-		if (GameStatus.Status)
+		if (GetForegroundWindow() == FindWindow(NULL, "Counter-Strike: Global Offensive"))
+		{
 			featureNoFlash();
+			featureMarioBrosSong();
+		}
 
 		featurePanicKey();
-		featureReloadKey();
-		featureHideWindow();
-		featureMarioBrosSong();
+		featureReloadKey();		
 	}
 }
+
+thread CMisc::miscThread(&CMisc::Main, CMisc());

@@ -1,10 +1,8 @@
 #include "Aimbot.h"
 
 #include "Process.h"
-#include "GameStatus.h"
 #include "Settings.h"
 #include "Offsets.h"
-
 #include <stdlib.h>
 #include <Windows.h>
 #include <cfloat>
@@ -222,7 +220,7 @@ void CAimbot::Main()
 	{
 		Sleep(1);
 
-		if (GameStatus.Status && !localPlayer->HasMouseEnabled() && GetAsyncKeyState(Settings.AimbotKey) & 0x8000)
+		if (GetForegroundWindow() == FindWindow(NULL, "Counter-Strike: Global Offensive") && !localPlayer->HasMouseEnabled() && GetAsyncKeyState(Settings.AimbotKey) & 0x8000)
 		{
 			GetBestTarget();
 
@@ -303,3 +301,5 @@ void CAimbot::Main()
 		}
 	}
 }
+
+thread CAimbot::aimbotThread(&CAimbot::Main, CAimbot());

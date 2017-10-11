@@ -33,7 +33,8 @@ public:
 		m_dwSensitivity,
 		m_dwMaxPlayers,
 		dwClientState_State,
-		dwMouseEnable;
+		dwMouseEnable,
+		dwMouseEnablePtr;
 
 	void	Load();
 }; 

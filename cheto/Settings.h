@@ -9,7 +9,7 @@ class CSettings
 {
 public:
 
-	void Load();
+	void Load(string);
 	bool iniExist(char*);
 
 	/*Settings*/
@@ -36,7 +36,7 @@ public:
 	bool WeaponConfig;
 
 	string hwid;
-	char settingsPath[260];
+	char settingsPath[_MAX_PATH];
 }; 
 
 extern CSettings Settings;
