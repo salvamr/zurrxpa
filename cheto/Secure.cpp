@@ -56,3 +56,40 @@ void CSecure::LookingForCSGO()
 		}
 	}
 }
+
+void CSecure::LookingForCSGOLAN()
+{
+	int count = 0;
+	while (CLIENT == 0x0)
+	{
+		if (count < 20)
+		{
+			Process.Client = Process.GetModule("client.dll");
+			Sleep(1000);
+			count++;
+		}
+		else
+		{
+			MessageBox(NULL, "client.dll not found", "Zurrapa", MB_ICONERROR | MB_OK);
+			CloseHandle(Process.HandleProcess);
+			ExitProcess(0);
+		}
+	}
+
+	count = 0;
+	while (ENGINE == 0x0)
+	{
+		if (count < 20)
+		{
+			Process.Engine = Process.GetModule("engine.dll");
+			Sleep(1000);
+			count++;
+		}
+		else
+		{
+			MessageBox(NULL, "engine.dll not found", "Zurrapa", MB_ICONERROR | MB_OK);
+			CloseHandle(Process.HandleProcess);
+			ExitProcess(0);
+		}
+	}
+}

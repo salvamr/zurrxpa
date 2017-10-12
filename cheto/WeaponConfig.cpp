@@ -12,8 +12,6 @@ CWeapon::CWeapon()
 
 CWeapon::~CWeapon()
 {
-	delete localPlayer;
-	delete file;
 }
 
 void CWeapon::Main()
@@ -34,8 +32,6 @@ void CWeapon::Main()
 		}
 	}
 }
-
-thread CWeapon::wcThread(&CWeapon::Main, CWeapon());
 
 void CWeapon::Load(int weaponID)
 {

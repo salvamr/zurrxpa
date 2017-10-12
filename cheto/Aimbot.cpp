@@ -37,8 +37,6 @@ CAimbot::CAimbot()
 
 CAimbot::~CAimbot()
 {
-	delete localPlayer;
-	delete entityList;
 }
 
 float CAimbot::RandomFloat(float Start, float End)
@@ -302,4 +300,3 @@ void CAimbot::Main()
 	}
 }
 
-thread CAimbot::aimbotThread(&CAimbot::Main, CAimbot());

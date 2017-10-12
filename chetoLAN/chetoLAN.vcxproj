@@ -29,43 +29,26 @@
     <ClCompile Include="..\cheto\Dumper\OffsetManager.cpp" />
     <ClCompile Include="..\cheto\Dumper\Remote.cpp" />
     <ClCompile Include="..\cheto\EntityPlayer.cpp" />
-    <ClCompile Include="..\cheto\GameStatus.cpp" />
     <ClCompile Include="..\cheto\ini.cpp" />
     <ClCompile Include="..\cheto\INIReader.cpp" />
     <ClCompile Include="..\cheto\LocalPlayer.cpp" />
     <ClCompile Include="..\cheto\Misc.cpp" />
     <ClCompile Include="..\cheto\Offsets.cpp" />
     <ClCompile Include="..\cheto\Printing.cpp" />
+    <ClCompile Include="..\cheto\Process.cpp" />
+    <ClCompile Include="..\cheto\Secure.cpp" />
+    <ClCompile Include="..\cheto\Settings.cpp" />
     <ClCompile Include="..\cheto\Triggerbot.cpp" />
     <ClCompile Include="..\cheto\WeaponConfig.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Process.cpp" />
-    <ClCompile Include="Secure.cpp" />
-    <ClCompile Include="Settings.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\cheto\Aimbot.h" />
-    <ClInclude Include="..\cheto\Bunnyhop.h" />
     <ClInclude Include="..\cheto\Dumper\HMain.h" />
     <ClInclude Include="..\cheto\Dumper\HNetVarManager.h" />
     <ClInclude Include="..\cheto\Dumper\HOffsetManager.h" />
     <ClInclude Include="..\cheto\Dumper\HRemote.h" />
     <ClInclude Include="..\cheto\Dumper\HUtilis.h" />
     <ClInclude Include="..\cheto\Dumper\HWin.h" />
-    <ClInclude Include="..\cheto\Engine.h" />
-    <ClInclude Include="..\cheto\GameStatus.h" />
-    <ClInclude Include="..\cheto\Include.h" />
-    <ClInclude Include="..\cheto\ini.h" />
-    <ClInclude Include="..\cheto\INIReader.h" />
-    <ClInclude Include="..\cheto\Misc.h" />
-    <ClInclude Include="..\cheto\Offsets.h" />
-    <ClInclude Include="..\cheto\Printing.h" />
-    <ClInclude Include="..\cheto\Triggerbot.h" />
-    <ClInclude Include="..\cheto\Vector.h" />
-    <ClInclude Include="..\cheto\WeaponConfig.h" />
-    <ClInclude Include="Process.h" />
-    <ClInclude Include="Secure.h" />
-    <ClInclude Include="Settings.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{CAAF68AD-7FAE-44C7-8434-3185700C8BD3}</ProjectGuid>

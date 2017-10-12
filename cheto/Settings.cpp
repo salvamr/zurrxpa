@@ -31,7 +31,7 @@ bool CSettings::iniExist(char* name)
 	}
 }
 
-void CSettings::Load(string serial)
+void CSettings::DownloadSettings(string serial)
 {
 	Settings.hwid = serial;
 
@@ -49,7 +49,10 @@ void CSettings::Load(string serial)
 
 	DeleteUrlCacheEntry(URLSettings.c_str());
 	URLDownloadToFile(NULL, URLSettings.c_str(), settingsPath, 0, NULL);
+}
 
+void CSettings::Load()
+{
 	INIReader file(settingsPath);
 
 	for (int i = 0; i < 15; i++)
@@ -140,4 +143,7 @@ void CSettings::Load(string serial)
 	WeaponConfig = file.GetInteger("MISC", "WeaponConfig", 0) == 1 ? true : false;
 
 	AimbotMouse = file.GetInteger("MISC", "MouseInput", 0) == 1 ? true : false;
+
+	launchOptions = file.GetString("MISC", "GameLaunchOptions", "");
+	gameLocation = file.GetString("MISC", "GameLocation", "");
 }

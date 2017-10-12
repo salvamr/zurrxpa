@@ -13,6 +13,7 @@ CBunny::CBunny()
 
 CBunny::~CBunny()
 {
+
 }
 
 void CBunny::Main()
@@ -21,20 +22,21 @@ void CBunny::Main()
 	{
 		Sleep(1);
 
- 		if (GetForegroundWindow() == FindWindow(NULL, "Counter-Strike: Global Offensive") && !localPlayer->HasMouseEnabled() && GetAsyncKeyState(Settings.BunnyHopKey) & 0x8000)
+ 		if (GetForegroundWindow() == FindWindow(NULL, "Counter-Strike: Global Offensive"))
 		{
-			if (localPlayer->GetStatus() & (1 << 0))
+			if (!localPlayer->HasMouseEnabled() && GetAsyncKeyState(Settings.BunnyHopKey) & 0x8000)
 			{
-				Process.Write<DWORD>(CLIENT + Offset.m_dwForceJump, 5);
-				Process.Write<DWORD>(CLIENT + Offset.m_dwForceJump, 4);
-				Process.Write<DWORD>(CLIENT + Offset.m_dwForceJump, 5);
-			}
-			else
-			{
-				Process.Write<DWORD>(CLIENT + Offset.m_dwForceJump, 4);
+				if (localPlayer->GetStatus() & (1 << 0))
+				{
+					Process.Write<DWORD>(CLIENT + Offset.m_dwForceJump, 5);
+				}
+				else
+				{
+					Process.Write<DWORD>(CLIENT + Offset.m_dwForceJump, 4);
+					Process.Write<DWORD>(CLIENT + Offset.m_dwForceJump, 5);
+					Process.Write<DWORD>(CLIENT + Offset.m_dwForceJump, 4);
+				}
 			}
 		}
 	}
 }
-
-thread CBunny::bunnyThread(&CBunny::Main, CBunny());

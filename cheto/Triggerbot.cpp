@@ -12,8 +12,6 @@ CTrigger::CTrigger()
 
 CTrigger::~CTrigger()
 {
-	delete localPlayer;
-	delete entityList;
 }
 
 void CTrigger::Main()
@@ -46,4 +44,3 @@ void CTrigger::Main()
 	}
 }
 
-thread CTrigger::triggerbotThread(&CTrigger::Main, CTrigger());

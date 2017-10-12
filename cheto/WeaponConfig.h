@@ -12,7 +12,6 @@ public:
 	void	Main();
 	CWeapon();
 	~CWeapon();
-	static thread wcThread;
 
 private:
 	CLocalPlayer* localPlayer;

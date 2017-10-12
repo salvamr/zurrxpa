@@ -1,9 +1,7 @@
 ﻿#include "..\cheto\Offsets.h"
 #include "..\cheto\Secure.h"
-#include "../cheto/GameStatus.h"
-#include "Process.h"
-
-#include "Settings.h"
+#include "../cheto/Process.h"
+#include "../cheto/Settings.h"
 
 #include "..\cheto\Aimbot.h"
 #include "..\cheto\Triggerbot.h"
@@ -12,65 +10,57 @@
 
 #include <thread>
 
-void ForegroundWindow()
+void StartThreads()
 {
-	while (FindWindow(NULL, "Counter-Strike: Global Offensive"))
-	{
-		if (GetForegroundWindow() == FindWindow(NULL, "Counter-Strike: Global Offensive"))
-		{
-			GameStatus.Status = true;
-		}
-		else
-		{
-			GameStatus.Status = false;
-		}
-		Sleep(50);
-	}
+	CAimbot Aimbot;
+	CTrigger Trigger;
+	CMisc Misc;
+	CWeapon WeaponConfig;
 
-	CloseHandle(Process.HandleProcess);
-}
+	thread t1(&CAimbot::Main, &Aimbot);
+	thread t2(&CTrigger::Main, &Trigger);
+	thread t3(&CMisc::Main, &Misc);
+	thread t4(&CWeapon::Main, &WeaponConfig);
 
-void IsDebuggerActive()
-{
-	for (;;Sleep(500))
-	{
-		if (IsDebuggerPresent())
-		{
-			CloseHandle(Process.HandleProcess);
-			ExitProcess(0);
-		}
-	}
+	Beep(500, 500);
+
+	t1.join();
+	t2.join();
+	t3.join();
+	t4.join();
 }
 
 //argv[0] es el nombre del ejecutable
 //argv[1] es el hwid
 int main(int argc, char* argv[])
 {
-	thread debugThread(IsDebuggerActive);
+	thread dbg([]() {
+		for (;; Sleep(500))
+		{
+			if (IsDebuggerPresent())
+			{
+				if (Process.HandleProcess) {
+					CloseHandle(Process.HandleProcess);
+				}
+				ExitProcess(0);
+			}
+		}
+	});
 	
-	//Settings.hwid = "NDE0NDQ2NzcwMQ"; 
-	Settings.hwid = string(argv[1]);
+	Settings.DownloadSettings(string(argv[1]));
+	//Settings.DownloadSettings("NDE0NDQ2NzcwMQ");
 
 	Settings.Load();
 
 	Process.HandleProcess = Process.NewProcess(Settings.launchOptions);
 
-	Secure.LookingForCSGO();
+	Secure.LookingForCSGOLAN();
 
 	Offset.Load();
 
-	thread aimbotThread(&CAimbot::Main, CAimbot());
-	thread triggerbotThread(&CTrigger::Main, CTrigger());
-	thread weaponCfgThread(&CWeapon::Main, CWeapon());
-	thread miscThread(&CMisc::Main, CMisc());
+	StartThreads();
 
-	Beep(500, 500);
-
-	ForegroundWindow();
-	aimbotThread.join();
-	triggerbotThread.join();
-	weaponCfgThread.join();
-	miscThread.join();
+	dbg.detach();
 
 	return 0;
 }

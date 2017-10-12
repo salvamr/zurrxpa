@@ -13,7 +13,6 @@ CMisc::CMisc()
 
 CMisc::~CMisc()
 {
-	delete localPlayer;
 }
 
 void CMisc::featureNoFlash()
@@ -40,7 +39,7 @@ void CMisc::featureReloadKey()
 	if (GetAsyncKeyState(Settings.ReloadKey))
 	{
 		Beep(500, 100);
-		Settings.Load(Settings.hwid);
+		Settings.Load();
 		Beep(500, 100);
 	}
 }
@@ -213,4 +212,4 @@ void CMisc::Main()
 	}
 }
 
-thread CMisc::miscThread(&CMisc::Main, CMisc());
+

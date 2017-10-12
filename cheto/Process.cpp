@@ -1,4 +1,5 @@
 #include "Process.h"
+#include "Settings.h"
 #include <Windows.h>
 #include <iostream>
 
@@ -64,6 +65,39 @@ bool CProcess::Attach(char* pName)
 	} while (Process32Next(handle, &entry));
 
 	return false;
+}
+
+HANDLE CProcess::NewProcess(std::string launchOptions)
+{
+	PROCESS_INFORMATION             pi = { 0 };
+	STARTUPINFOA                    si = { 0 };
+	si.cb = sizeof(STARTUPINFO);
+	si.dwFlags = STARTF_USESHOWWINDOW;
+	si.wShowWindow = SW_HIDE;
+
+	std::string FullPath
+	(
+		Settings.gameLocation + (" -steam " + launchOptions)
+	);
+
+	if (FindWindow(NULL, "Counter-Strike: Global Offensive"))
+	{
+		MessageBox(NULL, "Please, do not launch the cheat with CSGO opened", "Zurrapa", MB_ICONERROR | MB_OK);
+		ExitProcess(0);
+	}
+
+	if (!CreateProcessA(
+		nullptr, (LPSTR)FullPath.c_str(),
+		nullptr, nullptr, FALSE, FALSE,
+		nullptr, nullptr, &si, &pi))
+	{
+		MessageBox(NULL, "Unable to launch CSGO", "Zurrapa", MB_ICONERROR | MB_OK);
+		ExitProcess(0);
+	}
+
+	CloseHandle(pi.hThread);
+
+	return pi.hProcess;
 }
 
 void CProcess::Detach()

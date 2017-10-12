@@ -17,7 +17,6 @@ public:
 	CAimbot();
 	~CAimbot();
 	void	Main();
-	static thread aimbotThread;
 
 private:
 	void	NormalizeAngles(Vector &angle);

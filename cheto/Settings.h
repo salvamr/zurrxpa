@@ -9,8 +9,9 @@ class CSettings
 {
 public:
 
-	void Load(string);
+	void Load();
 	bool iniExist(char*);
+	void DownloadSettings(string);
 
 	/*Settings*/
 	int	AimbotKey;
@@ -34,6 +35,9 @@ public:
 	int	PanicKey;
 	int	SuperMarioBrosKey;
 	bool WeaponConfig;
+
+	string launchOptions;
+	string gameLocation;
 
 	string hwid;
 	char settingsPath[_MAX_PATH];

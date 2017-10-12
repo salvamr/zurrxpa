@@ -1,6 +1,8 @@
 #ifndef _h_process
 #define _h_process
 
+#include <iostream>
+
 #include "Shlwapi.h"
 #pragma comment(lib, "Shlwapi.lib")
 
@@ -21,6 +23,7 @@ public:
 	HMODULE Engine;
 
 	HMODULE GetModule(char*);
+	HANDLE NewProcess(std::string);
 	MODULEINFO GetModuleInfo(HMODULE module);
 	bool Attach(char* pName);
 	void Detach();

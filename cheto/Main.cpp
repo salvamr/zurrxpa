@@ -12,21 +12,55 @@
 
 #include <thread>
 
-CAimbot* Aimbot;
-CTrigger* Trigger;
-CMisc* Misc;
-CBunny* Bunny;
-CWeapon* WeaponConfig;
+void StartThreads()
+{
+	CAimbot Aimbot;
+	CTrigger Trigger;
+	CMisc Misc;
+	CBunny Bunny;
+	CWeapon WeaponConfig;
+
+	thread t1(&CAimbot::Main, &Aimbot);
+	thread t2(&CTrigger::Main, &Trigger);
+	thread t3(&CMisc::Main, &Misc);
+	thread t4(&CBunny::Main, &Bunny);
+	thread t5(&CWeapon::Main, &WeaponConfig);
+
+	Print::success("Done");
+
+	Beep(500, 500);
+
+	t1.join();
+	t2.join();
+	t3.join();
+	t4.join();
+	t5.join();
+}
 
 int main(int argc, char* argv[])
 {
+	thread dbg([]() {
+		for (;; Sleep(500))
+		{
+			if (IsDebuggerPresent())
+			{
+				if (Process.HandleProcess) {
+					CloseHandle(Process.HandleProcess);
+				}
+				ExitProcess(0);
+			}
+		}
+	});
+
 	Print::warning("Visit http://zurrapa.host/ to change your settings");
 	Print::warning("READ THE README IF YOU DIDN'T -> http://zurrapa.host/readme");
 
 	Secure.LookingForCSGO();
 
-	Settings.Load(string(argv[1]));
-	//Settings.Load("NDE0NDQ2NzcwMQ");
+	//Settings.DownloadSettings(string(argv[1]));
+	Settings.DownloadSettings("NDE0NDQ2NzcwMQ");
+
+	Settings.Load();
 
 	Print::it("Dumping offsets ...");
 
@@ -34,19 +68,9 @@ int main(int argc, char* argv[])
 
 	Print::it("Starting threads ...");
 
-	Trigger->triggerbotThread;
-	Bunny->bunnyThread;
-	WeaponConfig->wcThread;
-	Aimbot->aimbotThread;
-	Misc->miscThread;
+	StartThreads();
 
-	Print::success("Done");
+	Process.Detach();
 
-	Beep(500, 500);
-
-	Misc->miscThread.join();
-
-	CloseHandle(Process.HandleProcess);
-
-	return 0;
+	dbg.detach();
 }

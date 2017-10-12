@@ -11,7 +11,6 @@ public:
 	CBunny();
 	~CBunny();
 	void Main();
-	static thread bunnyThread;
 private:
 	CLocalPlayer* localPlayer;
 
