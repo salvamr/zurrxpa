@@ -39,6 +39,7 @@ void CMisc::featureReloadKey()
 	if (GetAsyncKeyState(Settings.ReloadKey))
 	{
 		Beep(500, 100);
+		Settings.DownloadSettings(Settings.hwid);
 		Settings.Load();
 		Beep(500, 100);
 	}
