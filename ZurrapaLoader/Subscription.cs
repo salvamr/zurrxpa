@@ -4,7 +4,7 @@ using ZurrapaGlobals;
 
 namespace ZurrapaSubcription
 {
-    class Subcription
+    class Subscription
     {
         private static string ExpirationDate = DataBase.Instance.Get().ExpirationDate;
 

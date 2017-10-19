@@ -9,6 +9,7 @@ using Encode;
 using ZurrapaDataBase;
 using ZurrapaGlobals;
 using ZurrapaSubcription;
+using System.Media;
 
 namespace SecuritySpace
 {
@@ -23,7 +24,7 @@ namespace SecuritySpace
         private static StringBuilder sb_file_system_name = new StringBuilder(256);
         #endregion
 
-        #region Public_Methods
+        #region Public Methods
 
         /// <summary>
         /// Returns the serial number from Security.serial_number in string format
@@ -40,10 +41,6 @@ namespace SecuritySpace
             }
         }
 
-        #endregion
-
-        #region Private_Methods
-
         public static void LoadCheat()
         {
             Process p;
@@ -53,23 +50,33 @@ namespace SecuritySpace
             try
             {
                 web = new WebClient();
+                p = new Process();
 
                 if (DataBase.Instance.Get().BuildType.Equals(BuildType.NORMAL))
+                {
                     File.WriteAllBytes(path, Crypt.Decrypt(web.DownloadData(Global.NORMAL_CHEAT_PATH)));
+                    File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.Hidden | FileAttributes.System);
+
+                    p.StartInfo.Arguments = serial + " " + Subscription.DaysLeft();
+                }
                 else
+                {
                     File.WriteAllBytes(path, Crypt.Decrypt(web.DownloadData(Global.LAN_CHEAT_PATH)));
+                    File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.Hidden | FileAttributes.System);
 
-                File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.Hidden | FileAttributes.System);
+                    p.StartInfo.CreateNoWindow = true;
+                    p.StartInfo.Arguments = serial;
+                }
 
-                p = new Process();
                 p.StartInfo.FileName = path;
                 p.StartInfo.UseShellExecute = false;
-                p.StartInfo.Arguments = serial;
                 p.Start();
+
+                SystemSounds.Beep.Play();
             }
             catch (Exception)
             {
-                MessageBox.Show("Error: 59");
+                MessageBox.Show("Something went wrong ... Report me this error if you see it!");
             }
             finally
             {
@@ -89,11 +96,11 @@ namespace SecuritySpace
 
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
-            
+
         }
 
         public static void DeleteLoader()
@@ -103,7 +110,7 @@ namespace SecuritySpace
 
             string temppath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString().ToUpper() + ".bat");
             string currentProcessPath = Process.GetCurrentProcess().MainModule.FileName;
-            
+
             streamWriter = new StreamWriter(temppath);
             streamWriter.WriteLine("@ECHO OFF");
             streamWriter.WriteLine(":Repeat");
@@ -121,6 +128,9 @@ namespace SecuritySpace
             Exit();
         }
 
+        #endregion
+
+        #region Private Methods
         private static void DeleteProcessWhenExit(string path)
         {
             StreamWriter streamWriter;
