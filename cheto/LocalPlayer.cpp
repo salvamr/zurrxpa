@@ -82,15 +82,52 @@ Vector CLocalPlayer::GetVecPunch()
 
 bool CLocalPlayer::HasBadWeapon()
 {
-	return (GetWeaponID() == 42 || GetWeaponID() == 43 || GetWeaponID() == 44 || GetWeaponID() == 45 || GetWeaponID() == 46 || GetWeaponID() == 47 || GetWeaponID() == 48
-		|| GetWeaponID() == 49 || GetWeaponID() == 59 || GetWeaponID() == 64 || GetWeaponID() == 500 || GetWeaponID() == 505 || GetWeaponID() == 506 || GetWeaponID() == 507 || GetWeaponID() == 508
-		|| GetWeaponID() == 509 || GetWeaponID() == 512 || GetWeaponID() == 514 || GetWeaponID() == 515 || GetWeaponID() == 516) ? true : false;
+	switch (GetWeaponID())
+	{
+		case 42:
+		case 43:
+		case 44:
+		case 45:
+		case 46:
+		case 47:
+		case 48:
+		case 49:
+		case 59:
+		case 64:
+		case 500:
+		case 505:
+		case 506:
+		case 507:
+		case 508:
+		case 509:
+		case 512:
+		case 514:
+		case 515:
+		case 516:
+			return true;
+		default:
+			return false;
+	}
 }
 
 bool CLocalPlayer::HasPistol()
 {
-	return (GetWeaponID() == 31 || GetWeaponID() == 1 || GetWeaponID() == 2 || GetWeaponID() == 3 || GetWeaponID() == 4 || GetWeaponID() == 30 || GetWeaponID() == 32 || GetWeaponID() == 36
-		|| GetWeaponID() == 61 || GetWeaponID() == 63) ? true : false;
+	switch (GetWeaponID())
+	{
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+		case 30:
+		case 31:
+		case 32:
+		case 36:
+		case 61:
+		case 63:
+			return true;
+		default:
+			return false;
+	}
 }
 
 bool CLocalPlayer::IsInGame()
@@ -106,6 +143,5 @@ void CLocalPlayer::SetAttack()
 		Process.Write(CLIENT + Offset.m_dwForceAttack, 1);
 		Sleep(65);
 		Process.Write(CLIENT + Offset.m_dwForceAttack, 0);
-		Sleep(65);
 	}
 }
