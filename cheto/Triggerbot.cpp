@@ -27,8 +27,6 @@ void CTrigger::Main()
 		{
 			crossId = localPlayer->GetCrosshairID();
 
-			cout << localPlayer->HasPistol() << endl;
-
 			if ((Settings.TriggerDisableForPistols && localPlayer->HasPistol()) || localPlayer->HasBadWeapon())
 			{
 				continue;
