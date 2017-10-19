@@ -202,7 +202,8 @@ void CMisc::Main()
 	while (FindWindow(NULL, "Counter-Strike: Global Offensive"))
 	{
 		Sleep(50);
-		if (GetForegroundWindow() == FindWindow(NULL, "Counter-Strike: Global Offensive"))
+		if (GetForegroundWindow() == FindWindow(NULL, "Counter-Strike: Global Offensive") &&
+			localPlayer->IsInGame())
 		{
 			featureNoFlash();
 			featureMarioBrosSong();

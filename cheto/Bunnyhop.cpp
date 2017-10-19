@@ -22,13 +22,17 @@ void CBunny::Main()
 	{
 		Sleep(1);
 
- 		if (GetForegroundWindow() == FindWindow(NULL, "Counter-Strike: Global Offensive"))
+ 		if (GetForegroundWindow() == FindWindow(NULL, "Counter-Strike: Global Offensive") && localPlayer->IsInGame())
 		{
-			if (GetAsyncKeyState(Settings.BunnyHopKey) & 0x8000 && !localPlayer->HasMouseEnabled())
-			{
-				if (localPlayer->GetStatus() & (1 << 0))
+			if (!localPlayer->HasMouseEnabled())
+			{		
+				if (localPlayer->GetStatus() == 257 && GetAsyncKeyState(Settings.BunnyHopKey) & 0x8000)
 				{
-					Process.Write<DWORD>(CLIENT + Offset.m_dwForceJump, 6);
+					Process.Write<DWORD>(CLIENT + Offset.m_dwForceJump, 5);
+				}
+				else
+				{
+					Process.Write<DWORD>(CLIENT + Offset.m_dwForceJump, 4);
 				}
 			}
 		}

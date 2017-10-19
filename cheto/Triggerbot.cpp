@@ -20,11 +20,14 @@ void CTrigger::Main()
 	{
 		Sleep(1);
 
-		if (GetForegroundWindow() == FindWindow(NULL, "Counter-Strike: Global Offensive") && !localPlayer->HasMouseEnabled() && GetAsyncKeyState(Settings.TriggerKey) & 0x8000 && !localPlayer->HasBadWeapon())
+		if (GetForegroundWindow() == FindWindow(NULL, "Counter-Strike: Global Offensive") &&
+			localPlayer->IsInGame() &&
+			!localPlayer->HasMouseEnabled() && 
+			GetAsyncKeyState(Settings.TriggerKey) & 0x8000)
 		{
 			crossId = localPlayer->GetCrosshairID();
 
-			if ((Settings.TriggerDisableForPistols && localPlayer->HasPistol()))
+			if ((Settings.TriggerDisableForPistols && localPlayer->HasPistol()) || localPlayer->HasBadWeapon())
 			{
 				continue;
 			}

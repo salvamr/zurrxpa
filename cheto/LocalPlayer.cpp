@@ -96,7 +96,7 @@ bool CLocalPlayer::HasPistol()
 bool CLocalPlayer::IsInGame()
 {
 	DWORD m_dwClientState = Process.Read<DWORD>(ENGINE + Offset.m_dwClientState);
-	return (Process.Read<int>(m_dwClientState + Offset.dwClientState_State) & 6);
+	return (Process.Read<int>(m_dwClientState + Offset.dwClientState_State) == 6);
 }
 
 void CLocalPlayer::SetAttack()

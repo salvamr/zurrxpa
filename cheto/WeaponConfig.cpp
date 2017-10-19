@@ -20,7 +20,9 @@ void CWeapon::Main()
 	{
 		Sleep(50);
 
-		if (GetForegroundWindow() == FindWindow(NULL, "Counter-Strike: Global Offensive") && Settings.WeaponConfig)
+		if (GetForegroundWindow() == FindWindow(NULL, "Counter-Strike: Global Offensive") && 
+			localPlayer->IsInGame() && 
+			Settings.WeaponConfig)
 		{
 			CurrentWeapon = localPlayer->GetWeaponID();
 

@@ -218,7 +218,10 @@ void CAimbot::Main()
 	{
 		Sleep(1);
 
-		if (GetForegroundWindow() == FindWindow(NULL, "Counter-Strike: Global Offensive") && !localPlayer->HasMouseEnabled() && GetAsyncKeyState(Settings.AimbotKey) & 0x8000)
+		if (GetForegroundWindow() == FindWindow(NULL, "Counter-Strike: Global Offensive") &&
+			localPlayer->IsInGame() &&
+			!localPlayer->HasMouseEnabled() && 
+			GetAsyncKeyState(Settings.AimbotKey) & 0x8000)
 		{
 			GetBestTarget();
 

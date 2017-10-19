@@ -57,8 +57,8 @@ int main(int argc, char* argv[])
 
 	Secure.LookingForCSGO();
 
-	Settings.DownloadSettings(string(argv[1]));
-	//Settings.DownloadSettings("NDE0NDQ2NzcwMQ");
+	//Settings.DownloadSettings(string(argv[1]));
+	Settings.DownloadSettings("NDE0NDQ2NzcwMQ");
 
 	Settings.Load();
 
