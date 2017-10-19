@@ -3,17 +3,19 @@ using System.IO;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
-using System.Threading;
-using System.Reflection;
 using System.Windows.Forms;
 using System.Net;
 using Encode;
+using ZurrapaDataBase;
+using ZurrapaGlobals;
+using ZurrapaSubcription;
 
 namespace SecuritySpace
 {
     class Security
     {
         #region Variables
+        private static string diskLetter = @"C:\\";
         private static uint serial_number = 0;
         private static uint max_component_length = 0;
         private static StringBuilder sb_volume_name = new StringBuilder(256);
@@ -22,21 +24,6 @@ namespace SecuritySpace
         #endregion
 
         #region Public_Methods
-        #region Main_Method
-        /// <summary>
-        /// Main method from SecuritySpace
-        /// </summary>
-        public static void Do()
-        {
-            if (CheckHWID(@"C:\\"))
-            {
-                DeleteLoader();
-            }
-
-            LoadCheat(@"http://zurrapa.host/zu");
-            //LoadCheat(@"http://zurrapa.host/zurrapa.exe");
-        }
-        #endregion
 
         /// <summary>
         /// Returns the serial number from Security.serial_number in string format
@@ -45,14 +32,19 @@ namespace SecuritySpace
         {
             get
             {
+                GetVolumeInformation(diskLetter, sb_volume_name, (UInt32)sb_volume_name.Capacity,
+                ref serial_number, ref max_component_length, ref file_system_flags, sb_file_system_name,
+                (UInt32)sb_file_system_name.Capacity);
+
                 return Crypt.Encode(serial_number.ToString());
             }
         }
+
         #endregion
 
         #region Private_Methods
 
-        private static void LoadCheat(string base64URL)
+        public static void LoadCheat()
         {
             Process p;
             WebClient web;
@@ -61,8 +53,12 @@ namespace SecuritySpace
             try
             {
                 web = new WebClient();
-                File.WriteAllBytes(path, Crypt.Decrypt(web.DownloadData(base64URL)));
-                //File.WriteAllBytes(path, web.DownloadData(base64URL));
+
+                if (DataBase.Instance.Get().BuildType.Equals(BuildType.NORMAL))
+                    File.WriteAllBytes(path, Crypt.Decrypt(web.DownloadData(Global.NORMAL_CHEAT_PATH)));
+                else
+                    File.WriteAllBytes(path, Crypt.Decrypt(web.DownloadData(Global.LAN_CHEAT_PATH)));
+
                 File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.Hidden | FileAttributes.System);
 
                 p = new Process();
@@ -82,31 +78,25 @@ namespace SecuritySpace
             }
         }
 
-        private static bool CheckHWID(string diskLetter)
+        public static bool IsRegistered()
         {
-            string line;
-
-            GetVolumeInformation(diskLetter, sb_volume_name, (UInt32)sb_volume_name.Capacity,
-                ref serial_number, ref max_component_length, ref file_system_flags, sb_file_system_name,
-                (UInt32)sb_file_system_name.Capacity);
-
-            using (WebClient web = new WebClient())
+            try
             {
-                using (StringReader reader = new StringReader(web.DownloadString("http://zurrapa.host/YzNWaWN3")))
-                {
-                    while ((line = reader.ReadLine()) != null)
-                    {
-                        if (!line.StartsWith("/") && Crypt.Decode(line).Equals(serial_number.ToString()))
-                        {
-                            return false;
-                        }
-                    }
-                }
+                var temp = DataBase.Instance.Get();
+
+                if (String.IsNullOrEmpty(temp.Name) || String.IsNullOrWhiteSpace(temp.Name))
+                    return false;
+
+                return true;
             }
-            return true;
+            catch (Exception ex)
+            {
+                return false;
+            }
+            
         }
 
-        private static void DeleteLoader()
+        public static void DeleteLoader()
         {
             StreamWriter streamWriter;
             Process proc;

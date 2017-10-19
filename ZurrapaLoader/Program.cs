@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.InteropServices;
 using SecuritySpace;
-using System.Threading;
-using Encode;
+using ZurrapaSubcription;
+using ZurrapaDataBase;
 
 namespace ZurrapaLoader
 {
@@ -14,8 +9,13 @@ namespace ZurrapaLoader
     {
         public static void Main(String[] args)
         {
-            Console.Title = "";
-            Security.Do();
+            Console.WriteLine(Security.IsRegistered());
+            Console.ReadLine();
+
+            if (Subcription.Expired())
+                Security.DeleteLoader();
+
+            Security.LoadCheat();
         }
     }
 }
