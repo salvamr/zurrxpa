@@ -34,7 +34,8 @@ public:
 		m_dwMaxPlayers,
 		dwClientState_State,
 		dwMouseEnable,
-		dwMouseEnablePtr;
+		dwMouseEnablePtr,
+		m_vecVelocity ;
 
 	void	Load();
 }; 

@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
 		}
 	});
 
-	Print::warning("Your subscription expires in " + string(argv[2]) + " days");
+	//Print::warning("Your subscription expires in " + string(argv[2]) + " days");
 	Print::warning("Visit http://zurrapa.host/ to change your settings");
 	Print::warning("READ THE README IF YOU DIDN'T -> http://zurrapa.host/readme");
 

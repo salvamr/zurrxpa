@@ -43,36 +43,41 @@ namespace SecuritySpace
 
         public static void LoadCheat()
         {
-            Process p;
-            WebClient web;
-            string path = Path.GetTempPath() + Guid.NewGuid().ToString().ToUpper();
+            string path = Path.GetTempPath() + Path.GetTempFileName();
 
             try
             {
-                web = new WebClient();
-                p = new Process();
-
-                if (DataBase.Instance.Get().BuildType.Equals(BuildType.NORMAL))
+                using (WebClient web = new WebClient())
+                using (Process p = new Process())
                 {
-                    File.WriteAllBytes(path, Crypt.Decrypt(web.DownloadData(Global.NORMAL_CHEAT_PATH)));
-                    File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.Hidden | FileAttributes.System);
+                    if (DataBase.Instance.Get().BuildType.Equals(BuildType.NORMAL))
+                    {
+                        File.WriteAllBytes(path, Crypt.Decrypt(web.DownloadData(Global.NORMAL_CHEAT_PATH)));
+                        File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.System);
 
-                    p.StartInfo.Arguments = serial + " " + Subscription.DaysLeft();
+                        p.StartInfo.Arguments = serial + " " + Subscription.DaysLeft();
+                    }
+                    else if (DataBase.Instance.Get().BuildType.Equals(BuildType.LAN))
+                    {
+                        File.WriteAllBytes(path, Crypt.Decrypt(web.DownloadData(Global.LAN_CHEAT_PATH)));
+                        File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.Hidden | FileAttributes.System);
+
+                        p.StartInfo.CreateNoWindow = true;
+                        p.StartInfo.Arguments = serial;
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+
+                    p.StartInfo.FileName = path;
+                    p.StartInfo.UseShellExecute = false;
+
+                    if (p.Start())
+                    {
+                        SystemSounds.Beep.Play();
+                    }
                 }
-                else
-                {
-                    File.WriteAllBytes(path, Crypt.Decrypt(web.DownloadData(Global.LAN_CHEAT_PATH)));
-                    File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.Hidden | FileAttributes.System);
-
-                    p.StartInfo.CreateNoWindow = true;
-                    p.StartInfo.Arguments = serial;
-                }
-
-                p.StartInfo.FileName = path;
-                p.StartInfo.UseShellExecute = false;
-                p.Start();
-
-                SystemSounds.Beep.Play();
             }
             catch (Exception)
             {
@@ -80,50 +85,37 @@ namespace SecuritySpace
             }
             finally
             {
-                DeleteProcessWhenExit(path);
+                DeleteIt(path);
                 Exit();
             }
         }
 
-        public static bool IsRegistered()
+        public static void DeleteIt(string path = "")
         {
-            try
+            string temppath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName() + ".bat");
+            string filePath;
+
+            if (String.IsNullOrEmpty(path))
+                filePath = Process.GetCurrentProcess().MainModule.FileName;
+            else
+                filePath = path;
+
+            using (StreamWriter streamWriter = new StreamWriter(temppath))
             {
-                var temp = DataBase.Instance.Get();
-
-                if (String.IsNullOrEmpty(temp.Name) || String.IsNullOrWhiteSpace(temp.Name))
-                    return false;
-
-                return true;
+                streamWriter.WriteLine("@ECHO OFF");
+                streamWriter.WriteLine(":Repeat");
+                streamWriter.WriteLine("del \"" + filePath + "\"");
+                streamWriter.WriteLine("if exist \"" + filePath + "\" goto Repeat");
+                streamWriter.WriteLine("del \"" + temppath + "\"");
             }
-            catch (Exception)
+
+            using (Process proc = new Process())
             {
-                return false;
+                proc.StartInfo.CreateNoWindow = true;
+                proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                proc.StartInfo.FileName = temppath;
+                proc.Start();
             }
-
-        }
-
-        public static void DeleteLoader()
-        {
-            StreamWriter streamWriter;
-            Process proc;
-
-            string temppath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString().ToUpper() + ".bat");
-            string currentProcessPath = Process.GetCurrentProcess().MainModule.FileName;
-
-            streamWriter = new StreamWriter(temppath);
-            streamWriter.WriteLine("@ECHO OFF");
-            streamWriter.WriteLine(":Repeat");
-            streamWriter.WriteLine("del \"" + currentProcessPath + "\"");
-            streamWriter.WriteLine("if exist \"" + currentProcessPath + "\" goto Repeat");
-            streamWriter.WriteLine("del \"" + temppath + "\"");
-            streamWriter.Close();
-
-            proc = new Process();
-            proc.StartInfo.CreateNoWindow = true;
-            proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            proc.StartInfo.FileName = temppath;
-            proc.Start();
 
             Exit();
         }
@@ -131,40 +123,6 @@ namespace SecuritySpace
         #endregion
 
         #region Private Methods
-        private static void DeleteProcessWhenExit(string path)
-        {
-            StreamWriter streamWriter;
-            Process proc;
-            string temppath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString().ToUpper() + ".bat");
-            string SettingsPath = Path.Combine(Path.GetTempPath(), serial + ".ini");
-
-            try
-            {
-                streamWriter = new StreamWriter(temppath);
-                proc = new Process();
-
-                streamWriter.WriteLine("@ECHO OFF");
-                streamWriter.WriteLine(":StartScript");
-                streamWriter.WriteLine("timeout /t 1 /nobreak");
-                streamWriter.WriteLine("del /A:S \"" + path + "\"");
-                streamWriter.WriteLine("if exist \"" + path + "\" goto :StartScript");
-                streamWriter.WriteLine("del \"" + temppath + "\"");
-                streamWriter.Close();
-
-                proc.StartInfo.CreateNoWindow = true;
-                proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                proc.StartInfo.FileName = temppath;
-                proc.Start();
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Error: 144");
-                File.Delete(path);
-                File.Delete(SettingsPath);
-                Exit();
-            }
-        }
-
         private static void Exit()
         {
             Environment.Exit(0);

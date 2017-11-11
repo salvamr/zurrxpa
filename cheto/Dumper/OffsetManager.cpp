@@ -27,6 +27,7 @@ namespace Dumper
 			Offset.m_bGunGameImmunity	= pNetVarManager->GetNetVar("DT_CSPlayer","m_bGunGameImmunity");
 			Offset.m_iCrossHairID		= pNetVarManager->GetNetVar("DT_CSPlayer", "m_bHasDefuser") + 0x5C;
 			Offset.m_iShotsFired		= pNetVarManager->GetNetVar("DT_CSPlayer", "m_iShotsFired");
+			Offset.m_vecVelocity 		= pNetVarManager->GetNetVar("DT_CSPlayer", "m_vecVelocity[0]");
 
 			Offset.m_lifeState			= pNetVarManager->GetNetVar("DT_BasePlayer", "m_lifeState");
 			Offset.m_fFlags				= pNetVarManager->GetNetVar("DT_BasePlayer", "m_fFlags");
@@ -60,4 +61,3 @@ namespace Dumper
         }
     }
 }
-

@@ -1,11 +1,11 @@
-﻿#include "..\cheto\Offsets.h"
-#include "..\cheto\Secure.h"
+﻿#include "../cheto/Offsets.h"
+#include "../cheto/Secure.h"
 #include "../cheto/Process.h"
 #include "../cheto/Settings.h"
 
-#include "..\cheto\Aimbot.h"
-#include "..\cheto\Triggerbot.h"
-#include "..\cheto\Misc.h"
+#include "../cheto/Aimbot.h"
+#include "../cheto/Triggerbot.h"
+#include "../cheto/Misc.h"
 #include "../cheto/WeaponConfig.h"
 
 #include <thread>

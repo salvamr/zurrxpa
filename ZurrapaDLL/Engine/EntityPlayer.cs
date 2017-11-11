@@ -1,58 +1,96 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media.Media3D;
+using ZurrapaDLL.ProcessManagement;
 
 namespace ZurrapaDLL.Engine
 {
     class EntityPlayer
     {
-        protected static IntPtr GetEntity(int Index)
+        private static EntityPlayer instance;
+
+        private EntityPlayer() { }
+
+        public static EntityPlayer Instance
         {
-            return CProcess.Read<IntPtr>(CProcess.CLIENT /*+ Offsets.m_deEntityList + (Index - 1) * 0x10*/);
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new EntityPlayer();
+                }
+
+                return instance;
+            }
         }
 
-        protected static bool IsAlive(int Index)
+        public IntPtr GetEntity(int Index)
+        {
+            return CProcess.Read<IntPtr>(CProcess.Client.BaseAddress /*+ Offsets.m_deEntityList + (Index - 1) * 0x10*/);
+        }
+
+        public bool IsAlive(int Index)
         {
             return CProcess.Read<bool>(GetEntity(Index) /*+ Offsets.m_lifeState*/);
         }
 
-        protected static bool IsInvisible(int Index)
+        public bool IsInvisible(int Index)
         {
             return CProcess.Read<bool>(GetEntity(Index) /*+ Offsets.m_bGunGameImmunity*/);
         }
 
-        protected static bool IsDormant(int Index)
+        public bool IsDormant(int Index)
         {
             return CProcess.Read<bool>(GetEntity(Index) /*+ Offsets.m_bDormant*/);
         }
 
-        protected static int GetHealth(int Index)
+        public int GetHealth(int Index)
         {
             return CProcess.Read<int>(GetEntity(Index) /*+ Offsets.m_iHealth*/);
         }
 
-        protected static int GetTeam(int Index)
+        public int GetTeam(int Index)
         {
             return CProcess.Read<int>(GetEntity(Index) /*+ Offsets.m_iTeamNum*/);
         }
 
-        protected static ulong GetBoneMatrix(int Index)
+        public IntPtr GetBoneMatrix(int Index)
         {
-            return CProcess.Read<ulong>(GetEntity(Index) /*+ Offsets.m_dwBoneMatrix*/);
+            return CProcess.Read<IntPtr>(GetEntity(Index) /*+ Offsets.m_dwBoneMatrix*/);
         }
 
-        protected static Vector3D GetBone(int Index, int BoneID)
+        public List<int> GetMaxPlayers()
         {
-            Vector3D temp = new Vector3D();
+            List<int> totalPlayers = new List<int>(0);
 
-            temp.X = CProcess.Read<double>((IntPtr)GetBoneMatrix(Index) + 0x30 * BoneID + 0x0C);
-            temp.Y = CProcess.Read<double>((IntPtr)GetBoneMatrix(Index) + 0x30 * BoneID + 0x1C);
-            temp.Z = CProcess.Read<double>((IntPtr)GetBoneMatrix(Index) + 0x30 * BoneID + 0x2C);
+            var maxPlayers = CProcess.Read<int>(CProcess.Read<IntPtr>(CProcess.Engine.BaseAddress /*+ Offset.m_dwClientState*/) /*+ Offset.m_dwMaxPlayers*/);
 
-            return temp;
+            //Existe el player con indice 0 ???? XD
+            for (int i = 0; i < maxPlayers; i++)
+            {
+                if (GetEntity(i) != null &&
+                    !IsAlive(i) &&
+                    !IsDormant(i) &&
+                    GetBoneMatrix(i) != null &&
+                    GetHealth(i) > 0 &&
+                    !IsInvisible(i) &&
+                    GetBone(i, 0 /*Settings.AimbotBone*/).Length() != 0)
+                {
+                    totalPlayers.Add(i);
+                }
+            }
+
+            return totalPlayers;
+        }
+
+        public Vector3 GetBone(int Index, int BoneID)
+        {
+            return new Vector3
+            {
+                X = CProcess.Read<float>((IntPtr)GetBoneMatrix(Index) + 0x30 * BoneID + 0x0C),
+                Y = CProcess.Read<float>((IntPtr)GetBoneMatrix(Index) + 0x30 * BoneID + 0x1C),
+                Z = CProcess.Read<float>((IntPtr)GetBoneMatrix(Index) + 0x30 * BoneID + 0x2C)
+            };
         }
     }
 }

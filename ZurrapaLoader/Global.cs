@@ -1,4 +1,6 @@
-﻿namespace ZurrapaGlobals
+﻿using System.Configuration;
+
+namespace ZurrapaGlobals
 {
     public enum BuildType
     {
@@ -8,9 +10,9 @@
 
     public class Global
     {
-        public const string AUTH_SECRET = "vIN9nmldv5yhumS10sxJTF9E66v8vB8Rhh1P7iMr";
-        public const string BASEPATH = "https://zurrapa-fc5ec.firebaseio.com/";
-        public const string NORMAL_CHEAT_PATH = "http://zurrapa.host/test";
-        public const string LAN_CHEAT_PATH = "http://zurrapa.host/testLAN";
+        public static string AUTH_SECRET = ConfigurationManager.AppSettings["authSecret"];
+        public static string BASEPATH = ConfigurationManager.AppSettings["basePathFireBase"];
+        public static string NORMAL_CHEAT_PATH = ConfigurationManager.AppSettings["normalCheatURL"];
+        public static string LAN_CHEAT_PATH = ConfigurationManager.AppSettings["lanCheatURL"];
     }
 }

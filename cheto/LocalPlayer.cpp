@@ -130,6 +130,11 @@ bool CLocalPlayer::HasPistol()
 	}
 }
 
+bool CLocalPlayer::IsMoving()
+{
+	return !Process.Read<Vector>(GetPlayer() + Offset.m_vecVelocity).IsZero();
+}
+
 bool CLocalPlayer::IsInGame()
 {
 	DWORD m_dwClientState = Process.Read<DWORD>(ENGINE + Offset.m_dwClientState);
