@@ -3,17 +3,20 @@ using System.IO;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
-using System.Threading;
-using System.Reflection;
 using System.Windows.Forms;
 using System.Net;
 using Encode;
+using ZurrapaDataBase;
+using ZurrapaGlobals;
+using ZurrapaSubcription;
+using System.Media;
 
 namespace SecuritySpace
 {
     class Security
     {
         #region Variables
+        private static string diskLetter = @"C:\\";
         private static uint serial_number = 0;
         private static uint max_component_length = 0;
         private static StringBuilder sb_volume_name = new StringBuilder(256);
@@ -21,22 +24,7 @@ namespace SecuritySpace
         private static StringBuilder sb_file_system_name = new StringBuilder(256);
         #endregion
 
-        #region Public_Methods
-        #region Main_Method
-        /// <summary>
-        /// Main method from SecuritySpace
-        /// </summary>
-        public static void Do()
-        {
-            if (CheckHWID(@"C:\\"))
-            {
-                DeleteLoader();
-            }
-
-            LoadCheat(@"http://zurrapa.host/zu");
-            //LoadCheat(@"http://zurrapa.host/zurrapa.exe");
-        }
-        #endregion
+        #region Public Methods
 
         /// <summary>
         /// Returns the serial number from Security.serial_number in string format
@@ -45,126 +33,96 @@ namespace SecuritySpace
         {
             get
             {
+                GetVolumeInformation(diskLetter, sb_volume_name, (UInt32)sb_volume_name.Capacity,
+                ref serial_number, ref max_component_length, ref file_system_flags, sb_file_system_name,
+                (UInt32)sb_file_system_name.Capacity);
+
                 return Crypt.Encode(serial_number.ToString());
             }
         }
-        #endregion
 
-        #region Private_Methods
-
-        private static void LoadCheat(string base64URL)
+        public static void LoadCheat()
         {
-            Process p;
-            WebClient web;
-            string path = Path.GetTempPath() + Guid.NewGuid().ToString().ToUpper();
+            string path = Path.GetTempPath() + Path.GetTempFileName();
 
             try
             {
-                web = new WebClient();
-                File.WriteAllBytes(path, Crypt.Decrypt(web.DownloadData(base64URL)));
-                //File.WriteAllBytes(path, web.DownloadData(base64URL));
-                File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.Hidden | FileAttributes.System);
+                using (WebClient web = new WebClient())
+                using (Process p = new Process())
+                {
+                    if (DataBase.Instance.Get().BuildType.Equals(BuildType.NORMAL))
+                    {
+                        File.WriteAllBytes(path, Crypt.Decrypt(web.DownloadData(Global.NORMAL_CHEAT_PATH)));
+                        File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.System);
 
-                p = new Process();
-                p.StartInfo.FileName = path;
-                p.StartInfo.UseShellExecute = false;
-                p.StartInfo.Arguments = serial;
-                p.Start();
+                        p.StartInfo.Arguments = serial + " " + Subscription.DaysLeft();
+                    }
+                    else if (DataBase.Instance.Get().BuildType.Equals(BuildType.LAN))
+                    {
+                        File.WriteAllBytes(path, Crypt.Decrypt(web.DownloadData(Global.LAN_CHEAT_PATH)));
+                        File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.Hidden | FileAttributes.System);
+
+                        p.StartInfo.CreateNoWindow = true;
+                        p.StartInfo.Arguments = serial;
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+
+                    p.StartInfo.FileName = path;
+                    p.StartInfo.UseShellExecute = false;
+
+                    if (p.Start())
+                    {
+                        SystemSounds.Beep.Play();
+                    }
+                }
             }
             catch (Exception)
             {
-                MessageBox.Show("Error: 59");
+                MessageBox.Show("Something went wrong ... Report me this error if you see it!");
             }
             finally
             {
-                DeleteProcessWhenExit(path);
+                DeleteIt(path);
                 Exit();
             }
         }
 
-        private static bool CheckHWID(string diskLetter)
+        public static void DeleteIt(string path = "")
         {
-            string line;
+            string temppath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName() + ".bat");
+            string filePath;
 
-            GetVolumeInformation(diskLetter, sb_volume_name, (UInt32)sb_volume_name.Capacity,
-                ref serial_number, ref max_component_length, ref file_system_flags, sb_file_system_name,
-                (UInt32)sb_file_system_name.Capacity);
+            if (String.IsNullOrEmpty(path))
+                filePath = Process.GetCurrentProcess().MainModule.FileName;
+            else
+                filePath = path;
 
-            using (WebClient web = new WebClient())
+            using (StreamWriter streamWriter = new StreamWriter(temppath))
             {
-                using (StringReader reader = new StringReader(web.DownloadString("http://zurrapa.host/YzNWaWN3")))
-                {
-                    while ((line = reader.ReadLine()) != null)
-                    {
-                        if (!line.StartsWith("/") && Crypt.Decode(line).Equals(serial_number.ToString()))
-                        {
-                            return false;
-                        }
-                    }
-                }
-            }
-            return true;
-        }
-
-        private static void DeleteLoader()
-        {
-            StreamWriter streamWriter;
-            Process proc;
-
-            string temppath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString().ToUpper() + ".bat");
-            string currentProcessPath = Process.GetCurrentProcess().MainModule.FileName;
-            
-            streamWriter = new StreamWriter(temppath);
-            streamWriter.WriteLine("@ECHO OFF");
-            streamWriter.WriteLine(":Repeat");
-            streamWriter.WriteLine("del \"" + currentProcessPath + "\"");
-            streamWriter.WriteLine("if exist \"" + currentProcessPath + "\" goto Repeat");
-            streamWriter.WriteLine("del \"" + temppath + "\"");
-            streamWriter.Close();
-
-            proc = new Process();
-            proc.StartInfo.CreateNoWindow = true;
-            proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            proc.StartInfo.FileName = temppath;
-            proc.Start();
-
-            Exit();
-        }
-
-        private static void DeleteProcessWhenExit(string path)
-        {
-            StreamWriter streamWriter;
-            Process proc;
-            string temppath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString().ToUpper() + ".bat");
-            string SettingsPath = Path.Combine(Path.GetTempPath(), serial + ".ini");
-
-            try
-            {
-                streamWriter = new StreamWriter(temppath);
-                proc = new Process();
-
                 streamWriter.WriteLine("@ECHO OFF");
-                streamWriter.WriteLine(":StartScript");
-                streamWriter.WriteLine("timeout /t 1 /nobreak");
-                streamWriter.WriteLine("del /A:S \"" + path + "\"");
-                streamWriter.WriteLine("if exist \"" + path + "\" goto :StartScript");
+                streamWriter.WriteLine(":Repeat");
+                streamWriter.WriteLine("del \"" + filePath + "\"");
+                streamWriter.WriteLine("if exist \"" + filePath + "\" goto Repeat");
                 streamWriter.WriteLine("del \"" + temppath + "\"");
-                streamWriter.Close();
+            }
 
+            using (Process proc = new Process())
+            {
                 proc.StartInfo.CreateNoWindow = true;
                 proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 proc.StartInfo.FileName = temppath;
                 proc.Start();
             }
-            catch (Exception)
-            {
-                MessageBox.Show("Error: 144");
-                File.Delete(path);
-                File.Delete(SettingsPath);
-                Exit();
-            }
+
+            Exit();
         }
 
+        #endregion
+
+        #region Private Methods
         private static void Exit()
         {
             Environment.Exit(0);

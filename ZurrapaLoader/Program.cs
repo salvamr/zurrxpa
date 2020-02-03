@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.InteropServices;
 using SecuritySpace;
+using ZurrapaSubcription;
+using ZurrapaDataBase;
+using System.Diagnostics;
 using System.Threading;
-using Encode;
+using System.Windows.Forms;
+using System.Media;
+using ZurrapaLoader.HardwareIDManagement;
 
 namespace ZurrapaLoader
 {
@@ -14,8 +14,40 @@ namespace ZurrapaLoader
     {
         public static void Main(String[] args)
         {
-            Console.Title = "";
-            Security.Do();
+            //new Thread(() =>
+            //{
+            //    Thread.CurrentThread.IsBackground = true;
+
+            //    while (true)
+            //    {
+            //        if (Debugger.IsAttached)
+            //        {
+            //            Security.DeleteLoader();
+            //        }
+            //        Thread.Sleep(100);
+            //    }
+            //}).Start();
+
+            Console.WriteLine(HardwareIDInfo.VolumeSerial());
+            Console.ReadLine();
+            if (Subscription.IsRegistered())
+            {
+                if (Subscription.Expired())
+                {
+                    SystemSounds.Beep.Play();
+                    MessageBox.Show("Your subscription expired!");
+                    Security.DeleteIt();
+                }   
+                else
+                {
+                    Security.LoadCheat();
+                }
+            }
+            else
+            {
+                Security.DeleteIt();
+            }
+
         }
     }
 }

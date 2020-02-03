@@ -12,35 +12,10 @@ namespace Encode
 {
     class Crypt
     {
-        private static bool hayError;
-        /// <summary>
-        /// Decode a passed string
-        /// </summary>
-        /// <param name="encodedData"></param>
-        /// <returns></returns>
-        public static string Decode(string encodedData)
-        {
-            do
-            {
-                hayError = false;
-                try
-                {
-                    return Encoding.UTF8.GetString(Convert.FromBase64String(encodedData));
-                }
-                catch (Exception)
-                {
-                    encodedData += "=";
-                    hayError = true;
-                }
-            } while (hayError);
-
-            return null;
-        }
-
         public static string Encode(string plainText)
         {
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
-            string result = System.Convert.ToBase64String(plainTextBytes);
+            var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
+            string result = Convert.ToBase64String(plainTextBytes);
             if (result.Contains("="))
             {
                 result = result.Substring(0, result.IndexOf("="));

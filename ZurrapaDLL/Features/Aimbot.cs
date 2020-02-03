@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Threading;
-using ZurrapaDLL.Engine;
 
 namespace ZurrapaDLL.Features
 {
@@ -15,12 +10,21 @@ namespace ZurrapaDLL.Features
 
         }
 
+        private void GetBestTarget()
+        {
+            Dictionary<int, float> CrosshairToPlayers;
+            var maxPlayers = 0;
+
+
+        }
+
         public void Start()
         {
             while(true)
             {
-                Console.WriteLine(LocalPlayer.GetHealth());
-                Thread.Sleep(100);
+                Thread.Sleep(1);
+
+
             }
         }
     }

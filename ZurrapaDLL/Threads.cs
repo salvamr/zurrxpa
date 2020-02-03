@@ -22,8 +22,7 @@ namespace ZurrapaDLL
 
         public static void Do()
         {
-            Aimbot oAimbot = new Aimbot();
-            thAimbot = new Thread(new ThreadStart(oAimbot.Start));
+            thAimbot = new Thread(new ThreadStart(Aimbot));
             thAimbot.Start();
             thDebugger = new Thread(new ThreadStart(IsDebugger));
             thTriggerbot = new Thread(new ThreadStart(Triggerbot));

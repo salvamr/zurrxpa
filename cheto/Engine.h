@@ -20,6 +20,7 @@ public:
 	bool	HasBadWeapon();
 	bool	HasPistol();
 	bool	IsInGame();
+	bool	IsMoving();
 	bool	HasMouseEnabled();
 
 	int		GetStatus();
